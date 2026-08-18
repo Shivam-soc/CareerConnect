@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { TypeAnimation } from "react-type-animation";
-import SearchBar from "../common/SearchBar";
-import Button from "../common/Button";
+import SearchInput from "../ui/SearchInput";
+import Button from "../ui/Button";
 
 function Hero({ search, setSearch }) {
   return (
@@ -60,7 +60,7 @@ function Hero({ search, setSearch }) {
 
           <div className="mt-10">
 
-            <SearchBar
+            <SearchInput
 
               search={search}
 
