@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import Navbar from "../components/landing/Navbar";
 import Hero from "../components/landing/Hero";
 import TrustedCompanies from "../components/landing/TrustedCompanies";
 import FeaturedJobs from "../components/landing/FeaturedJobs";
@@ -13,28 +14,32 @@ function Home() {
   const [search, setSearch] = useState("");
 
   return (
-    <main>
+    <>
+      <Navbar />
 
-      <Hero
-        search={search}
-        setSearch={setSearch}
-      />
+      <main>
 
-      <TrustedCompanies />
+        <Hero
+          search={search}
+          setSearch={setSearch}
+        />
 
-      <FeaturedJobs search={search} />
+        <TrustedCompanies />
 
-      <Categories />
+        <FeaturedJobs search={search} />
 
-      <Testimonials />
+        <Categories />
 
-      <Newsletter />
+        <Testimonials />
 
-      <Stats />
+        <Newsletter />
+
+        <Stats />
+
+      </main>
 
       <Footer />
-
-    </main>
+    </>
   );
 }
 

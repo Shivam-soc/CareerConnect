@@ -1,5 +1,5 @@
 import { useState } from "react";
-import JobCard from "./JobCard";
+import JobCard from "../jobs/JobCard";
 
 function FeaturedJobs({ search = "" }) {
   const [selectedFilter, setSelectedFilter] = useState("All");

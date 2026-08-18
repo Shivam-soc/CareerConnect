@@ -1,3 +1,4 @@
+import {Link} from "react-router-dom";
 import {
   FaBookmark,
   FaCheckCircle,
@@ -21,7 +22,7 @@ function JobCard({
   verified = false,
 }) {
   return (
-    <div className="group overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+    <div className="group overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm ...">
 
       {/* Header */}
       <div className="flex items-start justify-between">
@@ -30,7 +31,7 @@ function JobCard({
 
           {/* Company Logo */}
 
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-600 text-xl font-bold text-white">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 text-xl font-bold text-white shadow">
             {company.charAt(0)}
           </div>
 
@@ -131,9 +132,12 @@ function JobCard({
           {posted}
         </span>
 
-        <button className="rounded-xl bg-blue-600 px-5 py-2 font-semibold text-white transition hover:bg-blue-700">
-          Apply Now →
-        </button>
+        <Link
+          to={`/jobs/${title.toLowerCase().replace(/\s+/g, "-")}`}
+          className="rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
+        >
+          View Details
+        </Link>
 
       </div>
 

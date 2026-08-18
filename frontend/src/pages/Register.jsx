@@ -1,5 +1,15 @@
+import AuthLayout from "../components/auth/AuthLayout";
+import AuthBanner from "../components/auth/AuthBanner";
+import RegisterForm from "../components/auth/RegisterForm";
+
 function Register() {
-  return <h1>Register Page</h1>;
+  return (
+    <AuthLayout
+      banner={<AuthBanner />}
+    >
+      <RegisterForm />
+    </AuthLayout>
+  );
 }
 
 export default Register;
