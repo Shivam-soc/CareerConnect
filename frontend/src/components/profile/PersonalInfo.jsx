@@ -1,152 +1,95 @@
-import {
-  FaEnvelope,
-  FaPhone,
-  FaMapMarkerAlt,
-  FaGraduationCap,
-  FaUser,
-} from "react-icons/fa";
-
-import mockUser from "../../data/mockUser";
-
 function PersonalInfo() {
   return (
-    <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+    <section className="rounded-2xl border border-slate-200 bg-white p-6">
 
-      {/* Header */}
+      {/* Avatar */}
 
-      <div className="mb-6">
+      <div className="flex flex-col items-center">
 
-        <h2 className="text-2xl font-bold text-slate-900">
-          Personal Information
+        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-[#E8F7F3] text-3xl font-bold text-[#2E8B78]">
+          SK
+        </div>
+
+        <h2 className="mt-4 text-xl font-semibold text-slate-900">
+          Shivam Kumar
         </h2>
 
-        <p className="mt-1 text-slate-500">
-          Your personal details and professional summary.
+        <p className="mt-1 text-sm text-slate-500">
+          Electronics & Telecommunication Student
         </p>
+
+        <span className="mt-3 rounded-full bg-[#E8F7F3] px-3 py-1 text-xs font-medium text-[#2E8B78]">
+          Open to Opportunities
+        </span>
 
       </div>
 
-      {/* About */}
+      {/* Divider */}
 
-      <div className="mb-8 rounded-2xl bg-slate-50 p-5">
+      <div className="my-6 border-t border-slate-200" />
 
-        <h3 className="mb-3 text-lg font-semibold text-slate-900">
-          About
-        </h3>
+      {/* Details */}
 
-        <p className="leading-7 text-slate-600">
-          {mockUser.about}
-        </p>
+      <div className="space-y-5">
+
+        <div>
+          <p className="text-xs uppercase tracking-wide text-slate-400">
+            Email
+          </p>
+
+          <p className="mt-1 text-sm font-medium text-slate-800">
+            shivam@example.com
+          </p>
+        </div>
+
+        <div>
+          <p className="text-xs uppercase tracking-wide text-slate-400">
+            Phone
+          </p>
+
+          <p className="mt-1 text-sm font-medium text-slate-800">
+            +91 98765 43210
+          </p>
+        </div>
+
+        <div>
+          <p className="text-xs uppercase tracking-wide text-slate-400">
+            Location
+          </p>
+
+          <p className="mt-1 text-sm font-medium text-slate-800">
+            Pune, Maharashtra
+          </p>
+        </div>
 
       </div>
 
-      {/* Information Grid */}
+      {/* Divider */}
 
-      <div className="grid gap-5 md:grid-cols-2">
+      <div className="my-6 border-t border-slate-200" />
 
-        <div className="rounded-2xl border border-slate-200 p-5">
+      {/* Profile Completion */}
 
-          <div className="flex items-center gap-3">
+      <div>
 
-            <FaUser className="text-blue-600" />
+        <div className="flex items-center justify-between">
 
-            <span className="font-medium text-slate-500">
-              Full Name
-            </span>
-
-          </div>
-
-          <p className="mt-3 text-lg font-semibold text-slate-900">
-            {mockUser.name}
+          <p className="text-sm font-medium text-slate-700">
+            Profile Completion
           </p>
+
+          <span className="text-sm font-semibold text-[#2E8B78]">
+            82%
+          </span>
 
         </div>
 
-        <div className="rounded-2xl border border-slate-200 p-5">
+        <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-200">
 
-          <div className="flex items-center gap-3">
-
-            <FaEnvelope className="text-blue-600" />
-
-            <span className="font-medium text-slate-500">
-              Email
-            </span>
-
-          </div>
-
-          <p className="mt-3 text-lg font-semibold text-slate-900">
-            {mockUser.email}
-          </p>
-
-        </div>
-
-        <div className="rounded-2xl border border-slate-200 p-5">
-
-          <div className="flex items-center gap-3">
-
-            <FaPhone className="text-blue-600" />
-
-            <span className="font-medium text-slate-500">
-              Phone
-            </span>
-
-          </div>
-
-          <p className="mt-3 text-lg font-semibold text-slate-900">
-            {mockUser.phone}
-          </p>
-
-        </div>
-
-        <div className="rounded-2xl border border-slate-200 p-5">
-
-          <div className="flex items-center gap-3">
-
-            <FaMapMarkerAlt className="text-blue-600" />
-
-            <span className="font-medium text-slate-500">
-              Location
-            </span>
-
-          </div>
-
-          <p className="mt-3 text-lg font-semibold text-slate-900">
-            {mockUser.location}
-          </p>
-
-        </div>
-
-        <div className="rounded-2xl border border-slate-200 p-5 md:col-span-2">
-
-          <div className="flex items-center gap-3">
-
-            <FaGraduationCap className="text-blue-600" />
-
-            <span className="font-medium text-slate-500">
-              Education
-            </span>
-
-          </div>
-
-          <div className="mt-4">
-
-            <h4 className="text-lg font-semibold text-slate-900">
-              {mockUser.education[0].degree}
-            </h4>
-
-            <p className="mt-2 text-slate-600">
-              {mockUser.education[0].college}
-            </p>
-
-            <p className="mt-2 text-slate-500">
-              {mockUser.education[0].year}
-            </p>
-
-            <span className="mt-4 inline-block rounded-full bg-blue-100 px-4 py-2 text-sm font-semibold text-blue-700">
-              CGPA : {mockUser.education[0].cgpa}
-            </span>
-
-          </div>
+          <div
+            className="h-full rounded-full bg-[#2E8B78]"
+            style={{ width: "82%" }}
+          />
 
         </div>
 

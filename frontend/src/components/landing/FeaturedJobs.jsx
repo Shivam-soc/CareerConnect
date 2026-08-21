@@ -1,155 +1,105 @@
-import { useState } from "react";
+import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
+import { Link } from "react-router-dom";
+
+import jobs from "../../data/jobs";
 import JobCard from "../jobs/JobCard";
+import SectionHeading from "../ui/SectionHeading";
 
 function FeaturedJobs({ search = "" }) {
-  const [selectedFilter, setSelectedFilter] = useState("All");
+  const keyword = search.toLowerCase();
 
-  const jobs = [
-    {
-      id: 1,
-      company: "Google",
-      title: "Frontend Developer",
-      location: "Bangalore",
-      salary: "₹22 LPA",
-      experience: "2-4 Years",
-      type: "Full Time",
-      rating: 4.9,
-      posted: "2 days ago",
-      verified: true,
-      skills: ["React", "TypeScript", "Next.js"],
-    },
-    {
-      id: 2,
-      company: "Microsoft",
-      title: "Backend Developer",
-      location: "Hyderabad",
-      salary: "₹18 LPA",
-      experience: "1-3 Years",
-      type: "Remote",
-      rating: 4.8,
-      posted: "1 day ago",
-      verified: true,
-      skills: ["Node.js", "Express", "MongoDB"],
-    },
-    {
-      id: 3,
-      company: "Adobe",
-      title: "Software Engineer",
-      location: "Pune",
-      salary: "₹20 LPA",
-      experience: "0-2 Years",
-      type: "Hybrid",
-      rating: 4.7,
-      posted: "5 days ago",
-      verified: true,
-      skills: ["Java", "Spring Boot", "SQL"],
-    },
-  ];
+  const featuredJobs = jobs
+    .filter((job) => {
+      const matchesSearch =
+        job.title.toLowerCase().includes(keyword) ||
+        job.company.toLowerCase().includes(keyword) ||
+        job.location.toLowerCase().includes(keyword);
 
-  const filters = [
-    "All",
-    "Full Time",
-    "Remote",
-    "Hybrid",
-    "Internship",
-    "Fresher",
-  ];
-
-  const keyword = search.trim().toLowerCase();
-
-  const filteredJobs = jobs.filter((job) => {
-    const matchesSearch =
-      job.title.toLowerCase().includes(keyword) ||
-      job.company.toLowerCase().includes(keyword);
-
-    const matchesFilter =
-      selectedFilter === "All" ||
-      job.type === selectedFilter;
-
-    return matchesSearch && matchesFilter;
-  });
+      return matchesSearch;
+    })
+    .sort((a, b) => Number(b.featured) - Number(a.featured))
+    .slice(0, 6);
 
   return (
-    <section className="mx-auto max-w-7xl px-6 py-20">
+    <section className="bg-[#F8FAF8] py-20 lg:py-24">
 
-      {/* Header */}
+      <div className="mx-auto max-w-7xl px-6">
 
-      <div className="mb-10 flex flex-col items-center justify-between gap-6 md:flex-row">
+        <SectionHeading
+          eyebrow="Featured Opportunities"
+          title="Jobs You'll Love"
+          subtitle="Handpicked opportunities from India's fastest growing startups and top technology companies."
+          action={
+            <Link
+              to="/jobs"
+              className="group hidden items-center gap-2 text-sm font-semibold text-[#2E8B78] transition-all hover:text-[#236D5E] md:inline-flex"
+            >
+              View All Jobs
 
-        <div>
+              <ArrowRight
+                size={18}
+                className="transition-transform duration-300 group-hover:translate-x-1"
+              />
+            </Link>
+          }
+        />
 
-          <h2 className="text-4xl font-bold text-slate-900">
-            Featured Jobs
-          </h2>
+        {featuredJobs.length > 0 ? (
 
-          <p className="mt-2 text-slate-500">
-            Discover opportunities from the world's top companies.
-          </p>
+          <div className="mt-14 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
 
-        </div>
+            {featuredJobs.map((job, index) => (
 
-        <button className="rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700">
-          View All Jobs →
-        </button>
+              <motion.div
+                key={job.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: 0.45,
+                  delay: index * 0.08,
+                }}
+              >
+                <JobCard job={job} />
+              </motion.div>
 
-      </div>
+            ))}
 
-      {/* Filters */}
+          </div>
 
-      <div className="mb-10 flex flex-wrap gap-3">
+        ) : (
 
-        {filters.map((filter) => (
+          <div className="mt-16 rounded-[32px] border border-dashed border-slate-300 bg-white p-14 text-center">
 
-          <button
-            key={filter}
-            onClick={() => setSelectedFilter(filter)}
-            className={`rounded-full px-5 py-2 text-sm font-medium transition
+            <h3 className="text-2xl font-bold text-slate-900">
+              No matching jobs found
+            </h3>
 
-            ${
-              selectedFilter === filter
-                ? "bg-blue-600 text-white shadow-md"
-                : "border border-slate-300 bg-white text-slate-700 hover:border-blue-600 hover:bg-blue-600 hover:text-white"
-            }`}
+            <p className="mt-3 text-slate-500">
+              Try searching with another job title, company or location.
+            </p>
+
+          </div>
+
+        )}
+
+        <div className="mt-12 flex justify-center md:hidden">
+
+          <Link
+            to="/jobs"
+            className="inline-flex items-center gap-2 rounded-full border border-slate-300 px-6 py-3 font-semibold text-slate-700 transition-all duration-300 hover:-translate-y-1 hover:border-[#2E8B78] hover:bg-[#E8F7F3] hover:text-[#2E8B78]"
           >
-            {filter}
-          </button>
 
-        ))}
+            View All Jobs
+
+            <ArrowRight size={18} />
+
+          </Link>
+
+        </div>
 
       </div>
-
-      {/* Job Cards */}
-
-      {filteredJobs.length > 0 ? (
-
-        <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-
-          {filteredJobs.map((job) => (
-
-            <JobCard
-              key={job.id}
-              {...job}
-            />
-
-          ))}
-
-        </div>
-
-      ) : (
-
-        <div className="rounded-2xl border border-dashed border-slate-300 py-16 text-center">
-
-          <h3 className="text-2xl font-bold">
-            No Jobs Found
-          </h3>
-
-          <p className="mt-2 text-slate-500">
-            Try another search or filter.
-          </p>
-
-        </div>
-
-      )}
 
     </section>
   );

@@ -1,118 +1,75 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
 import AuthLayout from "../components/auth/AuthLayout";
-import AuthBanner from "../components/auth/AuthBanner";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    setSent(true);
-
     console.log(email);
+
+    // TODO: Send Reset Link API
   };
 
   return (
-    <AuthLayout
-      banner={<AuthBanner />}
-    >
-      <div className="rounded-3xl border border-slate-200 bg-white p-8 shadow-md">
+    <AuthLayout width="md">
+      <>
+        <Link
+          to="/"
+          className="text-2xl font-bold text-slate-900"
+        >
+          Career<span className="text-[#2E8B78]">Connect</span>
+        </Link>
 
-        <h2 className="text-4xl font-bold tracking-tight text-slate-900">
-          Forgot Password
-        </h2>
+        <div className="mt-8 mb-8">
+          <h1 className="text-4xl font-bold text-slate-900">
+            Forgot Password?
+          </h1>
 
-        <p className="mt-2 text-slate-500">
-          Enter your email and we'll send you a reset link.
-        </p>
+          <p className="mt-2 text-slate-500">
+            Enter your registered email address and we'll send you a reset link.
+          </p>
+        </div>
 
-        {!sent ? (
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-5"
+        >
+          <div>
+            <label className="mb-2 block text-sm font-medium">
+              Email Address
+            </label>
 
-          <form
-            onSubmit={handleSubmit}
-            className="mt-8 space-y-5"
-          >
-
-            <div>
-
-              <label className="mb-2 block text-sm font-medium">
-                Email Address
-              </label>
-
-              <input
-                type="email"
-                placeholder="name@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="
-                  w-full
-                  rounded-xl
-                  border
-                  border-slate-300
-                  px-4
-                  py-3
-                  outline-none
-                  transition
-                  focus:border-blue-600
-                  focus:ring-4
-                  focus:ring-blue-100
-                "
-              />
-
-            </div>
-
-            <button
-              className="
-                w-full
-                rounded-xl
-                bg-blue-600
-                py-3
-                font-semibold
-                text-white
-                hover:bg-blue-700
-              "
-            >
-              Send Reset Link
-            </button>
-
-          </form>
-
-        ) : (
-
-          <div className="mt-8 rounded-xl bg-green-50 p-6 text-center">
-
-            <div className="text-5xl">
-              ✅
-            </div>
-
-            <h3 className="mt-3 text-lg font-semibold text-green-700">
-              Check your email
-            </h3>
-
-            <p className="mt-2 text-sm text-green-600">
-              We have sent a password reset link.
-            </p>
-
+            <input
+              type="email"
+              placeholder="name@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="h-12 w-full rounded-lg border border-slate-300 px-4 outline-none focus:border-[#2E8B78] focus:ring-2 focus:ring-[#2E8B78]/20"
+              required
+            />
           </div>
 
-        )}
+          <button
+            type="submit"
+            className="h-12 w-full rounded-lg bg-[#2E8B78] text-white font-medium hover:bg-[#236D5E] transition"
+          >
+            Send Reset Link
+          </button>
+        </form>
 
-        <p className="mt-8 text-center text-sm">
-
+        <p className="mt-6 text-center text-sm text-slate-500">
+          Remember your password?{" "}
           <Link
             to="/login"
-            className="font-semibold text-blue-600 hover:underline"
+            className="font-medium text-[#2E8B78] hover:underline"
           >
-            ← Back to Login
+            Sign In
           </Link>
-
         </p>
-
-      </div>
+      </>
     </AuthLayout>
   );
 }

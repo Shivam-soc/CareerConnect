@@ -1,84 +1,81 @@
+import { ArrowUpRight } from "lucide-react";
 import {
-  FaFacebookF,
-  FaTwitter,
-  FaLinkedinIn,
   FaGithub,
-} from "react-icons/fa";
+  FaLinkedin,
+  FaInstagram,
+} from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
-    <footer className="bg-slate-900 text-slate-300">
+    <footer className="relative overflow-hidden bg-slate-950 text-slate-300">
 
-      <div className="mx-auto max-w-7xl px-6 py-16">
+      {/* Background Glow */}
 
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-5">
+      <div className="absolute inset-0 -z-10 overflow-hidden">
 
-          {/* Logo */}
+        <div className="absolute -left-32 top-0 h-80 w-80 rounded-full bg-[#2E8B78]/10 blur-[140px]" />
 
-          <div className="lg:col-span-2">
+        <div className="absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-emerald-500/5 blur-[160px]" />
 
-            <h2 className="text-3xl font-bold text-white">
-              Career<span className="text-blue-500">Connect</span>
-            </h2>
+      </div>
 
-            <p className="mt-5 max-w-md leading-7">
-              CareerConnect helps students discover jobs, internships,
-              and career opportunities from the world's leading companies.
+      <div className="mx-auto max-w-7xl px-6 py-20">
+
+        <div className="grid gap-16 lg:grid-cols-[2fr_1fr_1fr_1fr]">
+
+          {/* Brand */}
+
+          <div>
+
+            <Link
+              to="/"
+              className="inline-block"
+            >
+
+              <h2 className="text-3xl font-bold tracking-tight text-white">
+
+                Career
+                <span className="text-[#2E8B78]">
+                  Connect
+                </span>
+
+              </h2>
+
+            </Link>
+
+            <p className="mt-6 max-w-md leading-8 text-slate-400">
+
+              Helping students and professionals discover internships,
+              placements and full-time opportunities from India's leading
+              startups and technology companies.
+
             </p>
 
             <div className="mt-8 flex gap-4">
 
-              <a
-                href="#"
-                className="rounded-full bg-slate-800 p-3 transition hover:bg-blue-600 hover:text-white"
-              >
-                <FaFacebookF />
-              </a>
+              {[
+                FaGithub,
+                FaLinkedin,
+                FaInstagram,
+              ].map((Icon, index) => (
 
-              <a
-                href="#"
-                className="rounded-full bg-slate-800 p-3 transition hover:bg-blue-600 hover:text-white"
-              >
-                <FaTwitter />
-              </a>
+                <a
+                  key={index}
+                  href="#"
+                  className="group flex h-11 w-11 items-center justify-center rounded-full border border-slate-700 transition-all duration-300 hover:-translate-y-1 hover:border-[#2E8B78] hover:bg-[#2E8B78] hover:text-white"
+                >
 
-              <a
-                href="#"
-                className="rounded-full bg-slate-800 p-3 transition hover:bg-blue-600 hover:text-white"
-              >
-                <FaLinkedinIn />
-              </a>
+                  <Icon
+                    size={18}
+                    className="transition-transform duration-300 group-hover:scale-110"
+                  />
 
-              <a
-                href="#"
-                className="rounded-full bg-slate-800 p-3 transition hover:bg-blue-600 hover:text-white"
-              >
-                <FaGithub />
-              </a>
+                </a>
+
+              ))}
 
             </div>
-
-          </div>
-
-          {/* Quick Links */}
-
-          <div>
-
-            <h3 className="mb-5 text-lg font-semibold text-white">
-              Quick Links
-            </h3>
-
-            <ul className="space-y-3">
-
-              <li><a href="#" className="hover:text-blue-400">Home</a></li>
-
-              <li><a href="#" className="hover:text-blue-400">Jobs</a></li>
-
-              <li><a href="#" className="hover:text-blue-400">Companies</a></li>
-
-              <li><a href="#" className="hover:text-blue-400">Dashboard</a></li>
-
-            </ul>
 
           </div>
 
@@ -86,49 +83,111 @@ function Footer() {
 
           <div>
 
-            <h3 className="mb-5 text-lg font-semibold text-white">
+            <h3 className="text-lg font-semibold text-white">
               Company
             </h3>
 
-            <ul className="space-y-3">
+            <div className="mt-6 space-y-4">
 
-              <li><a href="#" className="hover:text-blue-400">About</a></li>
+              {[
+                ["About", "/about"],
+                ["Contact", "/contact"],
+                ["Companies", "/companies"],
+              ].map(([name, link]) => (
 
-              <li><a href="#" className="hover:text-blue-400">Contact</a></li>
+                <Link
+                  key={name}
+                  to={link}
+                  className="block transition-all duration-300 hover:translate-x-1 hover:text-white"
+                >
 
-              <li><a href="#" className="hover:text-blue-400">Privacy Policy</a></li>
+                  {name}
 
-              <li><a href="#" className="hover:text-blue-400">Terms</a></li>
+                </Link>
 
-            </ul>
+              ))}
+
+            </div>
 
           </div>
 
-          {/* Contact */}
+          {/* Jobs */}
 
           <div>
 
-            <h3 className="mb-5 text-lg font-semibold text-white">
-              Contact
+            <h3 className="text-lg font-semibold text-white">
+              Jobs
             </h3>
 
-            <p>Pune, Maharashtra</p>
+            <div className="mt-6 space-y-4">
 
-            <p className="mt-3">
-              support@careerconnect.com
-            </p>
+              {[
+                ["Browse Jobs", "/jobs"],
+                ["Saved Jobs", "/saved-jobs"],
+                ["Applications", "/applications"],
+              ].map(([name, link]) => (
 
-            <p className="mt-3">
-              +91 98765 43210
-            </p>
+                <Link
+                  key={name}
+                  to={link}
+                  className="block transition-all duration-300 hover:translate-x-1 hover:text-white"
+                >
+
+                  {name}
+
+                </Link>
+
+              ))}
+
+            </div>
+
+          </div>
+
+          {/* Resources */}
+
+          <div>
+
+            <h3 className="text-lg font-semibold text-white">
+              Resources
+            </h3>
+
+            <div className="mt-6 space-y-4">
+
+              {["Privacy", "Terms", "Support"].map((item) => (
+
+                <a
+                  key={item}
+                  href="#"
+                  className="group flex items-center gap-2 transition-all duration-300 hover:translate-x-1 hover:text-white"
+                >
+
+                  {item}
+
+                  <ArrowUpRight
+                    size={15}
+                    className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+                  />
+
+                </a>
+
+              ))}
+
+            </div>
 
           </div>
 
         </div>
 
-        <div className="mt-12 border-t border-slate-700 pt-6 text-center text-sm">
+        {/* Bottom */}
 
-          © 2026 CareerConnect. All Rights Reserved.
+        <div className="mt-20 flex flex-col items-center justify-between gap-4 border-t border-slate-800 pt-8 text-sm text-slate-500 md:flex-row">
+
+          <p>
+
+            © {new Date().getFullYear()} CareerConnect.
+            All rights reserved.
+
+          </p>
 
         </div>
 

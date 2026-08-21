@@ -1,97 +1,191 @@
 import { Link } from "react-router-dom";
 import {
-  FaArrowLeft,
-  FaBookmark,
-  FaCheckCircle,
-  FaClock,
-  FaMapMarkerAlt,
-  FaMoneyBillWave,
-  FaBriefcase,
-} from "react-icons/fa";
+  ArrowLeft,
+  MapPin,
+  Briefcase,
+  Clock3,
+  IndianRupee,
+  Bookmark,
+  Share2,
+  BadgeCheck,
+} from "lucide-react";
 
-function JobOverview() {
+function JobOverview({ job }) {
+  if (!job) return null;
+
+  const {
+    company,
+    logo,
+    title,
+    location,
+    salary,
+    type,
+    experience,
+    posted,
+    verified,
+    featured,
+    skills = [],
+  } = job;
+
   return (
-    <div className="rounded-3xl bg-white p-8 shadow-md">
+    <section className="rounded-[32px] border border-slate-200 bg-white p-8 shadow-sm">
 
       {/* Back */}
-        <Link
-            to="/jobs"
-            className="mb-6 flex items-center gap-2 text-blue-600 transition hover:underline"
-        >
-            <FaArrowLeft />
-            Back to Jobs
-        </Link>
 
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+      <Link
+        to="/jobs"
+        className="inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-[#2E8B78]"
+      >
+        <ArrowLeft size={17} />
+        Back to Jobs
+      </Link>
 
-        {/* Left */}
-        <div className="flex gap-5">
+      <div className="mt-8 flex flex-col gap-8 lg:flex-row lg:items-start">
 
-          <div className="flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-blue-600 to-indigo-600 text-3xl font-bold text-white">
-            G
-          </div>
+        {/* Logo */}
 
-          <div>
+        <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-3xl border border-slate-200 bg-slate-50">
 
-            <div className="flex items-center gap-2">
+          {logo ? (
+            <img
+              src={logo}
+              alt={company}
+              className="h-14 w-14 object-contain"
+            />
+          ) : (
+            <span className="text-3xl font-bold">
+              {company[0]}
+            </span>
+          )}
 
-              <h1 className="text-4xl font-bold">
-                Frontend Developer
-              </h1>
+        </div>
 
-              <FaCheckCircle className="text-green-500" />
+        {/* Content */}
 
-            </div>
+        <div className="flex-1">
 
-            <h2 className="mt-2 text-xl font-semibold text-slate-600">
-              Google
+          {/* Company */}
+
+          <div className="flex flex-wrap items-center gap-3">
+
+            <h2 className="text-lg font-semibold text-slate-700">
+              {company}
             </h2>
 
-            <div className="mt-5 flex flex-wrap gap-6 text-slate-600">
+            {verified && (
+              <span className="inline-flex items-center gap-1 rounded-full bg-[#E8F7F3] px-3 py-1 text-sm font-medium text-[#2E8B78]">
 
-              <span className="flex items-center gap-2">
-                <FaMapMarkerAlt />
-                Bangalore
+                <BadgeCheck size={15} />
+
+                Verified
+
+              </span>
+            )}
+
+            {featured && (
+              <span className="rounded-full bg-yellow-100 px-3 py-1 text-sm font-medium text-yellow-700">
+                Featured
+              </span>
+            )}
+
+          </div>
+
+          {/* Job Title */}
+
+          <h1 className="mt-3 text-4xl font-extrabold tracking-tight text-slate-900">
+
+            {title}
+
+          </h1>
+
+          {/* Meta */}
+
+          <div className="mt-6 flex flex-wrap gap-3">
+
+            <span className="flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm">
+
+              <MapPin size={16} />
+
+              {location}
+
+            </span>
+
+            <span className="flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm">
+
+              <Briefcase size={16} />
+
+              {experience}
+
+            </span>
+
+            <span className="flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm">
+
+              <Clock3 size={16} />
+
+              {posted}
+
+            </span>
+
+            <span className="flex items-center gap-2 rounded-full bg-[#E8F7F3] px-4 py-2 text-sm font-semibold text-[#2E8B78]">
+
+              <IndianRupee size={16} />
+
+              {salary}
+
+            </span>
+
+            <span className="rounded-full border border-slate-200 px-4 py-2 text-sm">
+
+              {type}
+
+            </span>
+
+          </div>
+
+          {/* Skills */}
+
+          <div className="mt-8 flex flex-wrap gap-3">
+
+            {skills.map((skill) => (
+
+              <span
+                key={skill}
+                className="rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-medium transition hover:border-[#2E8B78] hover:bg-[#E8F7F3]"
+              >
+                {skill}
               </span>
 
-              <span className="flex items-center gap-2">
-                <FaMoneyBillWave />
-                ₹22 LPA
-              </span>
-
-              <span className="flex items-center gap-2">
-                <FaBriefcase />
-                Full Time
-              </span>
-
-              <span className="flex items-center gap-2">
-                <FaClock />
-                Posted 2 days ago
-              </span>
-
-            </div>
+            ))}
 
           </div>
 
         </div>
 
-        {/* Right */}
+        {/* Actions */}
 
-        <div className="flex gap-4">
+        <div className="flex gap-3 lg:flex-col">
 
-          <button className="rounded-xl border border-slate-300 px-6 py-3 hover:bg-slate-100">
-            <FaBookmark />
+          <button className="flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-6 py-3 font-medium transition hover:border-[#2E8B78] hover:text-[#2E8B78]">
+
+            <Bookmark size={18} />
+
+            Save
+
           </button>
 
-          <button className="rounded-xl bg-blue-600 px-8 py-3 font-semibold text-white transition hover:bg-blue-700">
-            Apply Now
+          <button className="flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white px-6 py-3 font-medium transition hover:border-[#2E8B78] hover:text-[#2E8B78]">
+
+            <Share2 size={18} />
+
+            Share
+
           </button>
 
         </div>
 
       </div>
 
-    </div>
+    </section>
   );
 }
 

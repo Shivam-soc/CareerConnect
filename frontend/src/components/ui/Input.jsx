@@ -1,151 +1,61 @@
-import { useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import clsx from "clsx";
 
 function Input({
   label,
-  type = "text",
-  placeholder = "",
-  value,
-  onChange,
-  name,
-  id,
-  icon,
-  rightIcon,
   error,
   helperText,
-  required = false,
-  disabled = false,
+  leftIcon,
+  rightIcon,
   className = "",
+  ...props
 }) {
-  const [showPassword, setShowPassword] = useState(false);
-
-  const inputType =
-    type === "password"
-      ? showPassword
-        ? "text"
-        : "password"
-      : type;
-
   return (
-    <div className={`w-full ${className}`}>
-
-      {/* Label */}
-
+    <div className="w-full">
       {label && (
-        <label
-          htmlFor={id}
-          className="mb-2 block text-sm font-semibold text-slate-700"
-        >
+        <label className="mb-2 block text-sm font-medium text-slate-700">
           {label}
-
-          {required && (
-            <span className="ml-1 text-red-500">*</span>
-          )}
         </label>
       )}
 
-      {/* Input */}
-
-      <div className="relative">
-
-        {/* Left Icon */}
-
-        {icon && (
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
-            {icon}
-          </div>
+      <div
+        className={clsx(
+          "flex h-12 items-center rounded-2xl border border-slate-200 bg-white px-4 transition-all duration-300",
+          "focus-within:border-indigo-500 focus-within:ring-4 focus-within:ring-indigo-100",
+          error && "border-red-500 focus-within:ring-red-100"
+        )}
+      >
+        {leftIcon && (
+          <span className="mr-3 text-slate-400">
+            {leftIcon}
+          </span>
         )}
 
         <input
-          id={id}
-          name={name}
-          type={inputType}
-          value={value}
-          disabled={disabled}
-          onChange={onChange}
-          placeholder={placeholder}
-          className={`
-            w-full
-            rounded-xl
-            border
-            px-4
-            py-3
-            text-slate-700
-            outline-none
-            transition-all
-            duration-200
-            placeholder:text-slate-400
-
-            ${
-              icon
-                ? "pl-12"
-                : ""
-            }
-
-            ${
-              type === "password" || rightIcon
-                ? "pr-12"
-                : ""
-            }
-
-            ${
-              error
-                ? "border-red-500 focus:border-red-500 focus:ring-2 focus:ring-red-200"
-                : "border-slate-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-            }
-
-            ${
-              disabled
-                ? "cursor-not-allowed bg-slate-100"
-                : "bg-white"
-            }
-          `}
+          className={clsx(
+            "h-full w-full bg-transparent text-slate-900 placeholder:text-slate-400 focus:outline-none",
+            className
+          )}
+          {...props}
         />
 
-        {/* Password Toggle */}
-
-        {type === "password" && (
-          <button
-            type="button"
-            onClick={() =>
-              setShowPassword(!showPassword)
-            }
-            className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
-          >
-            {showPassword ? (
-              <FaEyeSlash />
-            ) : (
-              <FaEye />
-            )}
-          </button>
-        )}
-
-        {/* Right Icon */}
-
-        {rightIcon && type !== "password" && (
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">
+        {rightIcon && (
+          <span className="ml-3 text-slate-400">
             {rightIcon}
-          </div>
+          </span>
         )}
-
       </div>
 
-      {/* Error */}
-
-      {error && (
-        <p className="mt-2 text-sm text-red-500">
-          {error}
-        </p>
-      )}
-
-      {/* Helper */}
-
-      {!error && helperText && (
+      {helperText && !error && (
         <p className="mt-2 text-sm text-slate-500">
           {helperText}
         </p>
       )}
 
+      {error && (
+        <p className="mt-2 text-sm text-red-600">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

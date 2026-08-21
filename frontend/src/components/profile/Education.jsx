@@ -1,119 +1,90 @@
-import { FaGraduationCap, FaCalendarAlt, FaStar } from "react-icons/fa";
+import { GraduationCap } from "lucide-react";
 import mockUser from "../../data/mockUser";
 
 function Education() {
+  const { education } = mockUser;
+
   return (
-    <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+    <section className="rounded-2xl border border-slate-200 bg-white p-6">
 
       {/* Header */}
 
-      <div className="mb-8">
+      <div className="flex items-center justify-between">
 
-        <h2 className="text-2xl font-bold text-slate-900">
-          Education
-        </h2>
+        <div>
 
-        <p className="mt-1 text-slate-500">
-          Academic qualifications and achievements.
-        </p>
+          <h2 className="text-lg font-semibold text-slate-900">
+            Education
+          </h2>
+
+          <p className="mt-1 text-sm text-slate-500">
+            Academic qualifications.
+          </p>
+
+        </div>
+
+        <div className="rounded-xl bg-[#E8F7F3] p-3">
+
+          <GraduationCap
+            size={20}
+            className="text-[#2E8B78]"
+          />
+
+        </div>
 
       </div>
 
-      <div className="space-y-6">
+      {/* Content */}
 
-        {mockUser.education.map((edu, index) => (
+      <div className="mt-6">
 
-          <div
-            key={index}
-            className="
-              relative
-              rounded-2xl
-              border
-              border-slate-200
-              p-6
-              transition-all
-              duration-300
-              hover:border-blue-300
-              hover:shadow-md
-            "
-          >
+        <h3 className="text-base font-semibold text-slate-900">
+          {education.degree}
+        </h3>
 
-            {/* Top */}
+        <p className="mt-1 text-slate-600">
+          {education.college}
+        </p>
 
-            <div className="flex items-start justify-between">
+        <div className="mt-5 grid gap-5 sm:grid-cols-3">
 
-              <div className="flex gap-5">
+          <div>
 
-                <div
-                  className="
-                    flex
-                    h-14
-                    w-14
-                    items-center
-                    justify-center
-                    rounded-2xl
-                    bg-blue-100
-                    text-blue-600
-                  "
-                >
-                  <FaGraduationCap size={22} />
-                </div>
+            <p className="text-xs uppercase tracking-wide text-slate-400">
+              CGPA
+            </p>
 
-                <div>
-
-                  <h3 className="text-xl font-semibold text-slate-900">
-                    {edu.degree}
-                  </h3>
-
-                  <p className="mt-2 text-slate-600">
-                    {edu.college}
-                  </p>
-
-                  <div className="mt-4 flex flex-wrap gap-5 text-sm text-slate-500">
-
-                    <span className="flex items-center gap-2">
-
-                      <FaCalendarAlt />
-
-                      {edu.year}
-
-                    </span>
-
-                    <span className="flex items-center gap-2">
-
-                      <FaStar />
-
-                      CGPA {edu.cgpa}
-
-                    </span>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-              {/* Badge */}
-
-              <span
-                className="
-                  rounded-full
-                  bg-green-100
-                  px-4
-                  py-2
-                  text-sm
-                  font-semibold
-                  text-green-700
-                "
-              >
-                Current
-              </span>
-
-            </div>
+            <p className="mt-1 font-medium text-slate-800">
+              {education.cgpa}
+            </p>
 
           </div>
 
-        ))}
+          <div>
+
+            <p className="text-xs uppercase tracking-wide text-slate-400">
+              Duration
+            </p>
+
+            <p className="mt-1 font-medium text-slate-800">
+              {education.duration}
+            </p>
+
+          </div>
+
+          <div>
+
+            <p className="text-xs uppercase tracking-wide text-slate-400">
+              Status
+            </p>
+
+            <p className="mt-1 font-medium text-[#2E8B78]">
+              {education.status}
+            </p>
+
+          </div>
+
+        </div>
 
       </div>
 

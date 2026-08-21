@@ -1,175 +1,90 @@
-import {
-  FaBookmark,
-  FaMapMarkerAlt,
-  FaMoneyBillWave,
-  FaClock,
-} from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const jobs = [
   {
     id: 1,
-    company: "Google",
-    logo: "https://logo.clearbit.com/google.com",
+    company: "Netflix",
     role: "Frontend Developer",
-    location: "Bangalore",
-    salary: "₹22 LPA",
-    type: "Full Time",
+    location: "Remote",
+    salary: "₹18 LPA",
   },
   {
     id: 2,
     company: "Adobe",
-    logo: "https://logo.clearbit.com/adobe.com",
-    role: "Software Engineer Intern",
+    role: "React Developer",
     location: "Noida",
-    salary: "₹12 LPA",
-    type: "Internship",
+    salary: "₹15 LPA",
   },
   {
     id: 3,
-    company: "Microsoft",
-    logo: "https://logo.clearbit.com/microsoft.com",
-    role: "Backend Developer",
-    location: "Hyderabad",
-    salary: "₹26 LPA",
-    type: "Full Time",
+    company: "Google",
+    role: "Software Engineer",
+    location: "Bangalore",
+    salary: "₹28 LPA",
   },
 ];
 
 function RecommendedJobs() {
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-
+    <section className="rounded-2xl border border-slate-200 bg-white">
       {/* Header */}
-
-      <div className="mb-6 flex items-center justify-between">
-
+      <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
         <div>
-
-          <h2 className="text-2xl font-bold text-slate-900">
+          <h2 className="text-lg font-semibold text-slate-900">
             Recommended Jobs
           </h2>
-
           <p className="mt-1 text-sm text-slate-500">
-            Jobs matching your profile
+            Jobs matching your profile.
           </p>
-
         </div>
-
-        <button className="text-sm font-semibold text-blue-600 hover:text-blue-700">
+        <Link
+          to="/jobs"
+          className="text-sm font-medium text-[#2E8B78] transition-all hover:underline"
+        >
           View All
-        </button>
-
+        </Link>
       </div>
 
-      {/* Cards */}
-
-      <div className="space-y-5">
-
-        {jobs.map((job) => (
-
+      {/* Job List */}
+      <div>
+        {jobs.map((job, index) => (
           <div
             key={job.id}
-            className="
-              flex
-              items-center
-              justify-between
-              rounded-2xl
-              border
-              border-slate-200
-              p-5
-              transition-all
-              duration-300
-              hover:border-blue-300
-              hover:shadow-md
-            "
+            className={`flex cursor-pointer items-center justify-between px-6 py-5 transition-colors duration-200 hover:bg-slate-50 ${
+              index !== jobs.length - 1 ? "border-b border-slate-100" : ""
+            }`}
           >
-
-            {/* Left */}
-
-            <div className="flex items-center gap-5">
-
-              <img
-                src={job.logo}
-                alt={job.company}
-                className="h-14 w-14 rounded-xl border border-slate-200 bg-white p-2"
-              />
-
-              <div>
-
-                <h3 className="text-lg font-semibold text-slate-900">
-                  {job.role}
-                </h3>
-
-                <p className="mt-1 font-medium text-slate-600">
-                  {job.company}
-                </p>
-
-                <div className="mt-3 flex flex-wrap gap-5 text-sm text-slate-500">
-
-                  <span className="flex items-center gap-2">
-                    <FaMapMarkerAlt />
-                    {job.location}
-                  </span>
-
-                  <span className="flex items-center gap-2">
-                    <FaMoneyBillWave />
-                    {job.salary}
-                  </span>
-
-                  <span className="flex items-center gap-2">
-                    <FaClock />
-                    {job.type}
-                  </span>
-
-                </div>
-
-              </div>
-
+            <div>
+              <h3 className="font-medium text-slate-900">{job.role}</h3>
+              <p className="mt-1 text-sm text-slate-500">{job.company}</p>
             </div>
 
-            {/* Right */}
-
-            <div className="flex items-center gap-3">
-
+            <div className="text-right">
+              <p className="text-sm font-medium text-slate-900">{job.salary}</p>
+              <p className="mt-1 text-xs text-slate-400">{job.location}</p>
               <button
                 className="
-                  flex
-                  h-11
-                  w-11
-                  items-center
-                  justify-center
-                  rounded-xl
+                  mt-3
+                  rounded-lg
                   border
                   border-slate-300
-                  hover:bg-slate-100
+                  px-4
+                  py-2
+                  text-sm
+                  font-medium
+                  transition-all
+                  hover:border-[#2E8B78]
+                  hover:bg-slate-50
+                  hover:text-[#2E8B78]
+                  active:scale-95
                 "
               >
-                <FaBookmark />
+                View Job
               </button>
-
-              <button
-                className="
-                  rounded-xl
-                  bg-blue-600
-                  px-6
-                  py-3
-                  font-semibold
-                  text-white
-                  transition
-                  hover:bg-blue-700
-                "
-              >
-                Apply
-              </button>
-
             </div>
-
           </div>
-
         ))}
-
       </div>
-
     </section>
   );
 }

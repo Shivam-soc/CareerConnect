@@ -1,147 +1,181 @@
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
-  FaBookmark,
-  FaCheckCircle,
-  FaClock,
-  FaMapMarkerAlt,
-  FaMoneyBillWave,
-  FaBriefcase,
-  FaStar,
-} from "react-icons/fa";
+  ArrowRight,
+  MapPin,
+  Clock3,
+  Briefcase,
+} from "lucide-react";
 
-function JobCard({
-  company,
-  title,
-  location,
-  salary,
-  type,
-  experience,
-  rating,
-  posted,
-  skills = [],
-  verified = false,
-}) {
+import Card from "../ui/Card";
+import Badge from "../ui/Badge";
+
+function JobCard({ job }) {
+  if (!job) return null;
+
+  const {
+    id,
+    title,
+    company,
+    logo,
+    location,
+    salary,
+    type,
+    experience,
+    posted,
+    skills = [],
+    featured,
+  } = job;
+
   return (
-    <div className="group overflow-hidden rounded-3xl border border-slate-200 bg-white p-6 shadow-sm ...">
+    <Link
+      to={`/jobs/${id}`}
+      className="group block h-full"
+    >
+      <Card
+        className="flex h-full flex-col rounded-[26px] border border-slate-200 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#2E8B78]/40 hover:shadow-xl"
+      >
 
-      {/* Header */}
-      <div className="flex items-start justify-between">
+        {/* Top */}
 
-        <div className="flex gap-4">
+        <div className="flex items-start justify-between">
 
-          {/* Company Logo */}
+          <div className="flex items-center gap-4">
 
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 text-xl font-bold text-white shadow">
-            {company.charAt(0)}
-          </div>
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-slate-200 bg-slate-50 transition group-hover:scale-105">
 
-          <div>
-
-            <div className="flex items-center gap-2">
-
-              <h3 className="text-lg font-bold">
-                {company}
-              </h3>
-
-              {verified && (
-                <FaCheckCircle className="text-green-500" />
-              )}
+              <img
+                src={logo}
+                alt={company}
+                className="h-8 w-8 object-contain"
+              />
 
             </div>
 
-            <p className="text-sm text-slate-500">
-              Verified Company
-            </p>
+            <div>
+
+              <p className="font-semibold text-slate-900">
+                {company}
+              </p>
+
+              <div className="mt-1 flex items-center gap-1 text-sm text-slate-500">
+
+                <Clock3 size={14} />
+
+                {posted}
+
+              </div>
+
+            </div>
 
           </div>
 
+          {featured && (
+            <Badge
+              variant="primary"
+              size="sm"
+            >
+              Featured
+            </Badge>
+          )}
+
         </div>
 
-        <button className="rounded-full p-2 transition hover:bg-slate-100">
-          <FaBookmark className="text-slate-500 group-hover:text-blue-600" />
-        </button>
+        {/* Title */}
 
-      </div>
+        <h3 className="mt-6 line-clamp-2 text-xl font-bold leading-snug text-slate-900 transition group-hover:text-[#2E8B78]">
 
-      {/* Job Title */}
+          {title}
 
-      <h2 className="mt-6 text-2xl font-bold">
-        {title}
-      </h2>
+        </h3>
 
-      {/* Rating */}
+        {/* Meta */}
 
-      <div className="mt-3 flex items-center gap-2">
+        <div className="mt-5 flex flex-wrap gap-2">
 
-        <FaStar className="text-yellow-400" />
-
-        <span className="font-semibold">
-          {rating}
-        </span>
-
-      </div>
-
-      {/* Information */}
-
-      <div className="mt-6 space-y-3">
-
-        <div className="flex items-center gap-2 text-slate-600">
-          <FaMapMarkerAlt />
-          {location}
-        </div>
-
-        <div className="flex items-center gap-2 text-slate-600">
-          <FaMoneyBillWave />
-          {salary}
-        </div>
-
-        <div className="flex items-center gap-2 text-slate-600">
-          <FaBriefcase />
-          {type}
-        </div>
-
-        <div className="flex items-center gap-2 text-slate-600">
-          <FaClock />
-          {experience}
-        </div>
-
-      </div>
-
-      {/* Skills */}
-
-      <div className="mt-6 flex flex-wrap gap-2">
-
-        {skills.map((skill) => (
-
-          <span
-            key={skill}
-            className="rounded-full bg-blue-50 px-3 py-1 text-sm font-medium text-blue-700"
+          <Badge
+            variant="gray"
+            size="sm"
           >
-            {skill}
+            <MapPin size={14} />
+            {location}
+          </Badge>
+
+          <Badge
+            variant="gray"
+            size="sm"
+          >
+            <Briefcase size={14} />
+            {experience}
+          </Badge>
+
+          <Badge
+            variant="gray"
+            size="sm"
+          >
+            {type}
+          </Badge>
+
+        </div>
+
+        {/* Salary */}
+
+        <div className="mt-5">
+
+          <span className="rounded-full bg-[#E8F7F3] px-4 py-2 text-base font-bold text-[#2E8B78]">
+
+            {salary}
+
           </span>
 
-        ))}
+        </div>
 
-      </div>
+        {/* Skills */}
 
-      {/* Footer */}
+        <div className="mt-5 flex flex-wrap gap-2">
 
-      <div className="mt-8 flex items-center justify-between">
+          {skills.slice(0, 3).map((skill) => (
 
-        <span className="text-sm text-slate-500">
-          {posted}
-        </span>
+            <Badge
+              key={skill}
+              variant="gray"
+              size="sm"
+            >
+              {skill}
+            </Badge>
 
-        <Link
-          to={`/jobs/${title.toLowerCase().replace(/\s+/g, "-")}`}
-          className="rounded-xl bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
-        >
-          View Details
-        </Link>
+          ))}
 
-      </div>
+        </div>
 
-    </div>
+        {/* Spacer */}
+
+        <div className="flex-1" />
+
+        {/* Footer */}
+
+        <div className="mt-6 flex items-center justify-between border-t border-slate-100 pt-5">
+
+          <span className="text-sm text-slate-500">
+
+            Apply before closing
+
+          </span>
+
+          <span className="flex items-center gap-2 font-semibold text-[#2E8B78]">
+
+            Apply
+
+            <ArrowRight
+              size={17}
+              className="transition-transform duration-300 group-hover:translate-x-1"
+            />
+
+          </span>
+
+        </div>
+
+      </Card>
+    </Link>
   );
 }
 

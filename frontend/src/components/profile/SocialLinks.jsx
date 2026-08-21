@@ -2,115 +2,141 @@ import {
   FaGithub,
   FaLinkedin,
   FaGlobe,
-  FaExternalLinkAlt,
 } from "react-icons/fa";
-
-import { SiLeetcode, SiGeeksforgeeks } from "react-icons/si";
 
 import mockUser from "../../data/mockUser";
 
-const links = [
-  {
-    title: "GitHub",
-    icon: <FaGithub />,
-    value: mockUser.social.github,
-    color: "bg-slate-900 text-white",
-  },
-  {
-    title: "LinkedIn",
-    icon: <FaLinkedin />,
-    value: mockUser.social.linkedin,
-    color: "bg-blue-600 text-white",
-  },
-  {
-    title: "Portfolio",
-    icon: <FaGlobe />,
-    value: mockUser.social.portfolio,
-    color: "bg-violet-600 text-white",
-  },
-  {
-    title: "LeetCode",
-    icon: <SiLeetcode />,
-    value: mockUser.social.leetcode,
-    color: "bg-orange-500 text-white",
-  },
-  {
-    title: "GeeksforGeeks",
-    icon: <SiGeeksforgeeks />,
-    value: mockUser.social.geeksforgeeks,
-    color: "bg-green-600 text-white",
-  },
-];
-
 function SocialLinks() {
+  const { social } = mockUser;
+
   return (
-    <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+    <section className="rounded-2xl border border-slate-200 bg-white p-6">
 
       {/* Header */}
 
-      <div className="mb-8">
+      <div>
 
-        <h2 className="text-2xl font-bold text-slate-900">
+        <h2 className="text-lg font-semibold text-slate-900">
           Social Links
         </h2>
 
-        <p className="mt-1 text-slate-500">
-          Connect with me through my professional profiles.
+        <p className="mt-1 text-sm text-slate-500">
+          Your professional profiles.
         </p>
 
       </div>
 
-      <div className="grid gap-5 md:grid-cols-2">
+      {/* Links */}
 
-        {links.map((item) => (
+      <div className="mt-5 space-y-3">
 
-          <a
-            key={item.title}
-            href={item.value}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="
-              flex
-              items-center
-              justify-between
-              rounded-2xl
-              border
-              border-slate-200
-              p-5
-              transition-all
-              duration-300
-              hover:border-blue-300
-              hover:shadow-md
-            "
-          >
+        <a
+          href={social.linkedin}
+          target="_blank"
+          rel="noreferrer"
+          className="
+            flex
+            items-center
+            justify-between
+            rounded-xl
+            border
+            border-slate-200
+            px-4
+            py-3
+            transition
+            hover:bg-slate-50
+          "
+        >
+          <div className="flex items-center gap-3">
 
-            <div className="flex items-center gap-4">
+            <FaLinkedin
+              size={18}
+              className="text-[#0A66C2]"
+            />
 
-              <div
-                className={`flex h-12 w-12 items-center justify-center rounded-xl text-lg ${item.color}`}
-              >
-                {item.icon}
-              </div>
+            <span className="text-sm font-medium text-slate-700">
+              LinkedIn
+            </span>
 
-              <div>
+          </div>
 
-                <h3 className="font-semibold text-slate-900">
-                  {item.title}
-                </h3>
+          <span className="text-xs text-slate-400">
+            Visit
+          </span>
 
-                <p className="mt-1 truncate text-sm text-slate-500">
-                  {item.value}
-                </p>
+        </a>
 
-              </div>
+        <a
+          href={social.github}
+          target="_blank"
+          rel="noreferrer"
+          className="
+            flex
+            items-center
+            justify-between
+            rounded-xl
+            border
+            border-slate-200
+            px-4
+            py-3
+            transition
+            hover:bg-slate-50
+          "
+        >
+          <div className="flex items-center gap-3">
 
-            </div>
+            <FaGithub
+              size={18}
+              className="text-slate-800"
+            />
 
-            <FaExternalLinkAlt className="text-slate-400" />
+            <span className="text-sm font-medium text-slate-700">
+              GitHub
+            </span>
 
-          </a>
+          </div>
 
-        ))}
+          <span className="text-xs text-slate-400">
+            Visit
+          </span>
+
+        </a>
+
+        <a
+          href={social.portfolio}
+          target="_blank"
+          rel="noreferrer"
+          className="
+            flex
+            items-center
+            justify-between
+            rounded-xl
+            border
+            border-slate-200
+            px-4
+            py-3
+            transition
+            hover:bg-slate-50
+          "
+        >
+          <div className="flex items-center gap-3">
+
+            <FaGlobe
+              size={18}
+              className="text-[#2E8B78]"
+            />
+
+            <span className="text-sm font-medium text-slate-700">
+              Portfolio
+            </span>
+
+          </div>
+
+          <span className="text-xs text-slate-400">
+            Visit
+          </span>
+
+        </a>
 
       </div>
 

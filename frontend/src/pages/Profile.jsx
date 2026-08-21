@@ -13,39 +13,38 @@ import SocialLinks from "../components/profile/SocialLinks";
 function Profile() {
   return (
     <DashboardLayout>
-
       <ProfileHeader />
 
-      <div className="mt-8">
-        <PersonalInfo />
-      </div>
+      <div className="mt-6 grid gap-6 xl:grid-cols-[320px_minmax(0,1fr)]">
 
-      <div className="mt-8">
-        <Education />
-      </div>
+        {/* Left Column */}
 
-      <div className="mt-8">
-        <Experience />
-      </div>
+        <aside className="space-y-6 xl:sticky xl:top-24 xl:self-start">
 
-      <div className="mt-8">
-        <Skills />
-      </div>
+          <PersonalInfo />
 
-      <div className="mt-8">
-        <Projects />
-      </div>
+          <ResumeCard />
 
-      <div className="mt-8">
-        <ResumeCard />
-      </div>
+          <SocialLinks />
 
-      <div className="mt-8">
-        <Certifications />
-      </div>
+        </aside>
 
-      <div className="mt-8">
-        <SocialLinks />
+        {/* Right Column */}
+
+        <div className="space-y-6">
+
+          <Education />
+
+          <Experience />
+
+          <Skills />
+
+          <Projects />
+
+          <Certifications />
+
+        </div>
+
       </div>
 
     </DashboardLayout>

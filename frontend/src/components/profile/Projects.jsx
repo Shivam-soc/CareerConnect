@@ -1,161 +1,90 @@
-import {
-  FaGithub,
-  FaExternalLinkAlt,
-  FaCode,
-} from "react-icons/fa";
-
+import { ArrowUpRight } from "lucide-react";
 import mockUser from "../../data/mockUser";
 
 function Projects() {
+  const { projects } = mockUser;
+
   return (
-    <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+    <section className="rounded-2xl border border-slate-200 bg-white p-6">
 
       {/* Header */}
-
-      <div className="mb-8">
-
-        <h2 className="text-2xl font-bold text-slate-900">
+      <div>
+        <h2 className="text-lg font-semibold text-slate-900">
           Projects
         </h2>
 
-        <p className="mt-1 text-slate-500">
-          Academic and personal projects showcasing technical skills.
+        <p className="mt-1 text-sm text-slate-500">
+          Showcase your best work and technical skills.
         </p>
-
       </div>
 
-      <div className="space-y-6">
+      {/* Projects */}
+      <div className="mt-6 space-y-5">
 
-        {mockUser.projects.map((project) => (
+        {projects.map((project) => (
 
           <div
             key={project.id}
-            className="
-              rounded-2xl
-              border
-              border-slate-200
-              p-6
-              transition-all
-              duration-300
-              hover:border-blue-300
-              hover:shadow-md
-            "
+            className="rounded-xl border border-slate-200 p-5 transition hover:border-[#2E8B78]"
           >
 
-            {/* Top */}
+            <div className="flex items-start justify-between gap-4">
 
-            <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+              <div className="flex-1">
 
-              <div>
+                <h3 className="text-base font-semibold text-slate-900">
+                  {project.title}
+                </h3>
 
-                <div className="flex items-center gap-3">
-
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
-
-                    <FaCode />
-
-                  </div>
-
-                  <div>
-
-                    <h3 className="text-xl font-bold text-slate-900">
-                      {project.title}
-                    </h3>
-
-                    <span
-                      className={`mt-1 inline-block rounded-full px-3 py-1 text-xs font-semibold ${
-                        project.status === "Completed"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-yellow-100 text-yellow-700"
-                      }`}
-                    >
-                      {project.status}
-                    </span>
-
-                  </div>
-
-                </div>
-
-                <p className="mt-5 max-w-3xl leading-7 text-slate-600">
+                <p className="mt-2 text-sm leading-6 text-slate-500">
                   {project.description}
                 </p>
 
               </div>
 
-              {/* Buttons */}
-
-              <div className="flex gap-3">
-
+              {project.github && (
                 <a
                   href={project.github}
-                  className="
-                    flex
-                    items-center
-                    gap-2
-                    rounded-xl
-                    border
-                    border-slate-300
-                    px-4
-                    py-3
-                    font-medium
-                    hover:bg-slate-100
-                  "
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-slate-400 transition hover:text-[#2E8B78]"
                 >
-                  <FaGithub />
-
-                  GitHub
-
+                  <ArrowUpRight size={18} />
                 </a>
+              )}
 
-                <a
-                  href={project.demo}
-                  className="
-                    flex
-                    items-center
-                    gap-2
-                    rounded-xl
-                    bg-blue-600
-                    px-5
-                    py-3
-                    font-medium
-                    text-white
-                    hover:bg-blue-700
-                  "
-                >
-                  <FaExternalLinkAlt />
+            </div>
 
-                  Live Demo
+            {/* Status */}
 
-                </a>
+            <div className="mt-4">
+
+              <span className="rounded-full bg-[#E8F7F3] px-3 py-1 text-xs font-medium text-[#2E8B78]">
+                {project.status}
+              </span>
+
+            </div>
+
+            {/* Technologies */}
+
+            {project.technologies?.length > 0 && (
+
+              <div className="mt-5 flex flex-wrap gap-2">
+
+                {project.technologies.map((tech) => (
+
+                  <span
+                    key={tech}
+                    className="rounded-lg bg-slate-100 px-3 py-1.5 text-xs font-medium text-slate-600"
+                  >
+                    {tech}
+                  </span>
+
+                ))}
 
               </div>
 
-            </div>
-
-            {/* Tech Stack */}
-
-            <div className="mt-6 flex flex-wrap gap-3">
-
-              {project.technologies.map((tech) => (
-
-                <span
-                  key={tech}
-                  className="
-                    rounded-full
-                    bg-slate-100
-                    px-4
-                    py-2
-                    text-sm
-                    font-medium
-                    text-slate-700
-                  "
-                >
-                  {tech}
-                </span>
-
-              ))}
-
-            </div>
+            )}
 
           </div>
 

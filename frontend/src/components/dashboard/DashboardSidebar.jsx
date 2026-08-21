@@ -1,127 +1,154 @@
-import {
-  FaHome,
-  FaBriefcase,
-  FaBuilding,
-  FaClipboardList,
-  FaBookmark,
-  FaUser,
-  FaCog,
-  FaSignOutAlt,
-} from "react-icons/fa";
 import { NavLink } from "react-router-dom";
+import {
+  LayoutDashboard,
+  FileText,
+  Bookmark,
+  User,
+  Settings,
+  LogOut,
+} from "lucide-react";
 
-const menuItems = [
-  { name: "Dashboard", icon: <FaHome />, path: "/dashboard" },
-  { name: "Jobs", icon: <FaBriefcase />, path: "/jobs" },
-  { name: "Companies", icon: <FaBuilding />, path: "/companies" },
-  { name: "Applications", icon: <FaClipboardList />, path: "/applications" },
-  { name: "Saved Jobs", icon: <FaBookmark />, path: "/saved-jobs" },
-  { name: "Profile", icon: <FaUser />, path: "/profile" },
-  { name: "Settings", icon: <FaCog />, path: "/settings" },
+const mainMenu = [
+  {
+    name: "Dashboard",
+    path: "/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    name: "Applications",
+    path: "/applications",
+    icon: FileText,
+  },
+  {
+    name: "Saved Jobs",
+    path: "/saved-jobs",
+    icon: Bookmark,
+  },
 ];
+
+const accountMenu = [
+  {
+    name: "Profile",
+    path: "/profile",
+    icon: User,
+  },
+  {
+    name: "Settings",
+    path: "/settings",
+    icon: Settings,
+  },
+];
+
+function SidebarItem({ item }) {
+  const Icon = item.icon;
+
+  return (
+    <NavLink
+      to={item.path}
+      className={({ isActive }) =>
+        `flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
+          isActive
+            ? "bg-[#E8F7F3] text-[#2E8B78]"
+            : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+        }`
+      }
+    >
+      <Icon size={18} />
+      {item.name}
+    </NavLink>
+  );
+}
 
 function DashboardSidebar() {
   return (
-    <aside className="w-72 min-h-screen bg-slate-900 text-white flex flex-col justify-between">
+    <aside className="fixed left-0 top-0 flex h-screen w-60 flex-col border-r border-slate-200 bg-white">
 
       {/* Logo */}
 
-      <div>
+      <div className="px-6 py-7">
 
-        <div className="px-8 py-8 border-b border-slate-800">
+        <h1 className="text-2xl font-bold text-slate-900">
+          Career
+          <span className="text-[#2E8B78]">
+            Connect
+          </span>
+        </h1>
 
-          <h1 className="text-3xl font-bold">
-            Career<span className="text-blue-400">Connect</span>
-          </h1>
+        <p className="mt-1 text-xs text-slate-500">
+          Student Portal
+        </p>
 
-          <p className="text-slate-400 mt-2 text-sm">
-            Student Dashboard
+      </div>
+
+      {/* Navigation */}
+
+      <div className="flex-1 overflow-y-auto px-4">
+
+        {/* Main */}
+
+        <div className="mb-8">
+
+          <p className="mb-3 px-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
+            Main
           </p>
 
-        </div>
-
-        {/* Profile */}
-
-        <div className="px-8 py-8">
-
-          <div className="flex items-center gap-4">
-
-            <img
-              src="https://i.pravatar.cc/100"
-              alt="profile"
-              className="h-14 w-14 rounded-full border-2 border-blue-500"
-            />
-
-            <div>
-
-              <h2 className="font-semibold">
-                Shivam Kumar
-              </h2>
-
-              <p className="text-sm text-slate-400">
-                Electronics Student
-              </p>
-
-            </div>
-
+          <div className="space-y-1">
+            {mainMenu.map((item) => (
+              <SidebarItem
+                key={item.path}
+                item={item}
+              />
+            ))}
           </div>
 
         </div>
 
-        {/* Navigation */}
+        {/* Account */}
 
-        <nav className="px-4">
+        <div>
 
-          {menuItems.map((item) => (
+          <p className="mb-3 px-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
+            Account
+          </p>
 
-            <NavLink
-              key={item.name}
-              to={item.path}
-              className={({ isActive }) =>
-                `mb-2 flex items-center gap-4 rounded-xl px-5 py-3 transition-all ${
-                  isActive
-                    ? "bg-blue-600 text-white"
-                    : "text-slate-300 hover:bg-slate-800 hover:text-white"
-                }`
-              }
-            >
-              <span className="text-lg">
-                {item.icon}
-              </span>
+          <div className="space-y-1">
+            {accountMenu.map((item) => (
+              <SidebarItem
+                key={item.path}
+                item={item}
+              />
+            ))}
+          </div>
 
-              {item.name}
-
-            </NavLink>
-
-          ))}
-
-        </nav>
+        </div>
 
       </div>
 
       {/* Logout */}
 
-      <div className="p-5 border-t border-slate-800">
+      <div className="border-t border-slate-200 p-4">
 
         <button
           className="
             flex
             w-full
             items-center
-            gap-4
+            gap-3
             rounded-xl
-            px-5
+            px-4
             py-3
-            text-slate-300
-            transition
-            hover:bg-red-500
-            hover:text-white
+            text-sm
+            font-medium
+            text-slate-600
+            transition-all
+            duration-200
+            hover:bg-slate-100
+            hover:text-slate-900
           "
         >
-          <FaSignOutAlt />
+          <LogOut size={18} />
 
           Logout
-
         </button>
 
       </div>

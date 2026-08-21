@@ -3,25 +3,17 @@ import DashboardHeader from "../dashboard/DashboardHeader";
 
 function DashboardLayout({ children }) {
   return (
-    <div className="flex min-h-screen bg-slate-50">
-
-      {/* Sidebar */}
+    <div className="h-screen bg-[#F8FAF8]">
 
       <DashboardSidebar />
 
-      {/* Main */}
-
-      <div className="flex flex-1 flex-col overflow-hidden">
-
-        {/* Header */}
+      <div className="ml-60 flex h-screen flex-col">
 
         <DashboardHeader />
 
-        {/* Page Content */}
+        <main className="flex-1 overflow-y-auto">
 
-        <main className="flex-1 overflow-y-auto p-8">
-
-          <div className="mx-auto max-w-7xl">
+          <div className="mx-auto max-w-screen-2xl px-6 py-6">
 
             {children}
 

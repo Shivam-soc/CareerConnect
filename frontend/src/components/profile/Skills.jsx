@@ -1,67 +1,45 @@
-import {
-  FaCode,
-  FaLaptopCode,
-  FaServer,
-  FaDatabase,
-  FaTools,
-} from "react-icons/fa";
-
 import mockUser from "../../data/mockUser";
 
-const icons = {
-  Languages: <FaCode />,
-  Frontend: <FaLaptopCode />,
-  Backend: <FaServer />,
-  Database: <FaDatabase />,
-  Tools: <FaTools />,
-};
-
 function Skills() {
+  const { skills } = mockUser;
+
   return (
-    <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+    <section className="rounded-2xl border border-slate-200 bg-white p-6">
 
       {/* Header */}
 
-      <div className="mb-8">
+      <div>
 
-        <h2 className="text-2xl font-bold text-slate-900">
+        <h2 className="text-lg font-semibold text-slate-900">
           Skills
         </h2>
 
-        <p className="mt-1 text-slate-500">
-          Technologies and tools I'm comfortable working with.
+        <p className="mt-1 text-sm text-slate-500">
+          Technologies and tools you work with.
         </p>
 
       </div>
 
-      <div className="space-y-8">
+      {/* Categories */}
 
-        {Object.entries(mockUser.skills).map(([category, skills]) => (
+      <div className="mt-6 space-y-6">
+
+        {Object.entries(skills).map(([category,items]) => (
 
           <div key={category}>
 
-            <div className="mb-4 flex items-center gap-3">
-
-              <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-100 text-blue-600">
-
-                {icons[category]}
-
-              </div>
-
-              <h3 className="text-lg font-semibold text-slate-900">
-                {category}
-              </h3>
-
-            </div>
+            <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500">
+              {category}
+            </h3>
 
             <div className="flex flex-wrap gap-3">
 
-              {skills.map((skill) => (
+              {items.map((skill) => (
 
                 <span
                   key={skill}
                   className="
-                    rounded-full
+                    rounded-xl
                     border
                     border-slate-200
                     bg-slate-50
@@ -71,9 +49,8 @@ function Skills() {
                     font-medium
                     text-slate-700
                     transition
-                    hover:border-blue-400
-                    hover:bg-blue-50
-                    hover:text-blue-700
+                    hover:border-[#2E8B78]
+                    hover:text-[#2E8B78]
                   "
                 >
                   {skill}

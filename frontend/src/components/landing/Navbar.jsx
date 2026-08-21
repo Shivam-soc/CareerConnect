@@ -1,135 +1,124 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
-import {
-  FaBriefcase,
-  FaBars,
-  FaTimes,
-  FaBell,
-  FaSearch,
-  FaUserCircle,
-} from "react-icons/fa";
+import { Link, NavLink } from "react-router-dom";
+import { BriefcaseBusiness } from "lucide-react";
+import { motion } from "framer-motion";
 
-const navLinks = [
+import Button from "../ui/Button";
+
+const navItems = [
   { name: "Home", path: "/" },
   { name: "Jobs", path: "/jobs" },
   { name: "Companies", path: "/companies" },
   { name: "Dashboard", path: "/dashboard" },
-  { name: "About", path: "/about" },
 ];
 
 function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
-
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/80 backdrop-blur-lg">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+    <header className="sticky top-0 z-50 border-b border-slate-200/70 bg-white/80 backdrop-blur-xl supports-[backdrop-filter]:bg-white/70">
+
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6">
 
         {/* Logo */}
 
-        <NavLink
+        <Link
           to="/"
-          className="flex items-center gap-3"
+          className="group flex items-center gap-3"
         >
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-600 text-xl text-white shadow-lg">
-            <FaBriefcase />
+
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#2E8B78] text-white shadow-sm transition-all duration-300 group-hover:rotate-6 group-hover:scale-105">
+
+            <BriefcaseBusiness size={22} />
+
           </div>
 
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">
+
+            <h1 className="text-xl font-bold tracking-tight text-slate-900">
+
               Career
-              <span className="text-blue-600">
+              <span className="text-[#2E8B78]">
                 Connect
               </span>
+
             </h1>
-          </div>
-        </NavLink>
 
-        {/* Desktop Menu */}
+            <p className="-mt-0.5 text-xs tracking-wide text-slate-500">
+              Find. Apply. Grow.
+            </p>
 
-        <ul className="hidden items-center gap-8 md:flex">
-          {navLinks.map((link) => (
-            <li key={link.name}>
-              <NavLink
-                to={link.path}
-                className={({ isActive }) =>
-                  isActive
-                    ? "font-semibold text-blue-600"
-                    : "font-medium text-gray-700 transition hover:text-blue-600"
-                }
-              >
-                {link.name}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-
-        {/* Right Side */}
-
-        <div className="hidden items-center gap-5 md:flex">
-          <FaSearch className="cursor-pointer text-xl text-gray-600 hover:text-blue-600" />
-
-          <div className="relative cursor-pointer">
-            <FaBell className="text-xl text-gray-600 hover:text-blue-600" />
-
-            <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-              3
-            </span>
           </div>
 
-          <FaUserCircle className="cursor-pointer text-3xl text-gray-600 hover:text-blue-600" />
+        </Link>
 
-          <NavLink
-            to="/login"
-            className="font-medium text-blue-600"
-          >
-            Login
-          </NavLink>
+        {/* Navigation */}
 
-          <NavLink
-            to="/register"
-            className="rounded-xl bg-blue-600 px-5 py-2 text-white transition hover:bg-blue-700"
-          >
-            Register
-          </NavLink>
-        </div>
+        <nav className="hidden items-center gap-8 lg:flex">
 
-        {/* Mobile Menu Button */}
-
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="text-2xl md:hidden"
-        >
-          {menuOpen ? <FaTimes /> : <FaBars />}
-        </button>
-      </nav>
-
-      {/* Mobile Menu */}
-
-      {menuOpen && (
-        <div className="border-t bg-white md:hidden">
-          <ul className="flex flex-col gap-4 p-6">
-            {navLinks.map((link) => (
-              <NavLink
-                key={link.name}
-                to={link.path}
-                onClick={() => setMenuOpen(false)}
-                className="font-medium text-gray-700"
-              >
-                {link.name}
-              </NavLink>
-            ))}
-
-            <NavLink to="/login">Login</NavLink>
+          {navItems.map((item) => (
 
             <NavLink
-              to="/register"
-              className="rounded-lg bg-blue-600 px-4 py-2 text-center text-white"
+              key={item.name}
+              to={item.path}
+              className={({ isActive }) =>
+                `relative text-[15px] font-medium transition-all duration-300 ${
+                  isActive
+                    ? "text-[#2E8B78]"
+                    : "text-slate-600 hover:text-slate-900"
+                }`
+              }
             >
-              Register
+
+              {({ isActive }) => (
+                <div className="group relative">
+
+                  {item.name}
+
+                  <motion.span
+                    layoutId="navbar-indicator"
+                    className={`absolute -bottom-2 left-0 h-[2px] rounded-full bg-[#2E8B78] ${
+                      isActive ? "w-full" : "w-0 group-hover:w-full"
+                    } transition-all duration-300`}
+                  />
+
+                </div>
+              )}
+
             </NavLink>
-          </ul>
+
+          ))}
+
+        </nav>
+
+        {/* Right */}
+
+        <div className="flex items-center gap-3">
+
+          <Link to="/login">
+
+            <Button
+              variant="ghost"
+              size="sm"
+              className="hover:-translate-y-0.5"
+            >
+              Login
+            </Button>
+
+          </Link>
+
+          <Link to="/register">
+
+            <Button
+              size="sm"
+              className="shadow-sm hover:-translate-y-0.5 hover:shadow-lg"
+            >
+              Get Started
+            </Button>
+
+          </Link>
+
         </div>
-      )}
+
+      </div>
+
     </header>
   );
 }

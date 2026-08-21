@@ -2,12 +2,10 @@ import { useState } from "react";
 
 import Navbar from "../components/landing/Navbar";
 import Hero from "../components/landing/Hero";
-import TrustedCompanies from "../components/landing/TrustedCompanies";
+import TopHiringCompanies from "../components/landing/TopHiringCompanies";
 import FeaturedJobs from "../components/landing/FeaturedJobs";
-import Categories from "../components/landing/Categories";
-import Testimonials from "../components/landing/Testimonials";
-import Newsletter from "../components/landing/Newsletter";
-import Stats from "../components/landing/Stats";
+import WhyCareerConnect from "../components/landing/WhyCareerConnect";
+import CtaBand from "../components/landing/CtaBand";
 import Footer from "../components/landing/Footer";
 
 function Home() {
@@ -17,24 +15,28 @@ function Home() {
     <>
       <Navbar />
 
-      <main>
+      <main className="bg-[#F8FAF8]">
 
         <Hero
           search={search}
           setSearch={setSearch}
         />
 
-        <TrustedCompanies />
+        {/* Divider */}
 
-        <FeaturedJobs search={search} />
+        <div className="mx-auto h-px max-w-7xl bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
 
-        <Categories />
+        <TopHiringCompanies />
 
-        <Testimonials />
+        <FeaturedJobs
+          search={search}
+        />
 
-        <Newsletter />
+        <WhyCareerConnect />
 
-        <Stats />
+        
+
+        <CtaBand />
 
       </main>
 

@@ -1,158 +1,115 @@
-import {
-  FaFilePdf,
-  FaDownload,
-  FaUpload,
-  FaCheckCircle,
-} from "react-icons/fa";
-
+import { FaDownload, FaUpload } from "react-icons/fa";
 import mockUser from "../../data/mockUser";
 
 function ResumeCard() {
   const { resume } = mockUser;
 
   return (
-    <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+    <section className="rounded-2xl border border-slate-200 bg-white p-6">
 
       {/* Header */}
 
-      <div className="mb-8">
+      <div>
 
-        <h2 className="text-2xl font-bold text-slate-900">
+        <h2 className="text-lg font-semibold text-slate-900">
           Resume
         </h2>
 
-        <p className="mt-1 text-slate-500">
-          Keep your resume updated to improve your chances of getting shortlisted.
+        <p className="mt-1 text-sm text-slate-500">
+          Your latest uploaded resume.
         </p>
 
       </div>
 
-      {/* Resume Card */}
+      {/* Resume */}
 
-      <div className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+      <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4">
 
-        <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+        <p className="truncate text-sm font-medium text-slate-900">
+          {resume.fileName}
+        </p>
 
-          {/* Left */}
+        <p className="mt-2 text-xs text-slate-500">
+          {resume.fileSize}
+        </p>
 
-          <div className="flex items-center gap-5">
+        <p className="text-xs text-slate-500">
+          Updated {resume.uploadedOn}
+        </p>
 
-            <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-red-100 text-red-600">
+      </div>
 
-              <FaFilePdf size={28} />
+      {/* ATS */}
 
-            </div>
+      <div className="mt-5">
 
-            <div>
+        <div className="flex items-center justify-between">
 
-              <h3 className="text-lg font-semibold text-slate-900">
-                {resume.fileName}
-              </h3>
+          <span className="text-sm text-slate-600">
+            ATS Score
+          </span>
 
-              <p className="mt-2 text-sm text-slate-500">
-                Uploaded on {resume.uploadedOn}
-              </p>
+          <span className="text-sm font-semibold text-[#2E8B78]">
+            {resume.atsScore}%
+          </span>
 
-              <p className="text-sm text-slate-500">
-                File Size • {resume.fileSize}
-              </p>
+        </div>
 
-            </div>
+        <div className="mt-3 h-2 rounded-full bg-slate-200">
 
-          </div>
-
-          {/* Buttons */}
-
-          <div className="flex flex-wrap gap-3">
-
-            <button
-              className="
-                flex
-                items-center
-                gap-2
-                rounded-xl
-                border
-                border-slate-300
-                px-5
-                py-3
-                font-medium
-                hover:bg-slate-100
-              "
-            >
-              <FaDownload />
-
-              Download
-
-            </button>
-
-            <button
-              className="
-                flex
-                items-center
-                gap-2
-                rounded-xl
-                bg-blue-600
-                px-5
-                py-3
-                font-medium
-                text-white
-                hover:bg-blue-700
-              "
-            >
-              <FaUpload />
-
-              Replace Resume
-
-            </button>
-
-          </div>
+          <div
+            className="h-full rounded-full bg-[#2E8B78]"
+            style={{
+              width: `${resume.atsScore}%`,
+            }}
+          />
 
         </div>
 
       </div>
 
-      {/* ATS Score */}
+      {/* Buttons */}
 
-      <div className="mt-8 rounded-2xl border border-green-200 bg-green-50 p-6">
+      <div className="mt-6 flex gap-3">
 
-        <div className="flex items-center justify-between">
+        <button
+          className="
+            flex-1
+            rounded-xl
+            border
+            border-slate-200
+            py-2.5
+            text-sm
+            font-medium
+            text-slate-700
+            transition
+            hover:bg-slate-50
+          "
+        >
+          <span className="flex items-center justify-center gap-2">
+            <FaDownload size={13} />
+            Download
+          </span>
+        </button>
 
-          <div>
-
-            <h3 className="flex items-center gap-2 text-lg font-semibold text-green-700">
-
-              <FaCheckCircle />
-
-              ATS Resume Score
-
-            </h3>
-
-            <p className="mt-2 text-sm text-green-600">
-              Your resume is optimized for applicant tracking systems.
-            </p>
-
-          </div>
-
-          <div className="text-right">
-
-            <h2 className="text-4xl font-bold text-green-700">
-              {resume.atsScore}%
-            </h2>
-
-          </div>
-
-        </div>
-
-        <div className="mt-5 h-3 rounded-full bg-green-200">
-
-          <div
-            className="h-3 rounded-full bg-green-600"
-            style={{
-              width: `${resume.atsScore}%`,
-            }}
-          ></div>
-
-        </div>
+        <button
+          className="
+            flex-1
+            rounded-xl
+            bg-[#2E8B78]
+            py-2.5
+            text-sm
+            font-medium
+            text-white
+            transition
+            hover:opacity-90
+          "
+        >
+          <span className="flex items-center justify-center gap-2">
+            <FaUpload size={13} />
+            Replace
+          </span>
+        </button>
 
       </div>
 

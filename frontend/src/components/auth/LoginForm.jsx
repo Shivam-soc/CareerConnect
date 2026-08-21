@@ -12,7 +12,7 @@ function LoginForm() {
   });
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, checked, type } = e.target;
 
     setFormData({
       ...formData,
@@ -26,22 +26,30 @@ function LoginForm() {
     console.log(formData);
 
     // TODO:
-    // Backend Login API
+    // Login API
   };
 
   return (
-    <div className="rounded-3xl border border-slate-200 bg-white p-7 shadow-md">
+    <>
+      {/* Logo */}
+
+      <Link
+        to="/"
+        className="text-2xl font-bold text-slate-900"
+      >
+        Career<span className="text-[#2E8B78]">Connect</span>
+      </Link>
 
       {/* Heading */}
 
-      <div className="mb-8">
+      <div className="mt-10 mb-8">
 
-        <h2 className="text-4xl font-bold tracking-tight text-slate-900">
+        <h1 className="text-4xl font-bold text-slate-900">
           Welcome Back
-        </h2>
+        </h1>
 
         <p className="mt-2 text-slate-500">
-          Login to continue your CareerConnect journey.
+          Please enter your details to sign in.
         </p>
 
       </div>
@@ -58,7 +66,7 @@ function LoginForm() {
         <div>
 
           <label className="mb-2 block text-sm font-medium text-slate-700">
-            Email Address
+            Email
           </label>
 
           <input
@@ -69,20 +77,17 @@ function LoginForm() {
             onChange={handleChange}
             required
             className="
+              h-12
               w-full
-              rounded-xl
+              rounded-lg
               border
               border-slate-300
-              bg-white
               px-4
-              py-3
-              text-sm
               outline-none
-              transition-all
-              duration-200
-              focus:border-blue-600
-              focus:ring-4
-              focus:ring-blue-100
+              transition
+              focus:border-[#2E8B78]
+              focus:ring-2
+              focus:ring-[#2E8B78]/20
             "
           />
 
@@ -100,12 +105,7 @@ function LoginForm() {
 
             <Link
               to="/forgot-password"
-              className="
-                text-sm
-                text-blue-600
-                hover:text-blue-700
-                hover:underline
-              "
+              className="text-sm text-[#2E8B78] hover:underline"
             >
               Forgot Password?
             </Link>
@@ -122,39 +122,33 @@ function LoginForm() {
 
         {/* Remember */}
 
-        <div className="flex items-center justify-between">
+        <label className="flex items-center gap-2 text-sm text-slate-600">
 
-          <label className="flex items-center gap-2 text-sm text-slate-600">
+          <input
+            type="checkbox"
+            name="remember"
+            checked={formData.remember}
+            onChange={handleChange}
+            className="accent-[#2E8B78]"
+          />
 
-            <input
-              type="checkbox"
-              name="remember"
-              checked={formData.remember}
-              onChange={handleChange}
-              className="h-4 w-4 rounded border-slate-300"
-            />
+          Remember me
 
-            Remember Me
+        </label>
 
-          </label>
-
-        </div>
-
-        {/* Login Button */}
+        {/* Button */}
 
         <button
           type="submit"
           className="
+            h-12
             w-full
-            rounded-xl
-            bg-blue-600
-            py-3
-            font-semibold
+            rounded-lg
+            bg-[#2E8B78]
+            font-medium
             text-white
-            transition-all
-            duration-200
-            hover:bg-blue-700
-            active:scale-[0.99]
+            transition
+            hover:bg-[#236D5E]
           "
         >
           Sign In
@@ -162,45 +156,26 @@ function LoginForm() {
 
       </form>
 
-      {/* Divider */}
-
-      <div className="my-6 flex items-center">
-
-        <div className="h-px flex-1 bg-slate-200"></div>
-
-        <span className="mx-4 text-xs uppercase tracking-widest text-slate-400">
-          Or continue with
-        </span>
-
-        <div className="h-px flex-1 bg-slate-200"></div>
-
-      </div>
-
-      {/* Social */}
+      {/* Social Login */}
 
       <SocialLogin />
 
       {/* Footer */}
 
-      <p className="mt-6 text-center text-sm text-slate-500">
+      <p className="mt-8 text-center text-sm text-slate-500">
 
         Don't have an account?{" "}
 
         <Link
           to="/register"
-          className="
-            font-semibold
-            text-blue-600
-            hover:text-blue-700
-            hover:underline
-          "
+          className="font-medium text-[#2E8B78] hover:underline"
         >
           Create Account
         </Link>
 
       </p>
 
-    </div>
+    </>
   );
 }
 

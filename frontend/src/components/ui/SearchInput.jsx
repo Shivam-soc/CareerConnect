@@ -1,98 +1,32 @@
-import { useState } from "react";
-import { FaSearch, FaTimes } from "react-icons/fa";
+import { FiSearch } from "react-icons/fi";
+import clsx from "clsx";
 
 function SearchInput({
-  value = "",
+  value,
   onChange,
-  placeholder = "Search...",
+  placeholder = "Search jobs, companies or skills...",
   className = "",
-  disabled = false,
 }) {
-  const [inputValue, setInputValue] = useState(value);
-
-  const handleChange = (e) => {
-    setInputValue(e.target.value);
-
-    if (onChange) {
-      onChange(e);
-    }
-  };
-
-  const clearInput = () => {
-    setInputValue("");
-
-    if (onChange) {
-      onChange({
-        target: {
-          value: "",
-        },
-      });
-    }
-  };
-
   return (
-    <div className={`relative w-full ${className}`}>
-      {/* Search Icon */}
-
-      <FaSearch
-        className="
-          absolute
-          left-4
-          top-1/2
-          -translate-y-1/2
-          text-slate-400
-        "
+    <div
+      className={clsx(
+        "flex h-16 w-full items-center rounded-2xl border border-slate-200 bg-white px-5 shadow-sm transition-all duration-300",
+        "focus-within:border-[#2E8B78] focus-within:ring-4 focus-within:ring-[#2E8B78]/10",
+        className
+      )}
+    >
+      <FiSearch
+        size={22}
+        className="mr-4 text-slate-400"
       />
-
-      {/* Input */}
 
       <input
         type="text"
-        value={inputValue}
-        onChange={handleChange}
-        disabled={disabled}
+        value={value}
+        onChange={onChange}
         placeholder={placeholder}
-        className="
-          w-full
-          rounded-xl
-          border
-          border-slate-300
-          bg-white
-          py-3
-          pl-12
-          pr-12
-          text-slate-700
-          outline-none
-          transition-all
-          duration-200
-          placeholder:text-slate-400
-          focus:border-blue-500
-          focus:ring-2
-          focus:ring-blue-200
-          disabled:cursor-not-allowed
-          disabled:bg-slate-100
-        "
+        className="w-full bg-transparent text-base text-slate-800 placeholder:text-slate-400 focus:outline-none"
       />
-
-      {/* Clear Button */}
-
-      {inputValue && (
-        <button
-          type="button"
-          onClick={clearInput}
-          className="
-            absolute
-            right-4
-            top-1/2
-            -translate-y-1/2
-            text-slate-400
-            transition
-            hover:text-slate-700
-          "
-        >
-          <FaTimes />
-        </button>
-      )}
     </div>
   );
 }

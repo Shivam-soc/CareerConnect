@@ -1,152 +1,87 @@
-import {
-  FaCalendarAlt,
-  FaClock,
-  FaVideo,
-  FaArrowRight,
-} from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const interviews = [
   {
     id: 1,
     company: "Google",
     role: "Frontend Developer",
-    date: "20 Aug 2026",
-    time: "10:00 AM",
+    date: "24 Aug 2026",
+    time: "10:30 AM",
     mode: "Online",
-    logo: "https://logo.clearbit.com/google.com",
   },
   {
     id: 2,
     company: "Adobe",
-    role: "Software Engineer Intern",
-    date: "23 Aug 2026",
-    time: "2:30 PM",
-    mode: "Virtual",
-    logo: "https://logo.clearbit.com/adobe.com",
+    role: "Software Engineer",
+    date: "28 Aug 2026",
+    time: "02:00 PM",
+    mode: "On-site",
   },
 ];
 
 function UpcomingInterviews() {
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
-
+    <section className="rounded-2xl border border-slate-200 bg-white">
       {/* Header */}
-
-      <div className="mb-6 flex items-center justify-between">
-
+      <div className="flex items-center justify-between border-b border-slate-200 px-6 py-5">
         <div>
-
-          <h2 className="text-2xl font-bold text-slate-900">
+          <h2 className="text-lg font-semibold text-slate-900">
             Upcoming Interviews
           </h2>
-
           <p className="mt-1 text-sm text-slate-500">
-            Don't miss your next interview.
+            Your scheduled interviews.
           </p>
-
         </div>
-
+        <Link
+          to="/applications"
+          className="text-sm font-medium text-[#2E8B78] transition-all hover:underline"
+        >
+          View All
+        </Link>
       </div>
 
-      {/* Interview Cards */}
-
-      <div className="space-y-5">
-
-        {interviews.map((item) => (
-
+      {/* List */}
+      <div>
+        {interviews.map((item, index) => (
           <div
             key={item.id}
-            className="
-              rounded-2xl
-              border
-              border-slate-200
-              p-5
-              transition-all
-              duration-300
-              hover:border-blue-300
-              hover:shadow-md
-            "
+            className={`cursor-pointer px-6 py-5 transition-colors duration-200 hover:bg-slate-50 ${
+              index !== interviews.length - 1 ? "border-b border-slate-100" : ""
+            }`}
           >
+            <h3 className="font-medium text-slate-900">{item.company}</h3>
+            <p className="mt-1 text-sm text-slate-500">{item.role}</p>
 
-            <div className="flex items-center gap-4">
-
-              <img
-                src={item.logo}
-                alt={item.company}
-                className="h-12 w-12 rounded-xl border border-slate-200 bg-white p-2"
-              />
-
+            <div className="mt-4 flex items-center justify-between">
               <div>
-
-                <h3 className="font-semibold text-slate-900">
-                  {item.company}
-                </h3>
-
-                <p className="text-sm text-slate-500">
-                  {item.role}
+                <p className="text-sm text-slate-900">{item.date}</p>
+                <p className="mt-1 text-xs text-slate-500">
+                  {item.time} • {item.mode}
                 </p>
-
               </div>
 
+              <button
+                className="
+                  rounded-lg
+                  border
+                  border-slate-300
+                  px-4
+                  py-2
+                  text-sm
+                  font-medium
+                  transition-all
+                  hover:border-[#2E8B78]
+                  hover:bg-slate-50
+                  hover:text-[#2E8B78]
+                  active:scale-95
+                "
+              >
+                View Details
+              </button>
             </div>
-
-            <div className="mt-5 space-y-3 text-sm text-slate-600">
-
-              <div className="flex items-center gap-3">
-
-                <FaCalendarAlt className="text-blue-600" />
-
-                {item.date}
-
-              </div>
-
-              <div className="flex items-center gap-3">
-
-                <FaClock className="text-green-600" />
-
-                {item.time}
-
-              </div>
-
-              <div className="flex items-center gap-3">
-
-                <FaVideo className="text-purple-600" />
-
-                {item.mode}
-
-              </div>
-
-            </div>
-
-            <button
-              className="
-                mt-5
-                flex
-                w-full
-                items-center
-                justify-center
-                gap-2
-                rounded-xl
-                bg-blue-600
-                py-3
-                font-semibold
-                text-white
-                transition
-                hover:bg-blue-700
-              "
-            >
-              View Details
-
-              <FaArrowRight className="text-sm" />
-
-            </button>
-
           </div>
-
         ))}
-
       </div>
-
     </section>
   );
 }

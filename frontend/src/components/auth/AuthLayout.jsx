@@ -1,32 +1,38 @@
-function AuthLayout({ banner, children }) {
+import AuthBanner from "./AuthBanner";
+
+function AuthLayout({
+  children,
+  width = "md",
+}) {
+  const formWidth = {
+    sm: "max-w-sm",
+    md: "max-w-md",
+    lg: "max-w-lg",
+    xl: "max-w-xl",
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50">
+    <main className="grid min-h-screen lg:grid-cols-2">
 
-      <div className="mx-auto flex min-h-screen max-w-7xl">
+      {/* Left */}
 
-        {/* Left Side */}
+      <section className="flex items-center justify-center bg-white px-8 py-10">
 
-        <div className="hidden w-[45%] lg:flex">
-
-          {banner}
-
+        <div className={`w-full ${formWidth[width]}`}>
+          {children}
         </div>
 
-        {/* Right Side */}
+      </section>
 
-        <div className="flex w-full items-center justify-center px-6 py-8 lg:w-[55%]">
+      {/* Right */}
 
-          <div className="w-full max-w-[500px]">
+      <section className="hidden lg:block">
 
-            {children}
+        <AuthBanner />
 
-          </div>
+      </section>
 
-        </div>
-
-      </div>
-
-    </div>
+    </main>
   );
 }
 

@@ -1,184 +1,87 @@
-import {
-  FaBriefcase,
-  FaCalendarAlt,
-  FaMapMarkerAlt,
-  FaArrowRight,
-} from "react-icons/fa";
-
+import { Briefcase } from "lucide-react";
 import mockUser from "../../data/mockUser";
 
 function Experience() {
+  const { experience } = mockUser;
+
   return (
-    <section className="rounded-3xl border border-slate-200 bg-white p-6 shadow-sm">
+    <section className="rounded-2xl border border-slate-200 bg-white p-6">
 
       {/* Header */}
 
-      <div className="mb-8">
+      <div className="flex items-center justify-between">
 
-        <h2 className="text-2xl font-bold text-slate-900">
-          Experience
-        </h2>
+        <div>
 
-        <p className="mt-1 text-slate-500">
-          Internships, projects and professional experience.
-        </p>
+          <h2 className="text-lg font-semibold text-slate-900">
+            Experience
+          </h2>
+
+          <p className="mt-1 text-sm text-slate-500">
+            Internships and professional experience.
+          </p>
+
+        </div>
+
+        <div className="rounded-xl bg-[#E8F7F3] p-3">
+
+          <Briefcase
+            size={20}
+            className="text-[#2E8B78]"
+          />
+
+        </div>
 
       </div>
 
-      <div className="space-y-6">
+      {/* Content */}
 
-        {mockUser.experience.map((exp, index) => (
+      <div className="mt-6 space-y-6">
 
-          <div
-            key={index}
-            className="
-              rounded-2xl
-              border
-              border-slate-200
-              p-6
-              transition-all
-              duration-300
-              hover:border-blue-300
-              hover:shadow-md
-            "
-          >
+        {experience.length > 0 ? (
+          experience.map((item, index) => (
 
-            <div className="flex items-start justify-between">
+            <div
+              key={index}
+              className="border-l-2 border-[#2E8B78] pl-5"
+            >
 
-              {/* Left */}
+              <h3 className="text-base font-semibold text-slate-900">
+                {item.role}
+              </h3>
 
-              <div className="flex gap-5">
+              <p className="mt-1 text-sm text-slate-600">
+                {item.company}
+              </p>
 
-                <div
-                  className="
-                    flex
-                    h-14
-                    w-14
-                    items-center
-                    justify-center
-                    rounded-2xl
-                    bg-blue-100
-                    text-blue-600
-                  "
-                >
-                  <FaBriefcase size={22} />
-                </div>
+              <p className="mt-1 text-xs text-slate-500">
+                {item.duration}
+              </p>
 
-                <div>
-
-                  <h3 className="text-xl font-semibold text-slate-900">
-                    {exp.role}
-                  </h3>
-
-                  <p className="mt-2 font-medium text-slate-700">
-                    {exp.company}
-                  </p>
-
-                  <div className="mt-4 flex flex-wrap gap-5 text-sm text-slate-500">
-
-                    <span className="flex items-center gap-2">
-
-                      <FaCalendarAlt />
-
-                      {exp.duration}
-
-                    </span>
-
-                    <span className="flex items-center gap-2">
-
-                      <FaMapMarkerAlt />
-
-                      Remote
-
-                    </span>
-
-                  </div>
-
-                  <p className="mt-5 leading-7 text-slate-600">
-                    Worked on designing and developing scalable web
-                    applications using React, Node.js, Express and
-                    MongoDB while following modern UI/UX practices and
-                    clean architecture.
-                  </p>
-
-                </div>
-
-              </div>
-
-              {/* Badge */}
-
-              <span
-                className="
-                  rounded-full
-                  bg-green-100
-                  px-4
-                  py-2
-                  text-sm
-                  font-semibold
-                  text-green-700
-                "
-              >
-                Current
-              </span>
+              {item.description && (
+                <p className="mt-3 text-sm leading-6 text-slate-600">
+                  {item.description}
+                </p>
+              )}
 
             </div>
 
-            {/* Skills */}
+          ))
+        ) : (
 
-            <div className="mt-6 flex flex-wrap gap-3">
+          <div className="rounded-xl border border-dashed border-slate-300 bg-slate-50 p-6 text-center">
 
-              {[
-                "React",
-                "Node.js",
-                "Express",
-                "MongoDB",
-                "Tailwind CSS",
-              ].map((skill) => (
+            <p className="font-medium text-slate-700">
+              No experience added yet.
+            </p>
 
-                <span
-                  key={skill}
-                  className="
-                    rounded-full
-                    bg-slate-100
-                    px-4
-                    py-2
-                    text-sm
-                    font-medium
-                    text-slate-700
-                  "
-                >
-                  {skill}
-                </span>
-
-              ))}
-
-            </div>
-
-            {/* Footer */}
-
-            <div className="mt-6 flex justify-end">
-
-              <button
-                className="
-                  flex
-                  items-center
-                  gap-2
-                  font-semibold
-                  text-blue-600
-                  hover:text-blue-700
-                "
-              >
-                View Details
-
-                <FaArrowRight className="text-sm" />
-
-              </button>
-
-            </div>
+            <p className="mt-2 text-sm text-slate-500">
+              Add internships, freelance work or leadership roles to strengthen your profile.
+            </p>
 
           </div>
 
-        ))}
+        )}
 
       </div>
 

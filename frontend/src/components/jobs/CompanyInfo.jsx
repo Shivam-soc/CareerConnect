@@ -1,104 +1,233 @@
-function CompanyInfo() {
+import {
+  FileText,
+  CheckCircle2,
+  ClipboardList,
+  Gift,
+  Code2,
+} from "lucide-react";
+
+function CompanyInfo({ job }) {
+  if (!job) return null;
+
+  const {
+    description,
+    responsibilities = [],
+    requirements = [],
+    benefits = [],
+    skills = [],
+  } = job;
+
   return (
     <div className="space-y-8">
 
-      {/* About Job */}
-      <section className="rounded-3xl bg-white p-8 shadow-sm">
-        <h2 className="mb-4 text-2xl font-bold text-slate-900">
-          About this Job
-        </h2>
+      {/* About */}
+
+      <section className="rounded-[30px] border border-slate-200 bg-white p-8 shadow-sm">
+
+        <div className="mb-6 flex items-center gap-3">
+
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E8F7F3]">
+
+            <FileText
+              size={22}
+              className="text-[#2E8B78]"
+            />
+
+          </div>
+
+          <h2 className="text-2xl font-bold text-slate-900">
+            About this Job
+          </h2>
+
+        </div>
 
         <p className="leading-8 text-slate-600">
-          Google is looking for a passionate Frontend Developer to build
-          modern, scalable, and high-performance web applications.
-          You will work with designers, backend engineers, and product teams
-          to deliver world-class user experiences using modern technologies
-          like React, TypeScript, and Tailwind CSS.
+          {description}
         </p>
+
       </section>
 
       {/* Responsibilities */}
-      <section className="rounded-3xl bg-white p-8 shadow-sm">
-        <h2 className="mb-5 text-2xl font-bold text-slate-900">
-          Responsibilities
-        </h2>
 
-        <ul className="space-y-3 list-disc pl-6 text-slate-600">
-          <li>Develop responsive React applications.</li>
-          <li>Build reusable UI components.</li>
-          <li>Integrate REST APIs.</li>
-          <li>Optimize website performance.</li>
-          <li>Collaborate with cross-functional teams.</li>
-        </ul>
-      </section>
+      <section className="rounded-[30px] border border-slate-200 bg-white p-8 shadow-sm">
 
-      {/* Requirements */}
-      <section className="rounded-3xl bg-white p-8 shadow-sm">
-        <h2 className="mb-5 text-2xl font-bold text-slate-900">
-          Requirements
-        </h2>
+        <div className="mb-6 flex items-center gap-3">
 
-        <ul className="space-y-3 list-disc pl-6 text-slate-600">
-          <li>Strong knowledge of React.js.</li>
-          <li>JavaScript ES6+.</li>
-          <li>Tailwind CSS.</li>
-          <li>Git & GitHub.</li>
-          <li>REST APIs.</li>
-        </ul>
-      </section>
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E8F7F3]">
 
-      {/* Benefits */}
-      <section className="rounded-3xl bg-white p-8 shadow-sm">
-        <h2 className="mb-5 text-2xl font-bold text-slate-900">
-          Benefits
-        </h2>
+            <ClipboardList
+              size={22}
+              className="text-[#2E8B78]"
+            />
 
-        <div className="grid gap-4 md:grid-cols-2">
-
-          <div className="rounded-xl bg-slate-50 p-4">
-            🏥 Health Insurance
           </div>
 
-          <div className="rounded-xl bg-slate-50 p-4">
-            🏠 Hybrid Work
-          </div>
-
-          <div className="rounded-xl bg-slate-50 p-4">
-            📚 Learning Budget
-          </div>
-
-          <div className="rounded-xl bg-slate-50 p-4">
-            💰 Performance Bonus
-          </div>
+          <h2 className="text-2xl font-bold text-slate-900">
+            Responsibilities
+          </h2>
 
         </div>
-      </section>
 
-      {/* Skills */}
-      <section className="rounded-3xl bg-white p-8 shadow-sm">
-        <h2 className="mb-5 text-2xl font-bold text-slate-900">
-          Skills
-        </h2>
+        <div className="space-y-4">
 
-        <div className="flex flex-wrap gap-3">
+          {responsibilities.map((item, index) => (
 
-          {[
-            "React",
-            "TypeScript",
-            "Tailwind",
-            "Redux",
-            "Git",
-            "REST API",
-          ].map((skill) => (
-            <span
-              key={skill}
-              className="rounded-full bg-blue-50 px-4 py-2 font-medium text-blue-700"
+            <div
+              key={index}
+              className="flex items-start gap-3"
             >
-              {skill}
-            </span>
+
+              <CheckCircle2
+                size={18}
+                className="mt-1 shrink-0 text-[#2E8B78]"
+              />
+
+              <p className="leading-7 text-slate-600">
+                {item}
+              </p>
+
+            </div>
+
           ))}
 
         </div>
+
+      </section>
+
+      {/* Requirements */}
+
+      <section className="rounded-[30px] border border-slate-200 bg-white p-8 shadow-sm">
+
+        <div className="mb-6 flex items-center gap-3">
+
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E8F7F3]">
+
+            <CheckCircle2
+              size={22}
+              className="text-[#2E8B78]"
+            />
+
+          </div>
+
+          <h2 className="text-2xl font-bold text-slate-900">
+            Requirements
+          </h2>
+
+        </div>
+
+        <div className="space-y-4">
+
+          {requirements.map((item, index) => (
+
+            <div
+              key={index}
+              className="flex items-start gap-3"
+            >
+
+              <CheckCircle2
+                size={18}
+                className="mt-1 shrink-0 text-[#2E8B78]"
+              />
+
+              <p className="leading-7 text-slate-600">
+                {item}
+              </p>
+
+            </div>
+
+          ))}
+
+        </div>
+
+      </section>
+
+      {/* Benefits */}
+
+      <section className="rounded-[30px] border border-slate-200 bg-white p-8 shadow-sm">
+
+        <div className="mb-6 flex items-center gap-3">
+
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E8F7F3]">
+
+            <Gift
+              size={22}
+              className="text-[#2E8B78]"
+            />
+
+          </div>
+
+          <h2 className="text-2xl font-bold text-slate-900">
+            Benefits
+          </h2>
+
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+
+          {benefits.map((item, index) => (
+
+            <div
+              key={index}
+              className="rounded-2xl border border-slate-200 bg-[#F8FAF8] p-5 transition-all duration-300 hover:border-[#2E8B78] hover:bg-[#E8F7F3]"
+            >
+
+              <div className="flex items-center gap-3">
+
+                <CheckCircle2
+                  size={18}
+                  className="text-[#2E8B78]"
+                />
+
+                <span className="font-medium text-slate-700">
+                  {item}
+                </span>
+
+              </div>
+
+            </div>
+
+          ))}
+
+        </div>
+
+      </section>
+
+      {/* Skills */}
+
+      <section className="rounded-[30px] border border-slate-200 bg-white p-8 shadow-sm">
+
+        <div className="mb-6 flex items-center gap-3">
+
+          <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#E8F7F3]">
+
+            <Code2
+              size={22}
+              className="text-[#2E8B78]"
+            />
+
+          </div>
+
+          <h2 className="text-2xl font-bold text-slate-900">
+            Required Skills
+          </h2>
+
+        </div>
+
+        <div className="flex flex-wrap gap-3">
+
+          {skills.map((skill) => (
+
+            <span
+              key={skill}
+              className="rounded-full border border-slate-200 bg-white px-5 py-2 text-sm font-semibold text-slate-700 transition-all duration-300 hover:border-[#2E8B78] hover:bg-[#E8F7F3] hover:text-[#2E8B78]"
+            >
+              {skill}
+            </span>
+
+          ))}
+
+        </div>
+
       </section>
 
     </div>

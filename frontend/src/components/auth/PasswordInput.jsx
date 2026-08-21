@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { FiEye, FiEyeOff } from "react-icons/fi";
+import { Eye, EyeOff } from "lucide-react";
 
 function PasswordInput({
   value,
   onChange,
   name = "password",
   placeholder = "Enter your password",
+  autoComplete = "current-password",
 }) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -17,46 +18,29 @@ function PasswordInput({
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        autoComplete="current-password"
+        autoComplete={autoComplete}
         className="
+          h-12
           w-full
-          rounded-xl
+          rounded-lg
           border
           border-slate-300
-          bg-white
           px-4
-          py-3
           pr-12
-          text-sm
-          text-slate-800
-          placeholder:text-slate-400
           outline-none
-          transition-all
-          duration-200
-          focus:border-blue-600
-          focus:ring-4
-          focus:ring-blue-100
+          transition
+          focus:border-[#2E8B78]
+          focus:ring-2
+          focus:ring-[#2E8B78]/20
         "
       />
 
       <button
         type="button"
         onClick={() => setShowPassword(!showPassword)}
-        className="
-          absolute
-          right-4
-          top-1/2
-          -translate-y-1/2
-          text-slate-400
-          transition
-          hover:text-slate-700
-        "
+        className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#2E8B78]"
       >
-        {showPassword ? (
-          <FiEyeOff size={18} />
-        ) : (
-          <FiEye size={18} />
-        )}
+        {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
       </button>
     </div>
   );
