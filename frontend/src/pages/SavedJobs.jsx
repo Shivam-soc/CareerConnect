@@ -1,74 +1,51 @@
 import { useMemo, useState } from "react";
 
-import Navbar from "../components/landing/Navbar";
-import Footer from "../components/landing/Footer";
+import DashboardLayout from "../components/layout/DashboardLayout";
 
-import JobCard from "../components/jobs/JobCard";
-
-import SearchInput from "../components/ui/SearchInput";
-import EmptyState from "../components/ui/EmptyState";
-import SectionHeading from "../components/ui/SectionHeading";
+import SavedJobsHeader from "../components/savedJobs/SavedJobsHeader";
+import SavedJobsFilters from "../components/savedJobs/SavedJobsFilters";
+import SavedJobsList from "../components/savedJobs/SavedJobsList";
 
 import jobs from "../data/jobs";
 
 function SavedJobs() {
   const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("All");
 
   const savedJobs = useMemo(() => {
-    return jobs.filter(
-      (job) =>
-        job.saved &&
-        (
-          job.title.toLowerCase().includes(search.toLowerCase()) ||
-          job.company.toLowerCase().includes(search.toLowerCase()) ||
-          job.location.toLowerCase().includes(search.toLowerCase())
-        )
-    );
-  }, [search]);
+    return jobs.filter((job) => {
+      const matchesSearch =
+        job.title.toLowerCase().includes(search.toLowerCase()) ||
+        job.company.toLowerCase().includes(search.toLowerCase()) ||
+        job.location.toLowerCase().includes(search.toLowerCase());
+
+      const matchesFilter =
+        filter === "All" ||
+        job.type === filter;
+
+      return job.saved && matchesSearch && matchesFilter;
+    });
+  }, [search, filter]);
 
   return (
-    <>
-      <Navbar />
+    <DashboardLayout>
 
-      <main className="min-h-screen bg-slate-50">
+      <SavedJobsHeader />
 
-        <div className="mx-auto max-w-7xl px-6 py-12">
+      <div className="mt-6">
+        <SavedJobsFilters
+          search={search}
+          setSearch={setSearch}
+          filter={filter}
+          setFilter={setFilter}
+        />
+      </div>
 
-          <SectionHeading
-            title="Saved Jobs"
-            subtitle="Jobs you've bookmarked for later."
-          />
+      <div className="mt-6">
+        <SavedJobsList jobs={savedJobs} />
+      </div>
 
-          <div className="mb-8">
-            <SearchInput
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search saved jobs..."
-            />
-          </div>
-
-          {savedJobs.length === 0 ? (
-            <EmptyState
-              title="No Saved Jobs"
-              description="You haven't saved any jobs yet."
-            />
-          ) : (
-            <div className="space-y-6">
-              {savedJobs.map((job) => (
-                <JobCard
-                  key={job.id}
-                  job={job}
-                />
-              ))}
-            </div>
-          )}
-
-        </div>
-
-      </main>
-
-      <Footer />
-    </>
+    </DashboardLayout>
   );
 }
 

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Search, Bell, ChevronDown, Moon } from "lucide-react";
 
 function DashboardHeader() {
@@ -66,7 +67,8 @@ function DashboardHeader() {
 
           {/* Notification */}
 
-          <button
+          <Link
+            to="/Notifications"
             className="
               relative
               flex
@@ -80,16 +82,18 @@ function DashboardHeader() {
               bg-white
               transition
               hover:bg-slate-50
+              hover:border-[#2E8B78]
+              hover:text-[#2E8B78]
             "
           >
             <Bell
-              size={18}
+              size={19}
               className="text-slate-600"
             />
 
             <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-red-500" />
 
-          </button>
+          </Link>
 
           {/* Profile */}
 
