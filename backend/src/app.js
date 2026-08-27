@@ -3,6 +3,13 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import jobRoutes from "./routes/jobRoutes.js";
+import applicationRoutes from "./routes/applicationRoutes.js";
+import savedJobRoutes from "./routes/savedJobRoutes.js";
+import recruiterRoutes from "./routes/recruiterRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
+import companyRoutes from "./routes/companyRoutes.js";
+
 
 const app = express();
 
@@ -19,6 +26,12 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users",userRoutes);
+app.use("/api/jobs", jobRoutes);
+app.use("/api/applications", applicationRoutes);
+app.use("/api/saved-jobs",savedJobRoutes);
+app.use("/api/recruiter", recruiterRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/companies", companyRoutes);
 
 app.get("/", (req, res) => {
   res.json({
