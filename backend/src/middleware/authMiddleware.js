@@ -12,7 +12,7 @@ export const protect = async (req, res, next) => {
       token = req.headers.authorization.split(" ")[1];
     }
 
-    console.log("TOKEN:", token);
+    
 
     if (!token) {
       return res.status(401).json({
@@ -23,11 +23,11 @@ export const protect = async (req, res, next) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    console.log("DECODED:", decoded);
+    
 
     req.user = await User.findById(decoded.id).select("-password");
 
-    console.log("DATABASE ROLE:", req.user.role);
+    
 
     next();
   } catch (error) {
