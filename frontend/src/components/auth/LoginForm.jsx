@@ -1,38 +1,80 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import PasswordInput from "./PasswordInput";
 import SocialLogin from "./SocialLogin";
 
+import { loginUser } from "../../api/authApi";
+
 function LoginForm() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     remember: false,
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     const { name, value, checked, type } = e.target;
 
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: type === "checkbox" ? checked : value,
-    });
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(formData);
+    try {
+      setLoading(true);
 
-    // TODO:
-    // Login API
+      const response = await loginUser({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      // Backend returns:
+      // {
+      //   success,
+      //   message,
+      //   data: {
+      //      token,
+      //      user
+      //   }
+      // }
+
+      const { token, user } = response.data;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      if (user.role === "student") {
+        navigate("/dashboard");
+      } else if (user.role === "recruiter") {
+        navigate("/recruiter/dashboard");
+      } else if (user.role === "admin") {
+        navigate("/admin/dashboard");
+      }
+
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        error.response?.data?.message ||
+        error.message ||
+        "Login failed"
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
-      {/* Logo */}
-
       <Link
         to="/"
         className="text-2xl font-bold text-slate-900"
@@ -40,10 +82,7 @@ function LoginForm() {
         Career<span className="text-[#2E8B78]">Connect</span>
       </Link>
 
-      {/* Heading */}
-
       <div className="mt-10 mb-8">
-
         <h1 className="text-4xl font-bold text-slate-900">
           Welcome Back
         </h1>
@@ -51,20 +90,13 @@ function LoginForm() {
         <p className="mt-2 text-slate-500">
           Please enter your details to sign in.
         </p>
-
       </div>
-
-      {/* Form */}
 
       <form
         onSubmit={handleSubmit}
         className="space-y-5"
       >
-
-        {/* Email */}
-
         <div>
-
           <label className="mb-2 block text-sm font-medium text-slate-700">
             Email
           </label>
@@ -90,15 +122,10 @@ function LoginForm() {
               focus:ring-[#2E8B78]/20
             "
           />
-
         </div>
 
-        {/* Password */}
-
         <div>
-
           <div className="mb-2 flex items-center justify-between">
-
             <label className="text-sm font-medium text-slate-700">
               Password
             </label>
@@ -109,7 +136,6 @@ function LoginForm() {
             >
               Forgot Password?
             </Link>
-
           </div>
 
           <PasswordInput
@@ -117,13 +143,9 @@ function LoginForm() {
             value={formData.password}
             onChange={handleChange}
           />
-
         </div>
 
-        {/* Remember */}
-
         <label className="flex items-center gap-2 text-sm text-slate-600">
-
           <input
             type="checkbox"
             name="remember"
@@ -133,13 +155,11 @@ function LoginForm() {
           />
 
           Remember me
-
         </label>
-
-        {/* Button */}
 
         <button
           type="submit"
+          disabled={loading}
           className="
             h-12
             w-full
@@ -149,32 +169,25 @@ function LoginForm() {
             text-white
             transition
             hover:bg-[#236D5E]
+            disabled:cursor-not-allowed
+            disabled:opacity-70
           "
         >
-          Sign In
+          {loading ? "Signing In..." : "Sign In"}
         </button>
-
       </form>
-
-      {/* Social Login */}
 
       <SocialLogin />
 
-      {/* Footer */}
-
       <p className="mt-8 text-center text-sm text-slate-500">
-
         Don't have an account?{" "}
-
         <Link
           to="/register"
           className="font-medium text-[#2E8B78] hover:underline"
         >
           Create Account
         </Link>
-
       </p>
-
     </>
   );
 }
