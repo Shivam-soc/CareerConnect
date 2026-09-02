@@ -1,49 +1,68 @@
+import { Link } from "react-router-dom";
 import { FaMapMarkerAlt, FaUsers } from "react-icons/fa";
 
-function CompanyCard({
-  logo,
-  name,
-  industry,
-  location,
-  employees,
-  jobs,
-}) {
+function CompanyCard({ company }) {
+  if (!company) return null;
+
   return (
-    <div className="rounded-3xl bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+    <Link
+      to={`/companies/${company._id}`}
+      className="group block h-full"
+    >
+      <div className="flex h-full flex-col rounded-[26px] border border-slate-200 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#2E8B78]/40 hover:shadow-xl">
 
-      <img
-        src={logo}
-        alt={name}
-        className="h-16 w-16 object-contain"
-      />
+        {/* Logo */}
 
-      <h2 className="mt-5 text-2xl font-bold">
-        {name}
-      </h2>
+        {company.logo ? (
+          <img
+            src={company.logo}
+            alt={company.name}
+            className="h-16 w-16 object-contain"
+          />
+        ) : (
+          <div className="flex h-16 w-16 items-center justify-center rounded-2xl border border-slate-200 bg-[#E8F7F3] text-2xl font-bold text-[#2E8B78]">
+            {company.name?.charAt(0)}
+          </div>
+        )}
 
-      <p className="mt-2 text-slate-500">
-        {industry}
-      </p>
+        {/* Company Name */}
 
-      <div className="mt-5 space-y-2 text-slate-600">
+        <h2 className="mt-5 text-2xl font-bold text-slate-900 transition group-hover:text-[#2E8B78]">
+          {company.name}
+        </h2>
 
-        <div className="flex items-center gap-2">
-          <FaMapMarkerAlt />
-          {location}
+        {/* Industry */}
+
+        <p className="mt-2 text-slate-500">
+          {company.industry}
+        </p>
+
+        {/* Details */}
+
+        <div className="mt-6 space-y-3 text-slate-600">
+
+          <div className="flex items-center gap-2">
+            <FaMapMarkerAlt className="text-[#2E8B78]" />
+            {company.location}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <FaUsers className="text-[#2E8B78]" />
+            {company.size || "Not Available"}
+          </div>
+
         </div>
 
-        <div className="flex items-center gap-2">
-          <FaUsers />
-          {employees}
-        </div>
+        <div className="flex-1" />
+
+        {/* Button */}
+
+        <button className="mt-6 w-full rounded-2xl bg-[#2E8B78] py-3 font-semibold text-white transition-all duration-300 hover:bg-[#236D5E]">
+          View Company
+        </button>
 
       </div>
-
-      <button className="mt-6 w-full rounded-xl bg-blue-600 py-3 font-semibold text-white hover:bg-blue-700">
-        {jobs} Open Jobs
-      </button>
-
-    </div>
+    </Link>
   );
 }
 

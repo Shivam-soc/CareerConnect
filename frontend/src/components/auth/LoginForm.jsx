@@ -5,9 +5,11 @@ import PasswordInput from "./PasswordInput";
 import SocialLogin from "./SocialLogin";
 
 import { loginUser } from "../../api/authApi";
+import { useAuth } from "../../context/AuthContext";
 
 function LoginForm() {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -47,10 +49,17 @@ function LoginForm() {
       //   }
       // }
 
+      console.log("Login response:", response.data);
+
       const { token, user } = response.data;
+
+      console.log(user);
+      console.log(user.role);
 
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
+
+      setUser(user);
 
       if (user.role === "student") {
         navigate("/dashboard");

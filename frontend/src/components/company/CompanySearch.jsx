@@ -2,36 +2,54 @@ import { FaSearch, FaMapMarkerAlt } from "react-icons/fa";
 
 function CompanySearch() {
   return (
-    <div className="rounded-3xl bg-white p-4 shadow-xl">
+    <div className="rounded-[30px] border border-slate-200 bg-white p-4 shadow-xl">
 
       <div className="grid gap-4 md:grid-cols-4">
 
-        <div className="flex items-center gap-3 rounded-2xl border p-4">
+        {/* Search */}
+
+        <div className="flex h-14 items-center gap-3 rounded-2xl border border-slate-200 px-4 transition-all duration-300 focus-within:border-[#2E8B78]">
+
           <FaSearch className="text-slate-400" />
+
           <input
             type="text"
             placeholder="Search companies..."
-            className="w-full outline-none"
+            className="w-full bg-transparent outline-none placeholder:text-slate-400"
           />
+
         </div>
 
-        <div className="flex items-center gap-3 rounded-2xl border p-4">
+        {/* Location */}
+
+        <div className="flex h-14 items-center gap-3 rounded-2xl border border-slate-200 px-4 transition-all duration-300 focus-within:border-[#2E8B78]">
+
           <FaMapMarkerAlt className="text-slate-400" />
+
           <input
             type="text"
             placeholder="Location"
-            className="w-full outline-none"
+            className="w-full bg-transparent outline-none placeholder:text-slate-400"
           />
+
         </div>
 
-        <select className="rounded-2xl border p-4 outline-none">
+        {/* Industry */}
+
+        <select
+          className="h-14 rounded-2xl border border-slate-200 bg-white px-4 outline-none transition-all duration-300 focus:border-[#2E8B78]"
+        >
           <option>Technology</option>
           <option>Finance</option>
           <option>Healthcare</option>
           <option>Automobile</option>
         </select>
 
-        <button className="rounded-2xl bg-blue-600 py-4 font-semibold text-white transition hover:bg-blue-700">
+        {/* Button */}
+
+        <button
+          className="h-14 rounded-2xl bg-[#2E8B78] font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-[#236D5E] hover:shadow-lg"
+        >
           Search
         </button>
 

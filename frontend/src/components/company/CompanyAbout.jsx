@@ -1,24 +1,60 @@
-function CompanyAbout() {
+function CompanyAbout({ company }) {
+  if (!company) return null;
+
   return (
-    <section className="rounded-3xl bg-white p-8 shadow-sm">
+    <section className="rounded-[30px] border border-slate-200 bg-white p-8 shadow-sm">
 
       <h2 className="mb-6 text-3xl font-bold text-slate-900">
-        About Google
+        About {company.name}
       </h2>
 
       <p className="leading-8 text-slate-600">
-        Google is one of the world's leading technology companies,
-        specializing in internet-related services, cloud computing,
-        artificial intelligence, advertising technologies, and
-        consumer electronics.
+        {company.description || "No company description available."}
       </p>
 
-      <p className="mt-5 leading-8 text-slate-600">
-        Our mission is to organize the world's information and make
-        it universally accessible and useful. Google offers exciting
-        opportunities to work on products used by billions of people
-        every day.
-      </p>
+      <div className="mt-8 grid gap-6 md:grid-cols-2">
+
+        <div className="rounded-2xl border border-slate-200 bg-[#F8FAF8] p-5">
+          <p className="text-sm text-slate-500">
+            Industry
+          </p>
+
+          <p className="mt-2 text-lg font-semibold text-slate-900">
+            {company.industry || "Not Available"}
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-slate-200 bg-[#F8FAF8] p-5">
+          <p className="text-sm text-slate-500">
+            Founded
+          </p>
+
+          <p className="mt-2 text-lg font-semibold text-slate-900">
+            {company.founded || "Not Available"}
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-slate-200 bg-[#F8FAF8] p-5">
+          <p className="text-sm text-slate-500">
+            Company Size
+          </p>
+
+          <p className="mt-2 text-lg font-semibold text-slate-900">
+            {company.size || "Not Available"}
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-slate-200 bg-[#F8FAF8] p-5">
+          <p className="text-sm text-slate-500">
+            Headquarters
+          </p>
+
+          <p className="mt-2 text-lg font-semibold text-slate-900">
+            {company.location || "Not Available"}
+          </p>
+        </div>
+
+      </div>
 
     </section>
   );

@@ -29,7 +29,7 @@ const reviews = [
 
 function CompanyReviews() {
   return (
-    <section className="rounded-3xl bg-white p-8 shadow-sm">
+    <section className="rounded-[30px] border border-slate-200 bg-white p-8 shadow-sm">
 
       <div className="mb-8">
         <h2 className="text-3xl font-bold text-slate-900">
@@ -44,19 +44,19 @@ function CompanyReviews() {
       <div className="space-y-6">
 
         {reviews.map((review) => (
-
           <div
             key={review.id}
-            className="rounded-2xl border border-slate-200 p-6 transition hover:border-blue-200 hover:shadow-lg"
+            className="rounded-2xl border border-slate-200 bg-[#F8FAF8] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-[#2E8B78] hover:bg-[#E8F7F3] hover:shadow-lg"
           >
-
             <div className="flex items-center gap-4">
 
-              <FaUserCircle className="text-5xl text-blue-600" />
+              <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white shadow-sm">
+                <FaUserCircle className="text-4xl text-[#2E8B78]" />
+              </div>
 
               <div>
 
-                <h3 className="text-xl font-semibold">
+                <h3 className="text-xl font-semibold text-slate-900">
                   {review.name}
                 </h3>
 
@@ -79,12 +79,11 @@ function CompanyReviews() {
 
             </div>
 
-            <p className="mt-5 leading-7 text-slate-600">
+            <p className="mt-5 leading-7 text-slate-600 italic">
               "{review.review}"
             </p>
 
           </div>
-
         ))}
 
       </div>

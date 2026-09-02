@@ -1,4 +1,3 @@
-import google from "../../assets/logos/google.svg";
 import {
   FaCheckCircle,
   FaGlobe,
@@ -6,7 +5,9 @@ import {
   FaUsers,
 } from "react-icons/fa";
 
-function CompanyOverview() {
+function CompanyOverview({ company }) {
+  if (!company) return null;
+
   return (
     <section className="rounded-3xl bg-white p-8 shadow-sm">
 
@@ -14,18 +15,24 @@ function CompanyOverview() {
 
         <div className="flex items-center gap-6">
 
-          <img
-            src={google}
-            alt="Google"
-            className="h-24 w-24 rounded-3xl bg-slate-100 p-4"
-          />
+          {company.logo ? (
+            <img
+              src={company.logo}
+              alt={company.name}
+              className="h-24 w-24 rounded-3xl bg-slate-100 p-4 object-contain"
+            />
+          ) : (
+            <div className="flex h-24 w-24 items-center justify-center rounded-3xl bg-slate-100 text-4xl font-bold text-[#2E8B78]">
+              {company.name?.charAt(0)}
+            </div>
+          )}
 
           <div>
 
             <div className="flex items-center gap-2">
 
               <h1 className="text-4xl font-bold">
-                Google
+                {company.name}
               </h1>
 
               <FaCheckCircle className="text-green-500" />
@@ -33,19 +40,19 @@ function CompanyOverview() {
             </div>
 
             <p className="mt-2 text-lg text-slate-500">
-              Technology Company
+              {company.industry}
             </p>
 
             <div className="mt-5 flex flex-wrap gap-6 text-slate-600">
 
               <span className="flex items-center gap-2">
                 <FaMapMarkerAlt />
-                Bangalore
+                {company.location}
               </span>
 
               <span className="flex items-center gap-2">
                 <FaUsers />
-                180,000+ Employees
+                {company.size || "Not Available"}
               </span>
 
             </div>
@@ -55,12 +62,12 @@ function CompanyOverview() {
         </div>
 
         <a
-          href="https://google.com"
+          href={company.website}
           target="_blank"
           rel="noreferrer"
-          className="rounded-xl bg-blue-600 px-8 py-3 font-semibold text-white transition hover:bg-blue-700"
+          className="inline-flex items-center justify-center rounded-2xl bg-[#2E8B78] px-8 py-3 font-semibold text-white transition-all duration-300 hover:-translate-y-1 hover:bg-[#236D5E] hover:shadow-lg"
         >
-          <FaGlobe className="mr-2 inline" />
+          <FaGlobe className="mr-2" />
           Visit Website
         </a>
 

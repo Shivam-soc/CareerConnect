@@ -1,29 +1,50 @@
-import mockApplications from "../../data/mockApplications";
+import { useEffect, useState } from "react";
+import { getMyApplications } from "../../api/applicationApi";
 import ApplicationCard from "./ApplicationCard";
 
 function ApplicationsList() {
+  const [applications, setApplications] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchApplications();
+  }, []);
+
+  const fetchApplications = async () => {
+    try {
+      setLoading(true);
+
+      const response = await getMyApplications();
+
+      setApplications(response.data.applications);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="rounded-2xl bg-white p-10 text-center">
+        Loading applications...
+      </div>
+    );
+  }
+
   return (
     <section className="mt-6">
-
-      {mockApplications.length > 0 ? (
-
+      {applications.length > 0 ? (
         <div className="space-y-5">
-
-          {mockApplications.map((application) => (
-
+          {applications.map((application) => (
             <ApplicationCard
-              key={application.id}
+              key={application._id}
               application={application}
             />
-
           ))}
-
         </div>
-
       ) : (
-
         <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
-
           <h3 className="text-lg font-semibold text-slate-900">
             No applications yet
           </h3>
@@ -31,11 +52,8 @@ function ApplicationsList() {
           <p className="mt-2 text-sm text-slate-500">
             Start applying for jobs to keep track of your application journey.
           </p>
-
         </div>
-
       )}
-
     </section>
   );
 }

@@ -4,8 +4,9 @@ import {
   X,
   Upload,
   CheckCircle2,
-  FileText,
 } from "lucide-react";
+
+import { applyForJob } from "../../api/applicationApi";
 
 function ApplyModal({
   open,
@@ -13,6 +14,7 @@ function ApplyModal({
   job,
 }) {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -40,16 +42,50 @@ function ApplyModal({
     }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!form.resume) {
+    alert("Please upload your resume.");
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    const formData = new FormData();
+
+    formData.append("jobId", job._id);
+    formData.append("coverLetter", form.coverLetter);
+    formData.append("resume", form.resume);
+
+    await applyForJob(formData);
 
     setSubmitted(true);
 
     setTimeout(() => {
       setSubmitted(false);
+
+      setForm({
+        name: "",
+        email: "",
+        phone: "",
+        coverLetter: "",
+        resume: null,
+      });
+
       onClose();
     }, 2500);
-  };
+
+  } catch (error) {
+    alert(
+      error.response?.data?.message ||
+      "Unable to submit application."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <AnimatePresence>
@@ -84,8 +120,6 @@ function ApplyModal({
             className="relative w-full max-w-xl rounded-[32px] bg-white p-8 shadow-2xl"
           >
 
-            {/* Close */}
-
             <button
               onClick={onClose}
               className="absolute right-5 top-5 rounded-xl p-2 transition hover:bg-slate-100"
@@ -103,15 +137,11 @@ function ApplyModal({
                 />
 
                 <h2 className="mt-6 text-3xl font-bold">
-
                   Application Submitted
-
                 </h2>
 
                 <p className="mt-3 text-slate-500">
-
                   Your application has been sent successfully.
-
                 </p>
 
               </div>
@@ -123,28 +153,34 @@ function ApplyModal({
 
                 <div className="flex items-center gap-4">
 
-                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl border bg-slate-50">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl border bg-slate-50 overflow-hidden">
 
-                    <img
-                      src={job.logo}
-                      alt={job.company}
-                      className="h-10 w-10 object-contain"
-                    />
+                    {job.company?.logo ? (
+
+                      <img
+                        src={job.company.logo}
+                        alt={job.company.name}
+                        className="h-10 w-10 object-contain"
+                      />
+
+                    ) : (
+
+                      <span className="text-2xl font-bold text-[#2E8B78]">
+                        {job.company?.name?.charAt(0)}
+                      </span>
+
+                    )}
 
                   </div>
 
                   <div>
 
                     <h2 className="text-2xl font-bold">
-
                       Apply for {job.title}
-
                     </h2>
 
                     <p className="text-slate-500">
-
-                      {job.company}
-
+                      {job.company?.name}
                     </p>
 
                   </div>
@@ -186,25 +222,21 @@ function ApplyModal({
                     className="w-full rounded-2xl border border-slate-200 p-4 outline-none focus:border-[#2E8B78]"
                   />
 
-                  {/* Resume */}
-
                   <label className="flex cursor-pointer items-center justify-center gap-3 rounded-2xl border-2 border-dashed border-slate-300 p-6 transition hover:border-[#2E8B78]">
 
                     <Upload size={20} />
 
                     <span>
-
                       {form.resume
                         ? form.resume.name
                         : "Upload Resume (PDF)"}
-
                     </span>
 
                     <input
                       type="file"
                       accept=".pdf"
-                      onChange={handleResume}
                       hidden
+                      onChange={handleResume}
                     />
 
                   </label>
@@ -225,23 +257,20 @@ function ApplyModal({
                       onClick={onClose}
                       className="flex-1 rounded-2xl border border-slate-300 py-4 font-semibold transition hover:bg-slate-100"
                     >
-
                       Cancel
-
                     </button>
 
                     <button
                       type="submit"
                       className="flex-1 rounded-2xl bg-[#2E8B78] py-4 font-semibold text-white transition hover:bg-[#236D5E]"
                     >
-
-                      Submit Application
-
+                      {loading ? "Submitting..." : "Submit Application"}
                     </button>
 
                   </div>
 
                 </form>
+
               </>
 
             )}

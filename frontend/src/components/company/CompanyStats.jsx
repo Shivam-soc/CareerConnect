@@ -5,32 +5,34 @@ import {
   FaBuilding,
 } from "react-icons/fa";
 
-const stats = [
-  {
-    icon: <FaUsers className="text-4xl text-blue-600" />,
-    value: "180K+",
-    label: "Employees",
-  },
-  {
-    icon: <FaBriefcase className="text-4xl text-green-600" />,
-    value: "45",
-    label: "Open Jobs",
-  },
-  {
-    icon: <FaBuilding className="text-4xl text-purple-600" />,
-    value: "70+",
-    label: "Offices",
-  },
-  {
-    icon: <FaGlobe className="text-4xl text-orange-600" />,
-    value: "50+",
-    label: "Countries",
-  },
-];
+function CompanyStats({ company }) {
+  if (!company) return null;
 
-function CompanyStats() {
+  const stats = [
+    {
+      icon: <FaUsers className="text-3xl text-[#2E8B78]" />,
+      value: company.size || "N/A",
+      label: "Employees",
+    },
+    {
+      icon: <FaBriefcase className="text-3xl text-[#2E8B78]" />,
+      value: company.totalJobs || "0",
+      label: "Open Jobs",
+    },
+    {
+      icon: <FaBuilding className="text-3xl text-[#2E8B78]" />,
+      value: company.offices || "N/A",
+      label: "Offices",
+    },
+    {
+      icon: <FaGlobe className="text-3xl text-[#2E8B78]" />,
+      value: company.countries || "N/A",
+      label: "Countries",
+    },
+  ];
+
   return (
-    <section className="rounded-3xl bg-white p-8 shadow-sm">
+    <section className="rounded-[30px] border border-slate-200 bg-white p-8 shadow-sm">
 
       <div className="mb-8 text-center">
 
@@ -39,7 +41,7 @@ function CompanyStats() {
         </h2>
 
         <p className="mt-2 text-slate-500">
-          A quick overview of Google's global presence.
+          A quick overview of {company.name}.
         </p>
 
       </div>
@@ -47,26 +49,22 @@ function CompanyStats() {
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
 
         {stats.map((stat) => (
-
           <div
             key={stat.label}
-            className="rounded-2xl border border-slate-200 p-6 text-center transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-lg"
+            className="rounded-2xl border border-slate-200 bg-[#F8FAF8] p-6 text-center transition-all duration-300 hover:-translate-y-1 hover:border-[#2E8B78] hover:bg-[#E8F7F3] hover:shadow-lg"
           >
-
             <div className="flex justify-center">
               {stat.icon}
             </div>
 
-            <h3 className="mt-5 text-4xl font-bold text-slate-900">
+            <h3 className="mt-5 text-3xl font-bold text-slate-900">
               {stat.value}
             </h3>
 
             <p className="mt-2 text-slate-500">
               {stat.label}
             </p>
-
           </div>
-
         ))}
 
       </div>

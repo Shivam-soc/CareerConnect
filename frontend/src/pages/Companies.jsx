@@ -9,20 +9,20 @@ function Companies() {
     <>
       <Navbar />
 
-      <main className="bg-slate-50 min-h-screen">
+      <main className="min-h-screen bg-[#F8FAF8]">
 
         <CompanyHero />
 
-        <section className="mx-auto max-w-7xl px-6 py-16">
+        <section className="mx-auto max-w-7xl px-6 py-10">
 
           <div className="mb-10">
 
-            <h2 className="text-4xl font-bold text-slate-900">
+            <h2 className="text-4xl font-bold tracking-tight text-slate-900">
               Featured Companies
             </h2>
 
-            <p className="mt-3 text-slate-500">
-              Explore verified companies hiring now.
+            <p className="mt-3 text-lg text-slate-500">
+              Explore verified companies hiring across India.
             </p>
 
           </div>

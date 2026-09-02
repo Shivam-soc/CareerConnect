@@ -1,16 +1,25 @@
 import { Link } from "react-router-dom";
 import { Search, Bell, ChevronDown, Moon } from "lucide-react";
 
+import { useAuth } from "../../context/AuthContext";
+
 function DashboardHeader() {
+  const { user } = useAuth();
+
+  const initials = user?.fullName
+    ? user.fullName
+        .split(" ")
+        .map((name) => name[0])
+        .join("")
+        .toUpperCase()
+    : "U";
+
   return (
     <header className="sticky top-0 z-30 bg-[#F8FAF8]">
-
       <div className="flex h-16 items-center gap-6 border-b border-slate-200 bg-white px-6">
-
         {/* Search */}
 
         <div className="relative flex-1 max-w-2xl">
-
           <Search
             size={18}
             className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
@@ -38,13 +47,11 @@ function DashboardHeader() {
               focus:ring-[#2E8B78]/10
             "
           />
-
         </div>
 
         {/* Right */}
 
         <div className="ml-auto flex items-center gap-3">
-
           {/* Dark Mode */}
 
           <button
@@ -65,10 +72,10 @@ function DashboardHeader() {
             <Moon size={18} className="text-slate-600" />
           </button>
 
-          {/* Notification */}
+          {/* Notifications */}
 
           <Link
-            to="/Notifications"
+            to="/notifications"
             className="
               relative
               flex
@@ -86,13 +93,9 @@ function DashboardHeader() {
               hover:text-[#2E8B78]
             "
           >
-            <Bell
-              size={19}
-              className="text-slate-600"
-            />
+            <Bell size={19} className="text-slate-600" />
 
             <span className="absolute right-2.5 top-2.5 h-2 w-2 rounded-full bg-red-500" />
-
           </Link>
 
           {/* Profile */}
@@ -111,7 +114,6 @@ function DashboardHeader() {
               hover:bg-slate-50
             "
           >
-
             <div
               className="
                 flex
@@ -125,32 +127,26 @@ function DashboardHeader() {
                 text-[#2E8B78]
               "
             >
-              SK
+              {initials}
             </div>
 
             <div className="hidden text-left lg:block">
-
               <p className="text-sm font-medium text-slate-900">
-                Shivam Kumar
+                {user?.fullName || "Loading..."}
               </p>
 
-              <p className="text-xs text-slate-500">
-                Student
+              <p className="text-xs capitalize text-slate-500">
+                {user?.role || ""}
               </p>
-
             </div>
 
             <ChevronDown
               size={16}
               className="hidden text-slate-400 lg:block"
             />
-
           </button>
-
         </div>
-
       </div>
-
     </header>
   );
 }

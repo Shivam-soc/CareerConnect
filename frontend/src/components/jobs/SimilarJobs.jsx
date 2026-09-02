@@ -1,28 +1,45 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowRight, BriefcaseBusiness } from "lucide-react";
 
 import JobCard from "./JobCard";
-import jobs from "../../data/jobs";
+import { getJobs } from "../../api/jobApi";
 
 function SimilarJobs({ currentJob }) {
+  const [similarJobs, setSimilarJobs] = useState([]);
+
+  useEffect(() => {
+    if (!currentJob) return;
+
+    const fetchSimilarJobs = async () => {
+      try {
+        const response = await getJobs();
+
+        const jobs = response.data.jobs || [];
+
+        const filteredJobs = jobs
+          .filter((job) => {
+            // Exclude current job
+            if (job._id === currentJob._id) return false;
+
+            // Match by shared skills
+            return job.skills?.some((skill) =>
+              currentJob.skills?.includes(skill)
+            );
+          })
+          .slice(0, 3);
+
+        setSimilarJobs(filteredJobs);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchSimilarJobs();
+  }, [currentJob]);
+
   if (!currentJob) return null;
-
-  const similarJobs = jobs
-    .filter((job) => {
-      if (job.id === currentJob.id) return false;
-
-      const sameCategory =
-        job.category === currentJob.category;
-
-      const sharedSkills =
-        job.skills.some((skill) =>
-          currentJob.skills.includes(skill)
-        );
-
-      return sameCategory || sharedSkills;
-    })
-    .slice(0, 3);
 
   return (
     <section className="mt-16">
@@ -45,15 +62,11 @@ function SimilarJobs({ currentJob }) {
           <div>
 
             <h2 className="text-3xl font-bold text-slate-900">
-
               Similar Opportunities
-
             </h2>
 
             <p className="mt-1 text-slate-500">
-
               Jobs matching your skills and interests.
-
             </p>
 
           </div>
@@ -64,7 +77,6 @@ function SimilarJobs({ currentJob }) {
           to="/jobs"
           className="inline-flex items-center gap-2 rounded-2xl border border-slate-200 bg-white px-5 py-3 font-semibold transition-all duration-300 hover:border-[#2E8B78] hover:text-[#2E8B78] hover:shadow-md"
         >
-
           View All Jobs
 
           <ArrowRight
@@ -88,7 +100,7 @@ function SimilarJobs({ currentJob }) {
           {similarJobs.map((job, index) => (
 
             <motion.div
-              key={job.id}
+              key={job._id}
               initial={{
                 opacity: 0,
                 y: 20,
@@ -124,24 +136,18 @@ function SimilarJobs({ currentJob }) {
           />
 
           <h3 className="mt-5 text-2xl font-bold text-slate-800">
-
             No Similar Jobs Found
-
           </h3>
 
           <p className="mt-3 text-slate-500">
-
             Explore all available opportunities instead.
-
           </p>
 
           <Link
             to="/jobs"
             className="mt-6 inline-flex rounded-xl bg-[#2E8B78] px-6 py-3 font-semibold text-white transition hover:bg-[#236D5E]"
           >
-
             Browse Jobs
-
           </Link>
 
         </div>

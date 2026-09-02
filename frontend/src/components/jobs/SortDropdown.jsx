@@ -1,18 +1,30 @@
 import { FaSortAmountDown } from "react-icons/fa";
 
-function SortDropdown() {
+function SortDropdown({ sortBy, setSortBy }) {
   return (
-    <div className="flex items-center gap-3">
-      <FaSortAmountDown className="text-slate-500" />
-
-      <select className="rounded-xl border border-slate-200 bg-white px-4 py-2 outline-none focus:border-blue-600">
-        <option>Most Relevant</option>
-        <option>Newest</option>
-        <option>Highest Salary</option>
-        <option>Recently Posted</option>
-        <option>Highest Salary</option>
-      </select>
-    </div>
+    <select
+      value={sortBy}
+      onChange={(e) => setSortBy(e.target.value)}
+      className="
+        h-11
+        w-full
+        rounded-xl
+        border
+        border-slate-300
+        bg-white
+        px-4
+        text-sm
+        outline-none
+        transition
+        focus:border-[#2E8B78]
+        focus:ring-2
+        focus:ring-[#2E8B78]/20
+      "
+    >
+      <option value="latest">Latest</option>
+      <option value="oldest">Oldest</option>
+      <option value="salary">Highest Salary</option>
+    </select>
   );
 }
 

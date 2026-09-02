@@ -1,5 +1,5 @@
 import { useParams, Navigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import Navbar from "../components/landing/Navbar";
 import Footer from "../components/landing/Footer";
@@ -10,18 +10,48 @@ import CompanyInfo from "../components/jobs/CompanyInfo";
 import ApplySection from "../components/jobs/ApplySection";
 import SimilarJobs from "../components/jobs/SimilarJobs";
 
-import jobs from "../data/jobs";
+import { getJobById } from "../api/jobApi";
 
 function JobDetails() {
   const { id } = useParams();
 
   const [openModal, setOpenModal] = useState(false);
+  const [job, setJob] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [notFound, setNotFound] = useState(false);
 
-  const job = jobs.find(
-    (item) => item.id === Number(id)
-  );
+  useEffect(() => {
+    const fetchJob = async () => {
+      try {
+        const response = await getJobById(id);
 
-  if (!job) {
+        setJob(response.data.job);
+      } catch (error) {
+        console.error(error);
+        setNotFound(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJob();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+
+        <main className="min-h-screen flex items-center justify-center">
+          <h2 className="text-xl font-semibold">Loading...</h2>
+        </main>
+
+        <Footer />
+      </>
+    );
+  }
+
+  if (notFound || !job) {
     return <Navigate to="/jobs" replace />;
   }
 
@@ -67,8 +97,6 @@ function JobDetails() {
         </section>
 
       </main>
-
-      {/* Apply Modal */}
 
       <ApplyModal
         open={openModal}

@@ -1,79 +1,77 @@
+import { useEffect, useState } from "react";
+
 import CompanyCard from "./CompanyCard";
+import { getCompanies } from "../../api/companyApi";
 
-import microsoft from "../../assets/logos/microsoft.svg";
-import adobe from "../../assets/logos/adobe.svg";
-import amazon from "../../assets/logos/amazon.svg";
-import nvidia from "../../assets/logos/nvidia.svg";
+function SimilarCompanies({ currentCompany }) {
+  const [companies, setCompanies] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-const similarCompanies = [
-  {
-    id: 1,
-    logo: microsoft,
-    name: "Microsoft",
-    industry: "Technology",
-    location: "Hyderabad",
-    employees: "220,000+",
-    jobs: 32,
-  },
-  {
-    id: 2,
-    logo: adobe,
-    name: "Adobe",
-    industry: "Software",
-    location: "Noida",
-    employees: "29,000+",
-    jobs: 18,
-  },
-  {
-    id: 3,
-    logo: amazon,
-    name: "Amazon",
-    industry: "E-Commerce",
-    location: "Pune",
-    employees: "1.5M+",
-    jobs: 61,
-  },
-  {
-    id: 4,
-    logo: nvidia,
-    name: "NVIDIA",
-    industry: "AI & Hardware",
-    location: "Bangalore",
-    employees: "30,000+",
-    jobs: 21,
-  },
-];
+  useEffect(() => {
+    if (currentCompany?._id) {
+      fetchCompanies();
+    }
+  }, [currentCompany]);
 
-function SimilarCompanies() {
+  const fetchCompanies = async () => {
+    try {
+      const response = await getCompanies();
+
+      const filteredCompanies = response.data.companies
+        .filter((company) => company._id !== currentCompany._id)
+        .slice(0, 4);
+
+      setCompanies(filteredCompanies);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!currentCompany) return null;
+
   return (
-    <section className="rounded-3xl bg-white p-8 shadow-sm">
+    <section className="rounded-[30px] border border-slate-200 bg-white p-8 shadow-sm">
 
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-8">
 
-        <div>
+        <h2 className="text-3xl font-bold text-slate-900">
+          Similar Companies
+        </h2>
 
-          <h2 className="text-3xl font-bold text-slate-900">
-            Similar Companies
-          </h2>
+        <p className="mt-2 text-slate-500">
+          Discover more companies hiring now.
+        </p>
 
-          <p className="mt-2 text-slate-500">
-            Discover more companies hiring for similar roles.
-          </p>
+      </div>
+
+      {loading ? (
+
+        <div className="py-10 text-center text-slate-500">
+          Loading companies...
+        </div>
+
+      ) : companies.length === 0 ? (
+
+        <div className="rounded-2xl border border-dashed border-slate-300 py-10 text-center text-slate-500">
+          No similar companies found.
+        </div>
+
+      ) : (
+
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+
+          {companies.map((company) => (
+            <CompanyCard
+              key={company._id}
+              company={company}
+            />
+          ))}
 
         </div>
 
-      </div>
-
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-
-        {similarCompanies.map((company) => (
-          <CompanyCard
-            key={company.id}
-            {...company}
-          />
-        ))}
-
-      </div>
+      )}
 
     </section>
   );
