@@ -12,7 +12,10 @@ export const getCompanies = async () => {
 };
 
 export const getCompanyById = async (id) => {
-  const company = await Company.findById(id);
+  const company = await Company.findById(id).populate(
+    "recruiter",
+    "fullName email"
+  );
 
   if (!company) {
     throw new Error("Company not found");

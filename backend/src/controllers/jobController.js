@@ -4,6 +4,7 @@ import {
   getJobById,
   updateJob,
   deleteJob,
+  getRecruiterJobs,
 } from "../services/jobService.js";
 
 export const create = async (req, res) => {
@@ -52,6 +53,22 @@ export const getJob = async (req, res) => {
     });
   } catch (error) {
     res.status(404).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export const myJobs = async (req, res) => {
+  try {
+    const jobs = await getRecruiterJobs(req.user._id);
+
+    res.status(200).json({
+      success: true,
+      jobs,
+    });
+  } catch (error) {
+    res.status(500).json({
       success: false,
       message: error.message,
     });

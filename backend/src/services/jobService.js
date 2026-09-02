@@ -19,7 +19,7 @@ export const getAllJobs = async (query) => {
 
   const filter = {};
 
-  // Search by title
+  // Search
   if (search) {
     filter.title = {
       $regex: search,
@@ -62,7 +62,14 @@ export const getAllJobs = async (query) => {
   }
 
   const jobs = await Job.find(filter)
-    .populate("postedBy", "fullName email")
+    .populate(
+      "company",
+      "name logo website industry location"
+    )
+    .populate(
+      "postedBy",
+      "fullName email"
+    )
     .sort(sortOption)
     .skip((Number(page) - 1) * Number(limit))
     .limit(Number(limit));
@@ -78,10 +85,15 @@ export const getAllJobs = async (query) => {
 };
 
 export const getJobById = async (id) => {
-  const job = await Job.findById(id).populate(
-    "postedBy",
-    "fullName email"
-  );
+  const job = await Job.findById(id)
+    .populate(
+      "company",
+      "name logo website industry location"
+    )
+    .populate(
+      "postedBy",
+      "fullName email"
+    );
 
   if (!job) {
     throw new Error("Job not found");
@@ -98,14 +110,24 @@ export const updateJob = async (id, data, userId) => {
   }
 
   if (job.postedBy.toString() !== userId.toString()) {
-    throw new Error("You are not authorized to update this job");
+    throw new Error(
+      "You are not authorized to update this job"
+    );
   }
 
   Object.assign(job, data);
 
   await job.save();
 
-  return job;
+  return await Job.findById(job._id)
+    .populate(
+      "company",
+      "name logo website industry location"
+    )
+    .populate(
+      "postedBy",
+      "fullName email"
+    );
 };
 
 export const deleteJob = async (id, userId) => {
@@ -116,10 +138,25 @@ export const deleteJob = async (id, userId) => {
   }
 
   if (job.postedBy.toString() !== userId.toString()) {
-    throw new Error("You are not authorized to delete this job");
+    throw new Error(
+      "You are not authorized to delete this job"
+    );
   }
 
   await Job.findByIdAndDelete(id);
 
   return;
+};
+
+export const getRecruiterJobs = async (userId) => {
+  const jobs = await Job.find({
+    postedBy: userId,
+  })
+    .populate(
+      "company",
+      "name logo website industry location"
+    )
+    .sort({ createdAt: -1 });
+
+  return jobs;
 };
