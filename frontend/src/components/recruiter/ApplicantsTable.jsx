@@ -7,7 +7,7 @@ function ApplicantsTable({
 }) {
   if (loading) {
     return (
-      <div className="rounded-2xl border border-slate-200 bg-white p-10 text-center">
+      <div className="rounded-2xl bg-white p-12 text-center">
         <p className="text-slate-500">
           Loading applicants...
         </p>
@@ -18,12 +18,12 @@ function ApplicantsTable({
   if (applications.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center">
-        <h2 className="text-xl font-semibold text-slate-900">
+        <h3 className="text-xl font-semibold text-slate-900">
           No Applications Yet
-        </h2>
+        </h3>
 
         <p className="mt-2 text-slate-500">
-          No students have applied for this job.
+          Applicants will appear here once students apply for this job.
         </p>
       </div>
     );
@@ -33,31 +33,35 @@ function ApplicantsTable({
     <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       <div className="overflow-x-auto">
         <table className="min-w-full">
+
           <thead className="bg-slate-50">
-            <tr>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-slate-600">
-                Candidate
+            <tr className="text-left text-sm font-semibold text-slate-600">
+
+              <th className="px-6 py-4">
+                Applicant
               </th>
 
-              <th className="px-6 py-4 text-left text-sm font-semibold text-slate-600">
+              <th className="px-6 py-4">
                 Resume
               </th>
 
-              <th className="px-6 py-4 text-left text-sm font-semibold text-slate-600">
-                Cover Letter
+              <th className="px-6 py-4">
+                Applied On
               </th>
 
-              <th className="px-6 py-4 text-left text-sm font-semibold text-slate-600">
+              <th className="px-6 py-4">
                 Status
               </th>
 
-              <th className="px-6 py-4 text-right text-sm font-semibold text-slate-600">
+              <th className="px-6 py-4 text-center">
                 Action
               </th>
+
             </tr>
           </thead>
 
           <tbody>
+
             {applications.map((application) => (
               <ApplicantRow
                 key={application._id}
@@ -65,7 +69,9 @@ function ApplicantsTable({
                 refresh={refresh}
               />
             ))}
+
           </tbody>
+
         </table>
       </div>
     </div>

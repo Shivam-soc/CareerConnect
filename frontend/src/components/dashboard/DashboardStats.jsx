@@ -1,27 +1,27 @@
-const stats = [
-  {
-    title: "Applications",
-    value: "18",
-    subtitle: "+4 this week",
-  },
-  {
-    title: "Saved Jobs",
-    value: "12",
-    subtitle: "+2 this week",
-  },
-  {
-    title: "Interviews",
-    value: "3",
-    subtitle: "Tomorrow",
-  },
-  {
-    title: "Offers",
-    value: "1",
-    subtitle: "Congratulations",
-  },
-];
+function DashboardStats({ dashboard }) {
+  const stats = [
+    {
+      title: "Applications",
+      value: dashboard?.totalApplications || 0,
+      subtitle: "Total Applications",
+    },
+    {
+      title: "Saved Jobs",
+      value: dashboard?.savedJobs || 0,
+      subtitle: "Jobs Saved",
+    },
+    {
+      title: "Interviews",
+      value: dashboard?.interviews || 0,
+      subtitle: "Interview Scheduled",
+    },
+    {
+      title: "Offers",
+      value: dashboard?.offers || 0,
+      subtitle: "Offers Received",
+    },
+  ];
 
-function DashboardStats() {
   return (
     <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
       {stats.map((stat) => (
@@ -43,11 +43,17 @@ function DashboardStats() {
             hover:shadow-[#2E8B78]/10
           "
         >
-          <p className="text-sm text-slate-500">{stat.title}</p>
+          <p className="text-sm text-slate-500">
+            {stat.title}
+          </p>
+
           <h2 className="mt-3 text-4xl font-semibold text-slate-900">
             {stat.value}
           </h2>
-          <p className="mt-2 text-sm text-[#2E8B78]">{stat.subtitle}</p>
+
+          <p className="mt-2 text-sm text-[#2E8B78]">
+            {stat.subtitle}
+          </p>
         </div>
       ))}
     </section>

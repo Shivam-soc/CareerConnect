@@ -17,11 +17,31 @@ export const updateUserProfile = async (userId, data) => {
     throw new Error("User not found");
   }
 
-  Object.assign(user, data);
+  user.fullName = data.fullName;
+  user.phone = data.phone;
+  user.location = data.location;
+  user.headline = data.headline;
+  user.bio = data.bio;
+
+  user.skills = data.skills || [];
+  user.education = data.education || [];
+  user.experience = data.experience || [];
+  user.projects = data.projects || [];
+  user.certifications = data.certifications || [];
+
+  user.socialLinks = data.socialLinks || {
+    github: "",
+    linkedin: "",
+    portfolio: "",
+    leetcode: "",
+    geeksforgeeks: "",
+  };
+
+  user.resume = data.resume || "";
+  user.profilePicture = data.profilePicture || "";
+  user.coverPhoto = data.coverPhoto || "";
 
   await user.save();
 
-  const userResponse = user.toObject();
-  delete userResponse.password;
-  return userResponse;
+  return await User.findById(userId).select("-password");
 };

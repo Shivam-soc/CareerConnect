@@ -8,6 +8,7 @@ import applicationRoutes from "./routes/applicationRoutes.js";
 import savedJobRoutes from "./routes/savedJobRoutes.js";
 import recruiterRoutes from "./routes/recruiterRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import studentRoutes from "./routes/studentRoutes.js";
 import companyRoutes from "./routes/companyRoutes.js";
 import path from "path";
 
@@ -32,6 +33,7 @@ app.use("/api/saved-jobs",savedJobRoutes);
 app.use("/api/recruiter", recruiterRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/companies", companyRoutes);
+app.use("/api/student", studentRoutes);
 app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 app.get("/", (req, res) => {

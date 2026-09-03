@@ -1,124 +1,208 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   FileText,
   Bookmark,
   User,
   Settings,
+  Building2,
+  Briefcase,
   LogOut,
+  Menu,
+  ChevronLeft,
 } from "lucide-react";
 
-const mainMenu = [
-  {
-    name: "Dashboard",
-    path: "/dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    name: "Applications",
-    path: "/applications",
-    icon: FileText,
-  },
-  {
-    name: "Saved Jobs",
-    path: "/saved-jobs",
-    icon: Bookmark,
-  },
-];
+import { useAuth } from "../../context/AuthContext";
 
-const accountMenu = [
-  {
-    name: "Profile",
-    path: "/profile",
-    icon: User,
-  },
-  {
-    name: "Settings",
-    path: "/settings",
-    icon: Settings,
-  },
-];
-
-function SidebarItem({ item }) {
+function SidebarItem({ item, collapsed }) {
   const Icon = item.icon;
 
   return (
     <NavLink
       to={item.path}
       className={({ isActive }) =>
-        `flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
+        `flex items-center ${
+          collapsed ? "justify-center" : "gap-3"
+        } rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 ${
           isActive
             ? "bg-[#E8F7F3] text-[#2E8B78]"
             : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
         }`
       }
     >
-      <Icon size={18} />
-      {item.name}
+      <Icon size={20} />
+
+      {!collapsed && <span>{item.name}</span>}
     </NavLink>
   );
 }
 
-function DashboardSidebar() {
-  return (
-    <aside className="fixed left-0 top-0 flex h-screen w-60 flex-col border-r border-slate-200 bg-white">
+function DashboardSidebar({ collapsed, setCollapsed }) {
+  const { user, setUser } = useAuth();
+  const navigate = useNavigate();
 
+  const studentMenu = [
+    {
+      name: "Dashboard",
+      path: "/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      name: "Applications",
+      path: "/applications",
+      icon: FileText,
+    },
+    {
+      name: "Saved Jobs",
+      path: "/saved-jobs",
+      icon: Bookmark,
+    },
+  ];
+
+  const recruiterMenu = [
+    {
+      name: "Dashboard",
+      path: "/recruiter/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      name: "Companies",
+      path: "/companies",
+      icon: Building2,
+    },
+    {
+      name: "Jobs",
+      path: "/jobs",
+      icon: Briefcase,
+    },
+  ];
+
+  const adminMenu = [
+    {
+      name: "Dashboard",
+      path: "/admin/dashboard",
+      icon: LayoutDashboard,
+    },
+    {
+      name: "Companies",
+      path: "/companies",
+      icon: Building2,
+    },
+    {
+      name: "Jobs",
+      path: "/jobs",
+      icon: Briefcase,
+    },
+  ];
+
+  const accountMenu = [
+    {
+      name: "Profile",
+      path: "/profile",
+      icon: User,
+    },
+    {
+      name: "Settings",
+      path: "/settings",
+      icon: Settings,
+    },
+  ];
+
+  const mainMenu =
+    user?.role === "student"
+      ? studentMenu
+      : user?.role === "recruiter"
+      ? recruiterMenu
+      : adminMenu;
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    setUser(null);
+
+    navigate("/login");
+  };
+
+  return (
+    <aside
+      className={`fixed left-0 top-0 flex h-screen flex-col border-r border-slate-200 bg-white transition-all duration-300 ${
+        collapsed ? "w-20" : "w-60"
+      }`}
+    >
       {/* Logo */}
 
-      <div className="px-6 py-7">
+      <div className="flex items-center justify-between px-5 py-6">
 
-        <h1 className="text-2xl font-bold text-slate-900">
-          Career
-          <span className="text-[#2E8B78]">
-            Connect
-          </span>
-        </h1>
+        {!collapsed && (
+          <div>
+            <h1 className="text-2xl font-bold">
+              Career
+              <span className="text-[#2E8B78]">
+                Connect
+              </span>
+            </h1>
 
-        <p className="mt-1 text-xs text-slate-500">
-          Student Portal
-        </p>
+            <p className="mt-1 text-xs text-slate-500">
+              {user?.role === "student"
+                ? "Student Portal"
+                : user?.role === "recruiter"
+                ? "Recruiter Portal"
+                : "Admin Portal"}
+            </p>
+          </div>
+        )}
+
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className="rounded-lg p-2 hover:bg-slate-100"
+        >
+          {collapsed ? (
+            <Menu size={20} />
+          ) : (
+            <ChevronLeft size={20} />
+          )}
+        </button>
 
       </div>
 
-      {/* Navigation */}
+      {/* Main */}
 
-      <div className="flex-1 overflow-y-auto px-4">
+      <div className="flex-1 overflow-y-auto px-3">
 
-        {/* Main */}
-
-        <div className="mb-8">
-
+        {!collapsed && (
           <p className="mb-3 px-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
             Main
           </p>
+        )}
 
-          <div className="space-y-1">
-            {mainMenu.map((item) => (
-              <SidebarItem
-                key={item.path}
-                item={item}
-              />
-            ))}
-          </div>
+        <div className="space-y-2">
+
+          {mainMenu.map((item) => (
+            <SidebarItem
+              key={item.path}
+              item={item}
+              collapsed={collapsed}
+            />
+          ))}
 
         </div>
 
-        {/* Account */}
-
-        <div>
-
-          <p className="mb-3 px-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
+        {!collapsed && (
+          <p className="mb-3 mt-8 px-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
             Account
           </p>
+        )}
 
-          <div className="space-y-1">
-            {accountMenu.map((item) => (
-              <SidebarItem
-                key={item.path}
-                item={item}
-              />
-            ))}
-          </div>
+        <div className="space-y-2">
+
+          {accountMenu.map((item) => (
+            <SidebarItem
+              key={item.path}
+              item={item}
+              collapsed={collapsed}
+            />
+          ))}
 
         </div>
 
@@ -126,29 +210,17 @@ function DashboardSidebar() {
 
       {/* Logout */}
 
-      <div className="border-t border-slate-200 p-4">
+      <div className="border-t border-slate-200 p-3">
 
         <button
-          className="
-            flex
-            w-full
-            items-center
-            gap-3
-            rounded-xl
-            px-4
-            py-3
-            text-sm
-            font-medium
-            text-slate-600
-            transition-all
-            duration-200
-            hover:bg-slate-100
-            hover:text-slate-900
-          "
+          onClick={handleLogout}
+          className={`flex w-full items-center rounded-xl px-4 py-3 transition hover:bg-slate-100 ${
+            collapsed ? "justify-center" : "gap-3"
+          }`}
         >
-          <LogOut size={18} />
+          <LogOut size={20} />
 
-          Logout
+          {!collapsed && <span>Logout</span>}
         </button>
 
       </div>

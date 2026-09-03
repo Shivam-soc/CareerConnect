@@ -1,22 +1,22 @@
 import DashboardLayout from "../components/layout/DashboardLayout";
 import JobForm from "../components/jobs/JobForm";
 
-function CreateJob() {
+function EditJob() {
   return (
     <DashboardLayout>
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-slate-900">
-          Create New Job
+          Edit Job
         </h1>
 
         <p className="mt-2 text-slate-500">
-          Fill in the details to publish a new job posting.
+          Update your existing job posting.
         </p>
       </div>
 
-      <JobForm mode="create" />
+      <JobForm mode="edit" />
     </DashboardLayout>
   );
 }
 
-export default CreateJob;
+export default EditJob;

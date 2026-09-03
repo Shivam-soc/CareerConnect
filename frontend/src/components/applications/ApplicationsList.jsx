@@ -1,29 +1,9 @@
-import { useEffect, useState } from "react";
-import { getMyApplications } from "../../api/applicationApi";
 import ApplicationCard from "./ApplicationCard";
 
-function ApplicationsList() {
-  const [applications, setApplications] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchApplications();
-  }, []);
-
-  const fetchApplications = async () => {
-    try {
-      setLoading(true);
-
-      const response = await getMyApplications();
-
-      setApplications(response.data.applications);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+function ApplicationsList({
+  applications = [],
+  loading,
+}) {
   if (loading) {
     return (
       <div className="rounded-2xl bg-white p-10 text-center">
@@ -36,12 +16,14 @@ function ApplicationsList() {
     <section className="mt-6">
       {applications.length > 0 ? (
         <div className="space-y-5">
-          {applications.map((application) => (
-            <ApplicationCard
-              key={application._id}
-              application={application}
-            />
-          ))}
+          {applications
+            .filter((application) => application.job)
+            .map((application) => (
+              <ApplicationCard
+                key={application._id}
+                application={application}
+              />
+            ))}
         </div>
       ) : (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">

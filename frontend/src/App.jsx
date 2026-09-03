@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Jobs from "./pages/Jobs";
 import CreateJob from "./pages/CreateJob";
+import EditJob from "./pages/EditJob";
 import JobDetails from "./pages/JobDetails";
 import JobApplicants from "./pages/JobApplicants";
 import Companies from "./pages/Companies";
@@ -13,6 +14,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
+import EditProfile from "./pages/EditProfile";
 import SavedJobs from "./pages/SavedJobs";
 import Applications from "./pages/Applications";
 import Notifications from "./pages/Notifications";
@@ -75,7 +77,20 @@ function App() {
         path="/profile"
         element={
           <ProtectedRoute>
-            <Profile />
+            <StudentRoute>
+             <Profile />
+            </StudentRoute>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/profile/edit"
+        element={
+          <ProtectedRoute>
+            <StudentRoute>
+              <EditProfile />
+            </StudentRoute>
           </ProtectedRoute>
         }
       />
@@ -138,6 +153,17 @@ function App() {
          <ProtectedRoute>
            <RecruiterRoute>
              <CreateJob />
+            </RecruiterRoute>
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/recruiter/jobs/:jobId/edit"
+        element={
+          <ProtectedRoute>
+            <RecruiterRoute>
+              <EditJob />
             </RecruiterRoute>
           </ProtectedRoute>
         }

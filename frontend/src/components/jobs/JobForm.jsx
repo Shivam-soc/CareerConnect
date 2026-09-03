@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { getCompanies } from "../../api/companyApi";
-import { createJob } from "../../api/jobApi";
+import {
+  createJob,
+  updateJob,
+  getJobById,
+} from "../../api/jobApi";
 
-function CreateJobForm() {
+function JobForm({ mode = "create" }) {
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const [loading, setLoading] = useState(false);
   const [companies, setCompanies] = useState([]);
@@ -26,17 +31,48 @@ function CreateJobForm() {
 
   useEffect(() => {
     fetchCompanies();
+
+    if (mode === "edit") {
+      fetchJob();
+    }
   }, []);
-  
+
   const fetchCompanies = async () => {
     try {
       const response = await getCompanies();
-
-      // Change this if your backend returns a different structure
       setCompanies(response.data.companies || []);
     } catch (error) {
       console.error(error);
-      alert("Unable to load companies.");
+    }
+  };
+
+  const fetchJob = async () => {
+    try {
+      const response = await getJobById(id);
+
+      const job = response.data.job;
+
+      setFormData({
+        title: job.title || "",
+        company: job.company?._id || "",
+        location: job.location || "",
+        employmentType: job.employmentType || "Full-Time",
+        experience: job.experience || "",
+        salary: job.salary || "",
+        description: job.description || "",
+        responsibilities:
+          job.responsibilities?.join(", ") || "",
+        requirements:
+          job.requirements?.join(", ") || "",
+        skills:
+          job.skills?.join(", ") || "",
+        deadline: job.deadline
+          ? job.deadline.substring(0, 10)
+          : "",
+      });
+    } catch (error) {
+      console.error(error);
+      alert("Unable to load job.");
     }
   };
 
@@ -53,7 +89,7 @@ function CreateJobForm() {
     try {
       setLoading(true);
 
-      await createJob({
+      const payload = {
         ...formData,
 
         responsibilities: formData.responsibilities
@@ -70,17 +106,24 @@ function CreateJobForm() {
           .split(",")
           .map((item) => item.trim())
           .filter(Boolean),
-      });
+      };
 
-      alert("Job created successfully!");
+      if (mode === "create") {
+        await createJob(payload);
+        alert("Job created successfully!");
+      } else {
+        await updateJob(id, payload);
+        alert("Job updated successfully!");
+      }
 
       navigate("/recruiter/dashboard");
+
     } catch (error) {
       console.error(error);
 
       alert(
         error.response?.data?.message ||
-          "Unable to create job."
+          "Unable to save job."
       );
     } finally {
       setLoading(false);
@@ -311,4 +354,4 @@ function CreateJobForm() {
   );
 }
 
-export default CreateJobForm;
+export default JobForm;

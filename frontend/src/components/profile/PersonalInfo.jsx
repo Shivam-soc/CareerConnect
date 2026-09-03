@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useAuth } from "../../context/AuthContext";
 
 function PersonalInfo() {
@@ -11,14 +12,45 @@ function PersonalInfo() {
         .toUpperCase()
     : "U";
 
+  const profileCompletion = useMemo(() => {
+    const fields = [
+      !!user?.fullName,
+      !!user?.email,
+      !!user?.phone,
+      !!user?.location,
+      !!user?.headline,
+      !!user?.resume,
+      Array.isArray(user?.skills) &&
+        user.skills.length > 0,
+      Array.isArray(user?.education) &&
+        user.education.length > 0,
+    ];
+
+    const completed = fields.filter(Boolean).length;
+
+    return Math.round(
+      (completed / fields.length) * 100
+    );
+  }, [user]);
+
   return (
     <section className="rounded-2xl border border-slate-200 bg-white p-6">
+
       {/* Avatar */}
 
       <div className="flex flex-col items-center">
-        <div className="flex h-24 w-24 items-center justify-center rounded-full bg-[#E8F7F3] text-3xl font-bold text-[#2E8B78]">
-          {initials}
-        </div>
+
+       {user?.avatar ? (
+         <img
+           src={user.avatar}
+           alt={user.fullName}
+           className="h-24 w-24 rounded-full object-cover border"
+         />
+       ) : (
+          <div className="flex h-24 w-24 items-center justify-center rounded-full bg-[#E8F7F3] text-3xl font-bold text-[#2E8B78]">
+            {initials}
+          </div>
+        )}
 
         <h2 className="mt-4 text-xl font-semibold text-slate-900">
           {user?.fullName || "Loading..."}
@@ -31,15 +63,15 @@ function PersonalInfo() {
         <span className="mt-3 rounded-full bg-[#E8F7F3] px-3 py-1 text-xs font-medium text-[#2E8B78]">
           Open to Opportunities
         </span>
-      </div>
 
-      {/* Divider */}
+      </div>
 
       <div className="my-6 border-t border-slate-200" />
 
       {/* Details */}
 
       <div className="space-y-5">
+
         <div>
           <p className="text-xs uppercase tracking-wide text-slate-400">
             Email
@@ -69,32 +101,40 @@ function PersonalInfo() {
             {user?.location || "-"}
           </p>
         </div>
-      </div>
 
-      {/* Divider */}
+      </div>
 
       <div className="my-6 border-t border-slate-200" />
 
       {/* Profile Completion */}
 
       <div>
+
         <div className="flex items-center justify-between">
+
           <p className="text-sm font-medium text-slate-700">
             Profile Completion
           </p>
 
           <span className="text-sm font-semibold text-[#2E8B78]">
-            82%
+            {profileCompletion}%
           </span>
+
         </div>
 
         <div className="mt-3 h-2 overflow-hidden rounded-full bg-slate-200">
+
           <div
-            className="h-full rounded-full bg-[#2E8B78]"
-            style={{ width: "82%" }}
+            className="h-full rounded-full bg-[#2E8B78] transition-all duration-700"
+            style={{
+              width: `${profileCompletion}%`,
+            }}
           />
+
         </div>
+
       </div>
+
     </section>
   );
 }

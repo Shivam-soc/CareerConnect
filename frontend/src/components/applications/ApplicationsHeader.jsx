@@ -1,20 +1,30 @@
 import { Link } from "react-router-dom";
+import { Briefcase } from "lucide-react";
 
 function ApplicationsHeader() {
   return (
-    <section className="mb-6 flex items-start justify-between">
+    <section className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
       {/* Left */}
 
-      <div>
+      <div className="flex items-center gap-4">
 
-        <h1 className="text-3xl font-semibold text-slate-900">
-          Applications
-        </h1>
+        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#E8F7F3]">
+          <Briefcase
+            size={30}
+            className="text-[#2E8B78]"
+          />
+        </div>
 
-        <p className="mt-2 text-sm text-slate-500">
-          Track your job applications and monitor every stage of your hiring journey.
-        </p>
+        <div>
+          <h1 className="text-3xl font-bold text-slate-900">
+            My Applications
+          </h1>
+
+          <p className="mt-2 text-slate-500">
+            Track every job you've applied for and monitor your hiring progress.
+          </p>
+        </div>
 
       </div>
 
@@ -23,18 +33,19 @@ function ApplicationsHeader() {
       <Link
         to="/jobs"
         className="
+          inline-flex
+          items-center
           rounded-xl
           bg-[#2E8B78]
-          px-5
-          py-2.5
-          text-sm
-          font-medium
+          px-6
+          py-3
+          font-semibold
           text-white
           transition
-          hover:opacity-90
+          hover:bg-[#236D5E]
         "
       >
-        Explore Jobs
+        Browse More Jobs
       </Link>
 
     </section>

@@ -2,7 +2,10 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 
 import DashboardLayout from "../components/layout/DashboardLayout";
-import { getRecruiterJobs } from "../api/jobApi";
+import {
+  getRecruiterJobs, 
+  deleteJob,
+} from "../api/jobApi";
 
 import {
   Briefcase,
@@ -36,6 +39,31 @@ function RecruiterDashboard() {
       setLoading(false);
     }
   };
+
+  const handleDelete = async (jobId) => {
+  const confirmDelete = window.confirm(
+    "Are you sure you want to delete this job?"
+  );
+
+  if (!confirmDelete) return;
+
+  try {
+    await deleteJob(jobId);
+
+    setJobs((prev) =>
+      prev.filter((job) => job._id !== jobId)
+    );
+
+    alert("Job deleted successfully.");
+  } catch (error) {
+    console.error(error);
+
+    alert(
+      error.response?.data?.message ||
+      "Unable to delete job."
+    );
+  }
+};
 
   const stats = useMemo(() => {
     const activeJobs = jobs.filter(
@@ -267,6 +295,7 @@ function RecruiterDashboard() {
                         </Link>
 
                         <button
+                          onClick={() => handleDelete(job._id)}
                           className="rounded-lg border border-slate-200 p-2 transition hover:border-red-500 hover:text-red-600"
                           title="Delete Job"
                         >

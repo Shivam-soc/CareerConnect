@@ -32,13 +32,18 @@ export const AuthProvider = ({ children }) => {
     fetchProfile();
   }, []);
 
+  // Update user after editing profile
+  const updateUser = (updatedUser) => {
+    setUser(updatedUser);
+  };
+
   return (
     <AuthContext.Provider
       value={{
         user,
-        setUser,
         loading,
         fetchProfile,
+        updateUser,
       }}
     >
       {children}

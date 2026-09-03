@@ -1,17 +1,70 @@
+import { useState } from "react";
 import { Search } from "lucide-react";
 
 const filters = [
   "All",
   "Applied",
   "Under Review",
+  "Shortlisted",
   "Interview",
-  "Offer",
+  "Selected",
   "Rejected",
 ];
 
-function ApplicationsFilters() {
+function ApplicationsFilters({
+  applications,
+  setFilteredApplications,
+}) {
+  const [search, setSearch] = useState("");
+  const [activeFilter, setActiveFilter] = useState("All");
+
+  const filterApplications = (text, status) => {
+    let filtered = [...applications];
+
+    // Search by Job Title or Company Name
+    if (text.trim()) {
+      filtered = filtered.filter((application) => {
+        const job = application.job;
+
+        if (!job) return false;
+
+        return (
+          job.title
+            ?.toLowerCase()
+            .includes(text.toLowerCase()) ||
+          job.company?.name
+            ?.toLowerCase()
+            .includes(text.toLowerCase())
+        );
+      });
+    }
+
+    // Filter by Status
+    if (status !== "All") {
+      filtered = filtered.filter(
+        (application) => application.status === status
+      );
+    }
+
+    setFilteredApplications(filtered);
+  };
+
+  const handleSearch = (e) => {
+    const value = e.target.value;
+
+    setSearch(value);
+
+    filterApplications(value, activeFilter);
+  };
+
+  const handleFilter = (status) => {
+    setActiveFilter(status);
+
+    filterApplications(search, status);
+  };
+
   return (
-    <section className="mt-6 rounded-2xl border border-slate-200 bg-white p-6">
+    <section className="rounded-2xl border border-slate-200 bg-white p-6">
 
       {/* Search */}
 
@@ -24,7 +77,9 @@ function ApplicationsFilters() {
 
         <input
           type="text"
-          placeholder="Search company or role..."
+          value={search}
+          onChange={handleSearch}
+          placeholder="Search by company or job title..."
           className="
             h-11
             w-full
@@ -39,14 +94,12 @@ function ApplicationsFilters() {
             transition
             focus:border-[#2E8B78]
             focus:bg-white
-            focus:ring-2
-            focus:ring-[#2E8B78]/10
           "
         />
 
       </div>
 
-      {/* Filters */}
+      {/* Status Filters */}
 
       <div className="mt-5 flex flex-wrap gap-3">
 
@@ -54,19 +107,12 @@ function ApplicationsFilters() {
 
           <button
             key={filter}
-            className={`
-              rounded-xl
-              px-4
-              py-2
-              text-sm
-              font-medium
-              transition
-              ${
-                filter === "All"
-                  ? "bg-[#2E8B78] text-white"
-                  : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
-              }
-            `}
+            onClick={() => handleFilter(filter)}
+            className={`rounded-xl px-4 py-2 text-sm font-medium transition ${
+              activeFilter === filter
+                ? "bg-[#2E8B78] text-white"
+                : "border border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
+            }`}
           >
             {filter}
           </button>

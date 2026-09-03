@@ -86,6 +86,30 @@ projects: [
     demo: String,
   },
 ],
+certifications: [
+  {
+    title: {
+      type: String,
+      default: "",
+    },
+    organization: {
+      type: String,
+      default: "",
+    },
+    issueDate: {
+      type: String,
+      default: "",
+    },
+    credentialId: {
+      type: String,
+      default: "",
+    },
+    credentialUrl: {
+      type: String,
+      default: "",
+    },
+  },
+],
 
 socialLinks: {
   github: {
@@ -108,6 +132,16 @@ socialLinks: {
     type: String,
     default: "",
   },
+},
+
+profilePicture: {
+  type: String,
+  default: "",
+},
+
+coverPhoto: {
+  type: String,
+  default: "",
 },
 
 resume: {
