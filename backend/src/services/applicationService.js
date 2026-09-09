@@ -99,6 +99,7 @@ export const getJobApplications = async (
 // =============================
 export const updateApplicationStatus = async (
   applicationId,
+  recruiterId,
   status
 ) => {
   const validStatus = [
@@ -114,26 +115,22 @@ export const updateApplicationStatus = async (
     throw new Error("Invalid application status");
   }
 
-  const application =
-    await Application.findById(applicationId);
+  const application = await Application.findById(applicationId);
 
   if (!application) {
     throw new Error("Application not found");
   }
 
-  application.status = status;
+  if (application.recruiter.toString() !== recruiterId.toString()) {
+    throw new Error("Unauthorized");
+  }
 
+  application.status = status;
   await application.save();
 
   return await Application.findById(application._id)
-    .populate(
-      "student",
-      "fullName email profilePicture"
-    )
-    .populate(
-      "recruiter",
-      "fullName email"
-    )
+    .populate("student", "fullName email profilePicture")
+    .populate("recruiter", "fullName email")
     .populate({
       path: "job",
       populate: {

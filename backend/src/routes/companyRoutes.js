@@ -6,6 +6,7 @@ import {
   getOne,
   update,
   remove,
+  getRecruiterCompanies,
 } from "../controllers/companyController.js";
 
 import { protect } from "../middleware/authMiddleware.js";
@@ -13,10 +14,21 @@ import { authorize } from "../middleware/roleMiddleware.js";
 
 const router = express.Router();
 
+// Public Routes
 router.get("/", getAll);
 
+// Recruiter Routes
+router.get(
+  "/my",
+  protect,
+  authorize("recruiter"),
+  getRecruiterCompanies
+);
+
+// Public Route
 router.get("/:id", getOne);
 
+// Create Company
 router.post(
   "/",
   protect,
@@ -24,6 +36,7 @@ router.post(
   create
 );
 
+// Update Company
 router.put(
   "/:id",
   protect,
@@ -31,10 +44,11 @@ router.put(
   update
 );
 
+// Delete Company
 router.delete(
   "/:id",
   protect,
-  authorize("admin"),
+  authorize("recruiter", "admin"),
   remove
 );
 

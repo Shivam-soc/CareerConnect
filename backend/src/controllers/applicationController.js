@@ -6,15 +6,24 @@ import {
 } from "../services/applicationService.js";
 
 // ======================================
-// Student Apply for Job
+// Student - Apply for Job
 // ======================================
 export const apply = async (req, res) => {
   try {
+    const { jobId, coverLetter } = req.body;
+
+    if (!jobId) {
+      return res.status(400).json({
+        success: false,
+        message: "Job ID is required",
+      });
+    }
+
     const application = await applyForJob(
       req.user._id,
-      req.body.jobId,
+      jobId,
       {
-        coverLetter: req.body.coverLetter,
+        coverLetter,
         resume: req.file ? req.file.path : "",
       }
     );
@@ -25,6 +34,8 @@ export const apply = async (req, res) => {
       application,
     });
   } catch (error) {
+    console.error(error);
+
     res.status(400).json({
       success: false,
       message: error.message,
@@ -46,6 +57,8 @@ export const myApplications = async (req, res) => {
       applications,
     });
   } catch (error) {
+    console.error(error);
+
     res.status(500).json({
       success: false,
       message: error.message,
@@ -70,6 +83,8 @@ export const recruiterApplications = async (
       applications,
     });
   } catch (error) {
+    console.error(error);
+
     res.status(500).json({
       success: false,
       message: error.message,
@@ -85,10 +100,19 @@ export const updateStatus = async (
   res
 ) => {
   try {
+    const { status } = req.body;
+
+    if (!status) {
+      return res.status(400).json({
+        success: false,
+        message: "Status is required",
+      });
+    }
+
     const application =
       await updateApplicationStatus(
         req.params.id,
-        req.body.status
+        status
       );
 
     res.status(200).json({
@@ -97,6 +121,8 @@ export const updateStatus = async (
       application,
     });
   } catch (error) {
+    console.error(error);
+
     const statusCode =
       error.message === "Application not found"
         ? 404

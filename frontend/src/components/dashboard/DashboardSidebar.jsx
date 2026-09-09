@@ -4,6 +4,7 @@ import {
   FileText,
   Bookmark,
   User,
+  Users,
   Settings,
   Building2,
   Briefcase,
@@ -59,41 +60,51 @@ function DashboardSidebar({ collapsed, setCollapsed }) {
     },
   ];
 
-  const recruiterMenu = [
-    {
-      name: "Dashboard",
-      path: "/recruiter/dashboard",
-      icon: LayoutDashboard,
-    },
-    {
-      name: "Companies",
-      path: "/companies",
-      icon: Building2,
-    },
-    {
-      name: "Jobs",
-      path: "/jobs",
-      icon: Briefcase,
-    },
-  ];
+const recruiterMenu = [
+  {
+    name: "Dashboard",
+    path: "/recruiter/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    name: "Companies",
+    path: "/recruiter/companies",
+    icon: Building2,
+  },
+  {
+    name: "Post Job",
+    path: "/recruiter/jobs/create",
+    icon: Briefcase,
+  },
+];
 
-  const adminMenu = [
-    {
-      name: "Dashboard",
-      path: "/admin/dashboard",
-      icon: LayoutDashboard,
-    },
-    {
-      name: "Companies",
-      path: "/companies",
-      icon: Building2,
-    },
-    {
-      name: "Jobs",
-      path: "/jobs",
-      icon: Briefcase,
-    },
-  ];
+const adminMenu = [
+  {
+    name: "Dashboard",
+    path: "/admin/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    name: "Users",
+    path: "/admin/users",
+    icon: Users,
+  },
+  {
+    name: "Companies",
+    path: "/admin/companies",
+    icon: Building2,
+  },
+  {
+    name: "Jobs",
+    path: "/admin/jobs",
+    icon: Briefcase,
+  },
+  {
+    name: "Applications",
+    path: "/admin/applications",
+    icon: FileText,
+  },
+];
 
   const accountMenu = [
     {

@@ -7,11 +7,12 @@ export const createJob = async (jobData) => {
 
 export const getAllJobs = async (query) => {
   const {
-    search,
+    search = "",
     location,
     employmentType,
     experience,
     company,
+    status,
     page = 1,
     limit = 10,
     sort = "latest",
@@ -19,7 +20,7 @@ export const getAllJobs = async (query) => {
 
   const filter = {};
 
-  // Search
+  // Search by title
   if (search) {
     filter.title = {
       $regex: search,
@@ -44,22 +45,32 @@ export const getAllJobs = async (query) => {
     filter.company = company;
   }
 
+  if (status) {
+    filter.status = status;
+  }
+
   // Sorting
-  let sortOption = {};
+  let sortOption = { createdAt: -1 };
 
   switch (sort) {
     case "oldest":
       sortOption = { createdAt: 1 };
       break;
 
-    case "salary":
+    case "salary-high":
       sortOption = { salary: -1 };
+      break;
+
+    case "salary-low":
+      sortOption = { salary: 1 };
       break;
 
     default:
       sortOption = { createdAt: -1 };
-      break;
   }
+
+  const currentPage = Number(page);
+  const pageSize = Number(limit);
 
   const jobs = await Job.find(filter)
     .populate(
@@ -71,16 +82,22 @@ export const getAllJobs = async (query) => {
       "fullName email"
     )
     .sort(sortOption)
-    .skip((Number(page) - 1) * Number(limit))
-    .limit(Number(limit));
+    .skip((currentPage - 1) * pageSize)
+    .limit(pageSize);
 
   const totalJobs = await Job.countDocuments(filter);
 
   return {
     jobs,
-    totalJobs,
-    totalPages: Math.ceil(totalJobs / Number(limit)),
-    currentPage: Number(page),
+    pagination: {
+      totalJobs,
+      totalPages: Math.ceil(totalJobs / pageSize),
+      currentPage,
+      limit: pageSize,
+      hasNextPage:
+        currentPage < Math.ceil(totalJobs / pageSize),
+      hasPreviousPage: currentPage > 1,
+    },
   };
 };
 

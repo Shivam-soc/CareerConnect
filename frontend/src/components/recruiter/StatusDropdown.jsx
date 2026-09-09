@@ -17,35 +17,35 @@ function StatusDropdown({
     "Rejected",
   ];
 
-  const handleChange = async (e) => {
-    const newStatus = e.target.value;
+const handleChange = async (e) => {
+  const newStatus = e.target.value;
+
+  try {
+    setLoading(true);
+
+    await updateApplicationStatus(
+      application._id,
+      newStatus
+    );
 
     setStatus(newStatus);
 
-    try {
-      setLoading(true);
-
-      await updateApplicationStatus(
-        application._id,
-        newStatus
-      );
-
-      if (refresh) {
-        refresh();
-      }
-    } catch (error) {
-      console.error(error);
-
-      alert(
-        error.response?.data?.message ||
-          "Failed to update application status."
-      );
-
-      setStatus(application.status);
-    } finally {
-      setLoading(false);
+    if (refresh) {
+      await refresh();
     }
-  };
+
+    alert("Application status updated successfully.");
+  } catch (error) {
+    console.error(error);
+
+    alert(
+      error.response?.data?.message ||
+      "Failed to update application status."
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <select

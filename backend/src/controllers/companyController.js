@@ -1,3 +1,5 @@
+import Company from "../models/Company.js";
+
 import {
   createCompany,
   getCompanies,
@@ -6,6 +8,7 @@ import {
   deleteCompany,
 } from "../services/companyService.js";
 
+// Create Company
 export const create = async (req, res) => {
   try {
     const company = await createCompany({
@@ -25,6 +28,7 @@ export const create = async (req, res) => {
   }
 };
 
+// Get All Companies
 export const getAll = async (req, res) => {
   try {
     const companies = await getCompanies();
@@ -41,11 +45,29 @@ export const getAll = async (req, res) => {
   }
 };
 
+// Get Recruiter's Companies
+export const getRecruiterCompanies = async (req, res) => {
+  try {
+    const companies = await Company.find({
+      recruiter: req.user._id,
+    }).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      companies,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// Get One Company
 export const getOne = async (req, res) => {
   try {
-    const company = await getCompanyById(
-      req.params.id
-    );
+    const company = await getCompanyById(req.params.id);
 
     res.json({
       success: true,
@@ -59,11 +81,14 @@ export const getOne = async (req, res) => {
   }
 };
 
+// Update Company
 export const update = async (req, res) => {
   try {
     const company = await updateCompany(
       req.params.id,
-      req.body
+      req.body,
+      req.user._id,
+      req.user.role
     );
 
     res.json({
@@ -78,9 +103,14 @@ export const update = async (req, res) => {
   }
 };
 
+// Delete Company
 export const remove = async (req, res) => {
   try {
-    await deleteCompany(req.params.id);
+    await deleteCompany(
+      req.params.id,
+      req.user._id,
+      req.user.role
+    );
 
     res.json({
       success: true,

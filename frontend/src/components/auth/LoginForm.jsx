@@ -39,43 +39,37 @@ function LoginForm() {
         password: formData.password,
       });
 
-      // Backend returns:
-      // {
-      //   success,
-      //   message,
-      //   data: {
-      //      token,
-      //      user
-      //   }
-      // }
-
-      console.log("Login response:", response.data);
-
       const { token, user } = response.data;
-
-      console.log(user);
-      console.log(user.role);
 
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
 
+      // Update Auth Context
       setUser(user);
 
-      if (user.role === "student") {
-        navigate("/dashboard");
-      } else if (user.role === "recruiter") {
-        navigate("/recruiter/dashboard");
-      } else if (user.role === "admin") {
-        navigate("/admin/dashboard");
-      }
+      switch (user.role) {
+        case "student":
+          navigate("/dashboard");
+          break;
 
+        case "recruiter":
+          navigate("/recruiter/dashboard");
+          break;
+
+        case "admin":
+          navigate("/admin/dashboard");
+          break;
+
+        default:
+          navigate("/");
+      }
     } catch (error) {
       console.error(error);
 
       alert(
         error.response?.data?.message ||
-        error.message ||
-        "Login failed"
+          error.message ||
+          "Login failed"
       );
     } finally {
       setLoading(false);
@@ -88,7 +82,8 @@ function LoginForm() {
         to="/"
         className="text-2xl font-bold text-slate-900"
       >
-        Career<span className="text-[#2E8B78]">Connect</span>
+        Career
+        <span className="text-[#2E8B78]">Connect</span>
       </Link>
 
       <div className="mt-10 mb-8">
@@ -117,19 +112,7 @@ function LoginForm() {
             value={formData.email}
             onChange={handleChange}
             required
-            className="
-              h-12
-              w-full
-              rounded-lg
-              border
-              border-slate-300
-              px-4
-              outline-none
-              transition
-              focus:border-[#2E8B78]
-              focus:ring-2
-              focus:ring-[#2E8B78]/20
-            "
+            className="h-12 w-full rounded-lg border border-slate-300 px-4 outline-none transition focus:border-[#2E8B78] focus:ring-2 focus:ring-[#2E8B78]/20"
           />
         </div>
 
@@ -169,18 +152,7 @@ function LoginForm() {
         <button
           type="submit"
           disabled={loading}
-          className="
-            h-12
-            w-full
-            rounded-lg
-            bg-[#2E8B78]
-            font-medium
-            text-white
-            transition
-            hover:bg-[#236D5E]
-            disabled:cursor-not-allowed
-            disabled:opacity-70
-          "
+          className="h-12 w-full rounded-lg bg-[#2E8B78] font-medium text-white transition hover:bg-[#236D5E] disabled:cursor-not-allowed disabled:opacity-70"
         >
           {loading ? "Signing In..." : "Sign In"}
         </button>

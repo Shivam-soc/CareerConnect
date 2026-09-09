@@ -1,39 +1,15 @@
-import Job from "../models/Job.js";
-import Application from "../models/Application.js";
+import {
+  getDashboardData,
+  getRecruiterJobs,
+} from "../services/recruiterService.js";
 
 export const getDashboard = async (req, res) => {
   try {
-    const recruiterId = req.user._id;
-
-    const totalJobs = await Job.countDocuments({
-      postedBy: recruiterId,
-    });
-
-    const jobs = await Job.find({
-      postedBy: recruiterId,
-    });
-
-    const jobIds = jobs.map((job) => job._id);
-
-    const totalApplications = await Application.countDocuments({
-      job: { $in: jobIds },
-    });
-
-    const recentApplications = await Application.find({
-      job: { $in: jobIds },
-    })
-      .populate("student", "fullName email")
-      .populate("job", "title company")
-      .sort({ createdAt: -1 })
-      .limit(5);
+    const dashboard = await getDashboardData(req.user._id);
 
     res.status(200).json({
       success: true,
-      dashboard: {
-        totalJobs,
-        totalApplications,
-        recentApplications,
-      },
+      dashboard,
     });
   } catch (error) {
     res.status(500).json({
@@ -42,13 +18,12 @@ export const getDashboard = async (req, res) => {
     });
   }
 };
+
 export const getMyJobs = async (req, res) => {
   try {
-    const jobs = await Job.find({
-      postedBy: req.user._id,
-    }).sort({ createdAt: -1 });
+    const jobs = await getRecruiterJobs(req.user._id);
 
-    res.json({
+    res.status(200).json({
       success: true,
       jobs,
     });

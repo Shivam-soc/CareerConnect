@@ -6,6 +6,7 @@ import {
   getRecruiterJobs, 
   deleteJob,
 } from "../api/jobApi";
+import { getRecruiterDashboard } from "../api/recruiterApi";
 
 import {
   Briefcase,
@@ -19,27 +20,35 @@ import {
 } from "lucide-react";
 
 function RecruiterDashboard() {
+  const [dashboardData, setDashboardData] = useState({
+    totalJobs: 0,
+    totalApplications: 0,
+    recentApplications: [],
+  });
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchJobs();
+    fetchDashboard();
   }, []);
 
-  const fetchJobs = async () => {
-    try {
-      setLoading(true);
+ const fetchDashboard = async () => {
+  try {
+    setLoading(true);
 
-      const response = await getRecruiterJobs();
+    const [dashboardRes, jobsRes] = await Promise.all([
+      getRecruiterDashboard(),
+      getRecruiterJobs(),
+    ]);
 
-      setJobs(response.data.jobs);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+    setDashboardData(dashboardRes.data.dashboard);
+    setJobs(jobsRes.data.jobs);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setLoading(false);
+  }
+};
   const handleDelete = async (jobId) => {
   const confirmDelete = window.confirm(
     "Are you sure you want to delete this job?"
@@ -65,38 +74,38 @@ function RecruiterDashboard() {
   }
 };
 
-  const stats = useMemo(() => {
-    const activeJobs = jobs.filter(
-      (job) => job.status === "Open"
-    ).length;
+const stats = useMemo(() => {
+  const activeJobs = jobs.filter(
+    (job) => job.status === "Open"
+  ).length;
 
-    return [
-      {
-        title: "Active Jobs",
-        value: activeJobs,
-        icon: Briefcase,
-        color: "bg-[#E8F7F3] text-[#2E8B78]",
-      },
-      {
-        title: "Total Jobs",
-        value: jobs.length,
-        icon: FileText,
-        color: "bg-emerald-100 text-emerald-600",
-      },
-      {
-        title: "Candidates Hired",
-        value: "--",
-        icon: Users,
-        color: "bg-teal-100 text-teal-600",
-      },
-      {
-        title: "Hiring Rate",
-        value: "--",
-        icon: TrendingUp,
-        color: "bg-lime-100 text-lime-600",
-      },
-    ];
-  }, [jobs]);
+  return [
+    {
+      title: "Active Jobs",
+      value: activeJobs,
+      icon: Briefcase,
+      color: "bg-[#E8F7F3] text-[#2E8B78]",
+    },
+    {
+      title: "Total Jobs",
+      value: dashboardData.totalJobs,
+      icon: FileText,
+      color: "bg-emerald-100 text-emerald-600",
+    },
+    {
+      title: "Applications",
+      value: dashboardData.totalApplications,
+      icon: Users,
+      color: "bg-teal-100 text-teal-600",
+    },
+    {
+      title: "Open Jobs",
+      value: activeJobs,
+      icon: TrendingUp,
+      color: "bg-lime-100 text-lime-600",
+    },
+  ];
+}, [jobs, dashboardData]);
 
   return (
     <DashboardLayout>
@@ -317,6 +326,51 @@ function RecruiterDashboard() {
           </div>
         )}
 
+      </section>
+
+      {/* Recent Applications */}
+
+      <section className="mt-8 rounded-2xl border border-slate-200 bg-white p-6">
+        <h2 className="text-2xl font-bold text-slate-900">
+          Recent Applications
+        </h2>
+
+        <p className="mt-1 text-slate-500">
+          Latest applications received for your jobs.
+        </p>
+
+        <div className="mt-6 space-y-4">
+          {dashboardData.recentApplications.length === 0 ? (
+            <p className="text-slate-500">
+              No recent applications.
+            </p>
+          ) : (
+            dashboardData.recentApplications.map((application) => (
+              <div
+                key={application._id}
+                className="flex items-center justify-between rounded-xl border border-slate-200 p-4"
+              >
+                <div>
+                  <h3 className="font-semibold text-slate-900">
+                    {application.student?.fullName}
+                  </h3>
+
+                  <p className="text-sm text-slate-500">
+                    {application.job?.title}
+                  </p>
+
+                  <p className="text-xs text-slate-400">
+                    {new Date(application.createdAt).toLocaleDateString()}
+                  </p>
+                </div>
+
+                <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-700">
+                  {application.status}
+                </span>
+              </div>
+            ))
+          )}
+        </div>
       </section>
 
     </DashboardLayout>

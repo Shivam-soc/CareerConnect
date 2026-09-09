@@ -80,9 +80,9 @@ function Jobs() {
 
       setJobs(response.data.jobs || []);
 
-      setTotalJobs(response.data.totalJobs || 0);
+      setTotalJobs(response.data.pagination?.totalJobs || 0);
 
-      setTotalPages(response.data.totalPages || 1);
+      setTotalPages(response.data.pagination?.totalPages || 1);
     } catch (error) {
       console.error(error);
 
@@ -294,7 +294,7 @@ function Jobs() {
             {loading ? (
 
               <div className="py-20 text-center">
-                <p className="text-lg font-medium text-salte-500">
+                <p className="text-lg font-medium text-slate-500">
                   Loading jobs. . .
                 </p>
 

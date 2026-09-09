@@ -21,8 +21,11 @@ export const AuthProvider = ({ children }) => {
       setUser(response.data.user);
     } catch (error) {
       console.error(error);
+
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+
+      setUser(null);
     } finally {
       setLoading(false);
     }
@@ -32,7 +35,6 @@ export const AuthProvider = ({ children }) => {
     fetchProfile();
   }, []);
 
-  // Update user after editing profile
   const updateUser = (updatedUser) => {
     setUser(updatedUser);
   };
@@ -41,6 +43,7 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
+        setUser,          // ✅ Added
         loading,
         fetchProfile,
         updateUser,
