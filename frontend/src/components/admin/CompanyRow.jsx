@@ -1,5 +1,6 @@
 import { Trash2 } from "lucide-react";
 import { deleteCompany } from "../../api/adminApi";
+import { toast } from "react-hot-toast";
 
 function CompanyRow({
   company,
@@ -15,13 +16,13 @@ function CompanyRow({
     try {
       await deleteCompany(company._id);
 
-      alert("Company deleted successfully.");
+      toast.success("Company deleted successfully.");
 
       refresh();
     } catch (error) {
       console.error(error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Unable to delete company."
       );

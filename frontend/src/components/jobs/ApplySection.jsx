@@ -10,6 +10,7 @@ import {
   Users,
   CheckCircle2,
 } from "lucide-react";
+import { toast } from "react-hot-toast";
 
 function ApplySection({
   job,
@@ -31,9 +32,9 @@ function ApplySection({
   const handleShare = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
-      alert("Job link copied!");
+      toast.success("Job link copied!");
     } catch {
-      alert("Unable to copy link.");
+      toast.error("Unable to copy link.");
     }
   };
 

@@ -1,5 +1,6 @@
 import { Trash2, ExternalLink } from "lucide-react";
 import { deleteApplication } from "../../api/adminApi";
+import { toast } from "react-hot-toast";
 
 function ApplicationRow({
   application,
@@ -15,13 +16,13 @@ function ApplicationRow({
     try {
       await deleteApplication(application._id);
 
-      alert("Application deleted successfully.");
+      toast.success("Application deleted successfully.");
 
       refresh();
     } catch (error) {
       console.error(error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
         "Unable to delete application."
       );

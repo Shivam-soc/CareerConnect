@@ -8,13 +8,22 @@ import {
   deleteCompany,
 } from "../services/companyService.js";
 
+// ======================================
 // Create Company
+// ======================================
+
 export const create = async (req, res) => {
   try {
-    const company = await createCompany({
+    const companyData = {
       ...req.body,
       recruiter: req.user._id,
-    });
+    };
+
+    if (req.file) {
+      companyData.logo = req.file.path;
+    }
+
+    const company = await createCompany(companyData);
 
     res.status(201).json({
       success: true,
@@ -28,12 +37,15 @@ export const create = async (req, res) => {
   }
 };
 
+// ======================================
 // Get All Companies
+// ======================================
+
 export const getAll = async (req, res) => {
   try {
     const companies = await getCompanies();
 
-    res.json({
+    res.status(200).json({
       success: true,
       companies,
     });
@@ -45,7 +57,10 @@ export const getAll = async (req, res) => {
   }
 };
 
-// Get Recruiter's Companies
+// ======================================
+// Recruiter's Companies
+// ======================================
+
 export const getRecruiterCompanies = async (req, res) => {
   try {
     const companies = await Company.find({
@@ -64,12 +79,15 @@ export const getRecruiterCompanies = async (req, res) => {
   }
 };
 
+// ======================================
 // Get One Company
+// ======================================
+
 export const getOne = async (req, res) => {
   try {
     const company = await getCompanyById(req.params.id);
 
-    res.json({
+    res.status(200).json({
       success: true,
       company,
     });
@@ -81,17 +99,28 @@ export const getOne = async (req, res) => {
   }
 };
 
+// ======================================
 // Update Company
+// ======================================
+
 export const update = async (req, res) => {
   try {
+    const updateData = {
+      ...req.body,
+    };
+
+    if (req.file) {
+      updateData.logo = req.file.path;
+    }
+
     const company = await updateCompany(
       req.params.id,
-      req.body,
+      updateData,
       req.user._id,
       req.user.role
     );
 
-    res.json({
+    res.status(200).json({
       success: true,
       company,
     });
@@ -103,7 +132,10 @@ export const update = async (req, res) => {
   }
 };
 
+// ======================================
 // Delete Company
+// ======================================
+
 export const remove = async (req, res) => {
   try {
     await deleteCompany(
@@ -112,7 +144,7 @@ export const remove = async (req, res) => {
       req.user.role
     );
 
-    res.json({
+    res.status(200).json({
       success: true,
       message: "Company deleted successfully",
     });

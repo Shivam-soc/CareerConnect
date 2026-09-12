@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 import PasswordInput from "./PasswordInput";
 import SocialLogin from "./SocialLogin";
@@ -47,26 +48,29 @@ function LoginForm() {
       // Update Auth Context
       setUser(user);
 
-      switch (user.role) {
-        case "student":
-          navigate("/dashboard");
-          break;
+     toast.success(`Welcome back, ${user.fullName}!`);
 
-        case "recruiter":
-          navigate("/recruiter/dashboard");
-          break;
+     switch (user.role) {
+       case "student":
+        navigate("/dashboard", { replace: true });
+        break;
 
-        case "admin":
-          navigate("/admin/dashboard");
-          break;
+       case "recruiter":
+        navigate("/recruiter/dashboard", { replace: true });
+        break;
 
-        default:
-          navigate("/");
+       case "admin":
+        navigate("/admin/dashboard", { replace: true });
+        break;
+
+       default:
+         toast.error("Invalid user role");
+         navigate("/", { replace: true });
       }
     } catch (error) {
       console.error(error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           error.message ||
           "Login failed"

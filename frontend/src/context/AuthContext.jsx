@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+
 import { getProfile } from "../api/userApi";
 
 const AuthContext = createContext();
@@ -7,20 +13,29 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // ===========================
+  // Fetch Logged-in User
+  // ===========================
   const fetchProfile = async () => {
     try {
       const token = localStorage.getItem("token");
 
       if (!token) {
-        setLoading(false);
+        setUser(null);
         return;
       }
 
-      const response = await getProfile();
+      const { data } = await getProfile();
 
-      setUser(response.data.user);
+      setUser(data.user);
+
+      // Keep localStorage in sync
+      localStorage.setItem(
+        "user",
+        JSON.stringify(data.user)
+      );
     } catch (error) {
-      console.error(error);
+      console.error("Auth Error:", error);
 
       localStorage.removeItem("token");
       localStorage.removeItem("user");
@@ -35,18 +50,37 @@ export const AuthProvider = ({ children }) => {
     fetchProfile();
   }, []);
 
+  // ===========================
+  // Update User
+  // ===========================
   const updateUser = (updatedUser) => {
     setUser(updatedUser);
+
+    localStorage.setItem(
+      "user",
+      JSON.stringify(updatedUser)
+    );
+  };
+
+  // ===========================
+  // Logout
+  // ===========================
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+
+    setUser(null);
   };
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        setUser,          // ✅ Added
         loading,
+        setUser,
         fetchProfile,
         updateUser,
+        logout,
       }}
     >
       {children}

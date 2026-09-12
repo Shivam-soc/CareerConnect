@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { updateApplicationStatus } from "../../api/applicationApi";
+import { toast } from "react-hot-toast";
 
 function StatusDropdown({
   application,
@@ -34,11 +35,11 @@ const handleChange = async (e) => {
       await refresh();
     }
 
-    alert("Application status updated successfully.");
+    toast.success("Application status updated successfully.");
   } catch (error) {
     console.error(error);
 
-    alert(
+    toast.error(
       error.response?.data?.message ||
       "Failed to update application status."
     );

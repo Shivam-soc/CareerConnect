@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
+
 import { useAuth } from "../../../context/AuthContext";
 import { updateProfile } from "../../../api/userApi";
 
@@ -84,11 +86,11 @@ function ProfileForm() {
 
       updateUser(response.data.user);
 
-      alert("Profile updated successfully!");
+      toast.success("Profile updated successfully!");
     } catch (error) {
       console.error(error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Failed to update profile."
       );

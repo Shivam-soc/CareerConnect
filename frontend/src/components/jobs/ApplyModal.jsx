@@ -5,6 +5,8 @@ import {
   Upload,
   CheckCircle2,
 } from "lucide-react";
+import{toast} from "react-hot-toast";
+import { useAuth } from "../../context/AuthContext";
 
 import { applyForJob } from "../../api/applicationApi";
 
@@ -15,11 +17,12 @@ function ApplyModal({
 }) {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const { user } = useAuth();
 
   const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
+    name: user?.fullName || "",
+    email: user?.email || "",
+    phone: user?.phone || "",
     coverLetter: "",
     resume: null,
   });
@@ -46,7 +49,7 @@ function ApplyModal({
   e.preventDefault();
 
   if (!form.resume) {
-    alert("Please upload your resume.");
+    toast.error("Please upload your resume.");
     return;
   }
 
@@ -78,7 +81,7 @@ function ApplyModal({
     }, 2500);
 
   } catch (error) {
-    alert(
+    toast.error(
       error.response?.data?.message ||
       "Unable to submit application."
     );

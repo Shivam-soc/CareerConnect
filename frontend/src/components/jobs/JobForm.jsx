@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 import { getCompanies } from "../../api/companyApi";
 import {
@@ -72,7 +73,7 @@ function JobForm({ mode = "create" }) {
       });
     } catch (error) {
       console.error(error);
-      alert("Unable to load job.");
+      toast.error("Unable to load job.");
     }
   };
 
@@ -110,10 +111,10 @@ function JobForm({ mode = "create" }) {
 
       if (mode === "create") {
         await createJob(payload);
-        alert("Job created successfully!");
+        toast.success("Job created successfully!");
       } else {
         await updateJob(id, payload);
-        alert("Job updated successfully!");
+        toast.success("Job updated successfully!");
       }
 
       navigate("/recruiter/dashboard");
@@ -121,7 +122,7 @@ function JobForm({ mode = "create" }) {
     } catch (error) {
       console.error(error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Unable to save job."
       );

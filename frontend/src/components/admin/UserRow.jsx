@@ -1,6 +1,7 @@
 import { Trash2 } from "lucide-react";
 
 import { deleteUser } from "../../api/adminApi";
+import { toast } from "react-hot-toast";
 
 function UserRow({
   user,
@@ -20,7 +21,7 @@ function UserRow({
     } catch (error) {
       console.error(error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
         "Unable to delete user."
       );

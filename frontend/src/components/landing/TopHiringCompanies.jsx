@@ -1,42 +1,25 @@
 import LogoMarquee from "./LogoMarquee";
 
-// Logos
-import googleLogo from "../../assets/logos/google.svg";
-import microsoftLogo from "../../assets/logos/microsoft.svg";
-import adobeLogo from "../../assets/logos/adobe.svg";
-import amazonLogo from "../../assets/logos/amazon.svg";
-import appleLogo from "../../assets/logos/apple.svg";
-import metaLogo from "../../assets/logos/meta.svg";
-import intelLogo from "../../assets/logos/intel.svg";
-import nvidiaLogo from "../../assets/logos/nvidia.svg";
-import ciscoLogo from "../../assets/logos/cisco.svg";
-import accentureLogo from "../../assets/logos/accenture.svg";
-import ibmLogo from "../../assets/logos/ibm.svg";
-import acerLogo from "../../assets/logos/acer.svg";
-
 const logos = [
-  googleLogo,
-  microsoftLogo,
-  adobeLogo,
-  amazonLogo,
-  appleLogo,
-  metaLogo,
-  intelLogo,
-  nvidiaLogo,
-  ciscoLogo,
-  accentureLogo,
-  ibmLogo,
-  acerLogo,
+  "/logos/google.svg",
+  "/logos/microsoft.svg",
+  "/logos/adobe.svg",
+  "/logos/amazon.svg",
+  "/logos/apple.svg",
+  "/logos/meta.svg",
+  "/logos/intel.svg",
+  "/logos/nvidia.svg",
+  "/logos/cisco.svg",
+  "/logos/accenture.svg",
+  "/logos/ibm.svg",
+  "/logos/acer.svg",
 ];
 
 function TopHiringCompanies() {
   return (
     <section className="bg-white py-20 lg:py-24">
-
       <div className="mx-auto max-w-7xl px-6">
-
         <div className="mx-auto max-w-3xl text-center">
-
           <span className="inline-flex rounded-full bg-[#E8F7F3] px-5 py-2 text-sm font-semibold text-[#2E8B78]">
             Trusted Companies
           </span>
@@ -51,17 +34,12 @@ function TopHiringCompanies() {
             Discover opportunities from global technology companies,
             innovative startups and industry leaders actively hiring.
           </p>
-
         </div>
 
         <div className="mt-16">
-
           <LogoMarquee logos={logos} />
-
         </div>
-
       </div>
-
     </section>
   );
 }

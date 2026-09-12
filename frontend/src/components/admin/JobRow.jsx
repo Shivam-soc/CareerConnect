@@ -1,5 +1,6 @@
 import { Trash2 } from "lucide-react";
 import { deleteJob } from "../../api/adminApi";
+import { toast } from "react-hot-toast";
 
 function JobRow({
   job,
@@ -15,13 +16,13 @@ function JobRow({
     try {
       await deleteJob(job._id);
 
-      alert("Job deleted successfully.");
+      toast.success("Job deleted successfully.");
 
       refresh();
     } catch (error) {
       console.error(error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
         "Unable to delete job."
       );

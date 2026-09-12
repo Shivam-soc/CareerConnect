@@ -6,13 +6,36 @@ import generateToken from "../utils/generateToken.js";
 // Register User
 // =============================
 export const registerUser = async (userData) => {
-  const { fullName, email, password, role } = userData;
+  const {
+    fullName,
+    email,
+    password,
+    role = "student",
+  } = userData;
 
-  // Check if user already exists
-  const existingUser = await User.findOne({ email });
+  // Validation
+  if (!fullName || !email || !password) {
+    throw new Error("All fields are required.");
+  }
+
+  // Check if email already exists
+  const existingUser = await User.findOne({
+    email: email.toLowerCase(),
+  });
 
   if (existingUser) {
-    throw new Error("User already exists");
+    throw new Error("User already exists.");
+  }
+
+  // Allowed roles
+  const allowedRoles = [
+    "student",
+    "recruiter",
+    "admin",
+  ];
+
+  if (!allowedRoles.includes(role)) {
+    throw new Error("Invalid role.");
   }
 
   // Hash password
@@ -20,8 +43,8 @@ export const registerUser = async (userData) => {
 
   // Create user
   const user = await User.create({
-    fullName,
-    email,
+    fullName: fullName.trim(),
+    email: email.toLowerCase(),
     password: hashedPassword,
     role,
   });
@@ -29,7 +52,7 @@ export const registerUser = async (userData) => {
   // Generate JWT
   const token = generateToken(user._id, user.role);
 
-  // Remove password before sending response
+  // Remove password
   const userResponse = user.toObject();
   delete userResponse.password;
 
@@ -42,25 +65,33 @@ export const registerUser = async (userData) => {
 // =============================
 // Login User
 // =============================
-export const loginUser = async (email, password) => {
-  // Find user
-  const user = await User.findOne({ email });
+export const loginUser = async (
+  email,
+  password
+) => {
+  if (!email || !password) {
+    throw new Error("Email and password are required.");
+  }
+
+  const user = await User.findOne({
+    email: email.toLowerCase(),
+  });
 
   if (!user) {
-    throw new Error("Invalid email or password");
+    throw new Error("Invalid email or password.");
   }
 
-  // Compare password
-  const isMatch = await bcrypt.compare(password, user.password);
+  const isMatch = await bcrypt.compare(
+    password,
+    user.password
+  );
 
   if (!isMatch) {
-    throw new Error("Invalid email or password");
+    throw new Error("Invalid email or password.");
   }
 
-  // Generate JWT
   const token = generateToken(user._id, user.role);
 
-  // Remove password before sending response
   const userResponse = user.toObject();
   delete userResponse.password;
 

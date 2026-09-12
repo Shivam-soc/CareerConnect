@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 import {
   createCompany,
@@ -13,6 +14,8 @@ function CompanyForm({ mode = "create" }) {
 
   const [loading, setLoading] = useState(false);
   const [fetching, setFetching] = useState(false);
+
+  const [logoFile, setLogoFile] = useState(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -50,7 +53,7 @@ function CompanyForm({ mode = "create" }) {
       });
     } catch (error) {
       console.error(error);
-      alert("Unable to load company.");
+      toast.error("Unable to load company.");
     } finally {
       setFetching(false);
     }
@@ -63,25 +66,50 @@ function CompanyForm({ mode = "create" }) {
     }));
   };
 
+  const handleLogoChange = (e) => {
+    if (e.target.files.length > 0) {
+      setLogoFile(e.target.files[0]);
+
+      setFormData((prev) => ({
+        ...prev,
+        logo: URL.createObjectURL(e.target.files[0]),
+      }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
       setLoading(true);
 
-      if (mode === "create") {
-        await createCompany(formData);
-        alert("Company created successfully.");
-      } else {
-        await updateCompany(id, formData);
-        alert("Company updated successfully.");
+      const data = new FormData();
+
+      Object.entries(formData).forEach(([key, value]) => {
+        if (key !== "logo") {
+          data.append(key, value);
+        }
+      });
+
+      if (logoFile) {
+        data.append("logo", logoFile);
       }
 
-      navigate("/recruiter/companies");
+      if (mode === "create") {
+        await createCompany(data);
+        toast.success("Company created successfully.");
+      } else {
+        await updateCompany(id, data);
+        toast.success("Company updated successfully.");
+      }
+
+      navigate("/recruiter/companies", {
+        replace: true,
+      });
     } catch (error) {
       console.error(error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Unable to save company."
       );
@@ -103,8 +131,6 @@ function CompanyForm({ mode = "create" }) {
       onSubmit={handleSubmit}
       className="rounded-3xl bg-white p-8 shadow-sm"
     >
-      {/* Company Information */}
-
       <div className="mb-8">
         <h2 className="text-2xl font-bold text-slate-900">
           Company Information
@@ -116,10 +142,9 @@ function CompanyForm({ mode = "create" }) {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        {/* Company Name */}
 
         <div>
-          <label className="mb-2 block font-medium text-slate-700">
+          <label className="mb-2 block font-medium">
             Company Name
           </label>
 
@@ -129,15 +154,12 @@ function CompanyForm({ mode = "create" }) {
             value={formData.name}
             onChange={handleChange}
             required
-            placeholder="Google"
-            className="w-full rounded-xl border border-slate-300 p-3 outline-none transition focus:border-[#2E8B78]"
+            className="w-full rounded-xl border border-slate-300 p-3 focus:border-[#2E8B78] outline-none"
           />
         </div>
 
-        {/* Industry */}
-
         <div>
-          <label className="mb-2 block font-medium text-slate-700">
+          <label className="mb-2 block font-medium">
             Industry
           </label>
 
@@ -146,15 +168,12 @@ function CompanyForm({ mode = "create" }) {
             name="industry"
             value={formData.industry}
             onChange={handleChange}
-            placeholder="Information Technology"
-            className="w-full rounded-xl border border-slate-300 p-3 outline-none transition focus:border-[#2E8B78]"
+            className="w-full rounded-xl border border-slate-300 p-3 focus:border-[#2E8B78] outline-none"
           />
         </div>
 
-        {/* Website */}
-
         <div>
-          <label className="mb-2 block font-medium text-slate-700">
+          <label className="mb-2 block font-medium">
             Website
           </label>
 
@@ -163,32 +182,33 @@ function CompanyForm({ mode = "create" }) {
             name="website"
             value={formData.website}
             onChange={handleChange}
-            placeholder="https://company.com"
-            className="w-full rounded-xl border border-slate-300 p-3 outline-none transition focus:border-[#2E8B78]"
+            className="w-full rounded-xl border border-slate-300 p-3 focus:border-[#2E8B78] outline-none"
           />
         </div>
 
-        {/* Logo */}
-
         <div>
-          <label className="mb-2 block font-medium text-slate-700">
-            Logo URL
+          <label className="mb-2 block font-medium">
+            Company Logo
           </label>
 
           <input
-            type="url"
-            name="logo"
-            value={formData.logo}
-            onChange={handleChange}
-            placeholder="https://..."
-            className="w-full rounded-xl border border-slate-300 p-3 outline-none transition focus:border-[#2E8B78]"
+            type="file"
+            accept="image/*"
+            onChange={handleLogoChange}
+            className="w-full rounded-xl border border-slate-300 p-3"
           />
+
+          {formData.logo && (
+            <img
+              src={formData.logo}
+              alt="Company Logo"
+              className="mt-4 h-24 w-24 rounded-xl border object-cover"
+            />
+          )}
         </div>
 
-        {/* Location */}
-
         <div>
-          <label className="mb-2 block font-medium text-slate-700">
+          <label className="mb-2 block font-medium">
             Location
           </label>
 
@@ -197,15 +217,12 @@ function CompanyForm({ mode = "create" }) {
             name="location"
             value={formData.location}
             onChange={handleChange}
-            placeholder="Bangalore"
-            className="w-full rounded-xl border border-slate-300 p-3 outline-none transition focus:border-[#2E8B78]"
+            className="w-full rounded-xl border border-slate-300 p-3 focus:border-[#2E8B78] outline-none"
           />
         </div>
 
-        {/* Company Size */}
-
         <div>
-          <label className="mb-2 block font-medium text-slate-700">
+          <label className="mb-2 block font-medium">
             Company Size
           </label>
 
@@ -213,7 +230,7 @@ function CompanyForm({ mode = "create" }) {
             name="size"
             value={formData.size}
             onChange={handleChange}
-            className="w-full rounded-xl border border-slate-300 p-3 outline-none transition focus:border-[#2E8B78]"
+            className="w-full rounded-xl border border-slate-300 p-3"
           >
             <option value="">Select Size</option>
             <option>1-10 Employees</option>
@@ -225,10 +242,8 @@ function CompanyForm({ mode = "create" }) {
           </select>
         </div>
 
-        {/* Founded */}
-
         <div className="md:col-span-2">
-          <label className="mb-2 block font-medium text-slate-700">
+          <label className="mb-2 block font-medium">
             Founded
           </label>
 
@@ -237,16 +252,14 @@ function CompanyForm({ mode = "create" }) {
             name="founded"
             value={formData.founded}
             onChange={handleChange}
-            placeholder="2005"
-            className="w-full rounded-xl border border-slate-300 p-3 outline-none transition focus:border-[#2E8B78]"
+            className="w-full rounded-xl border border-slate-300 p-3"
           />
         </div>
+
       </div>
 
-      {/* Description */}
-
       <div className="mt-8">
-        <label className="mb-2 block font-medium text-slate-700">
+        <label className="mb-2 block font-medium">
           Company Description
         </label>
 
@@ -255,17 +268,14 @@ function CompanyForm({ mode = "create" }) {
           name="description"
           value={formData.description}
           onChange={handleChange}
-          placeholder="Tell students about your company..."
-          className="w-full rounded-xl border border-slate-300 p-4 outline-none transition focus:border-[#2E8B78]"
+          className="w-full rounded-xl border border-slate-300 p-4"
         />
       </div>
-
-      {/* Submit */}
 
       <button
         type="submit"
         disabled={loading}
-        className="mt-8 w-full rounded-xl bg-[#2E8B78] py-4 font-semibold text-white transition hover:bg-[#236D5E] disabled:cursor-not-allowed disabled:opacity-60"
+        className="mt-8 w-full rounded-xl bg-[#2E8B78] py-4 font-semibold text-white hover:bg-[#236D5E] disabled:opacity-60"
       >
         {loading
           ? mode === "edit"

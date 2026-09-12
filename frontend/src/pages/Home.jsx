@@ -15,26 +15,20 @@ function Home() {
     <>
       <Navbar />
 
-      <main className="bg-[#F8FAF8]">
+      <main className="min-h-screen bg-[#F8FAF8]">
 
         <Hero
           search={search}
           setSearch={setSearch}
         />
 
-        {/* Divider */}
-
-        <div className="mx-auto h-px max-w-7xl bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+        <div className="mx-auto my-4 h-px max-w-7xl bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
 
         <TopHiringCompanies />
 
-        <FeaturedJobs
-          search={search}
-        />
+        <FeaturedJobs search={search} />
 
         <WhyCareerConnect />
-
-        
 
         <CtaBand />
 

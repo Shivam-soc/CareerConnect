@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Pencil, Trash2, Plus } from "lucide-react";
+import { toast } from "react-hot-toast";
 
 import DashboardLayout from "../components/layout/DashboardLayout";
 import {
@@ -37,11 +38,11 @@ function RecruiterCompanies() {
         prev.filter((company) => company._id !== id)
       );
 
-      alert("Company deleted.");
+      toast.success("Company deleted.");
     } catch (error) {
       console.error(error);
 
-      alert(
+      toast.error(
         error.response?.data?.message ||
           "Unable to delete company."
       );

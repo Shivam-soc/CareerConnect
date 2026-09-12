@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 import DashboardLayout from "../components/layout/DashboardLayout";
 import {
@@ -63,11 +64,11 @@ function RecruiterDashboard() {
       prev.filter((job) => job._id !== jobId)
     );
 
-    alert("Job deleted successfully.");
+    toast.success("Job deleted successfully.");
   } catch (error) {
     console.error(error);
 
-    alert(
+    toast.error(
       error.response?.data?.message ||
       "Unable to delete job."
     );

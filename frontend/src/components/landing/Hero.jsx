@@ -1,6 +1,9 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Sparkles } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Sparkles } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+
+import { getJobs } from "../../api/jobApi";
 
 import Button from "../ui/Button";
 import SearchInput from "../ui/SearchInput";
@@ -24,11 +27,36 @@ const fadeUp = {
 };
 
 function Hero({ search, setSearch }) {
+  const navigate = useNavigate();
+
+  const [featuredJob, setFeaturedJob] = useState(null);
+
+  useEffect(() => {
+    const fetchFeaturedJob = async () => {
+      try {
+        const response = await getJobs({
+          limit: 1,
+          sort: "latest",
+        });
+
+        setFeaturedJob(response.data.jobs?.[0] || null);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchFeaturedJob();
+  }, []);
+
+  const handleSearch = () => {
+    if (!search.trim()) return;
+
+    navigate(`/jobs?search=${encodeURIComponent(search)}`);
+  };
 
   return (
     <section className="relative overflow-hidden bg-[#F8FAF8]">
-
-      {/* Grid */}
+      {/* Background Grid */}
 
       <div
         className="absolute inset-0 -z-20 opacity-[0.03]"
@@ -42,7 +70,6 @@ function Hero({ search, setSearch }) {
       {/* Glow */}
 
       <div className="absolute inset-0 -z-10 overflow-hidden">
-
         <motion.div
           animate={{
             scale: [1, 1.08, 1],
@@ -68,7 +95,6 @@ function Hero({ search, setSearch }) {
         />
 
         <div className="absolute bottom-0 left-1/2 h-80 w-80 -translate-x-1/2 rounded-full bg-[#2E8B78]/10 blur-[150px]" />
-
       </div>
 
       {/* Floating Dots */}
@@ -91,14 +117,11 @@ function Hero({ search, setSearch }) {
         className="absolute left-[48%] top-20 h-2 w-2 rounded-full bg-[#2E8B78]"
       />
 
-      <div className="mx-auto max-w-7xl px-6 pt-8 pb-14 lg:pt-10 lg:pb-16">
-
-        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-
+      <div className="mx-auto max-w-7xl px-6 py-16 lg:py-20">
+        <div className="grid items-center gap-16 lg:grid-cols-2">
           {/* LEFT */}
 
           <div>
-
             <motion.div
               variants={fadeUp}
               initial="hidden"
@@ -120,11 +143,11 @@ function Hero({ search, setSearch }) {
               initial="hidden"
               animate="show"
               custom={0.1}
-              className="mt-6 max-w-[650px] text-5xl font-extrabold leading-[1.02] tracking-tight text-slate-900 lg:text-7xl"
+              className="mt-6 text-5xl font-extrabold leading-tight text-slate-900 lg:text-7xl"
             >
               Find your next
 
-              <span className="mt-2 block text-[#2E8B78]">
+              <span className="block text-[#2E8B78]">
                 Dream Career
               </span>
             </motion.h1>
@@ -134,24 +157,34 @@ function Hero({ search, setSearch }) {
               initial="hidden"
               animate="show"
               custom={0.2}
-              className="mt-7 max-w-lg text-lg leading-8 text-slate-600"
+              className="mt-7 max-w-xl text-lg leading-8 text-slate-600"
             >
               Discover internships, placements and full-time opportunities
               from India's leading startups and technology companies.
             </motion.p>
+
+            {/* Search */}
 
             <motion.div
               variants={fadeUp}
               initial="hidden"
               animate="show"
               custom={0.3}
-              className="mt-10 rounded-2xl bg-white/70 p-1 shadow-lg backdrop-blur-sm"
+              className="mt-10 rounded-2xl bg-white p-2 shadow-lg"
             >
               <SearchInput
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleSearch();
+                  }
+                }}
               />
             </motion.div>
+
+            {/* Buttons */}
 
             <motion.div
               variants={fadeUp}
@@ -160,28 +193,67 @@ function Hero({ search, setSearch }) {
               custom={0.4}
               className="mt-8 flex flex-wrap gap-4"
             >
-              <Button
-                size="lg"
-                className="hover:-translate-y-1 hover:shadow-xl"
-              >
-                Explore Jobs
-              </Button>
+              <Link to="/jobs">
+                <Button size="lg">
+                  Explore Jobs
+                </Button>
+              </Link>
 
-              <Button
-                variant="secondary"
-                size="lg"
-                className="hover:-translate-y-1 hover:border-[#2E8B78] hover:bg-[#E8F7F3]"
-              >
-                Browse Companies
-              </Button>
+              <Link to="/companies">
+                <Button
+                  variant="secondary"
+                  size="lg"
+                >
+                  Browse Companies
+                </Button>
+              </Link>
             </motion.div>
+
+            {/* Stats */}
+
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              animate="show"
+              custom={0.5}
+              className="mt-12 flex gap-10"
+            >
+              <div>
+                <h3 className="text-3xl font-bold text-[#2E8B78]">
+                  15K+
+                </h3>
+                <p className="text-sm text-slate-500">
+                  Students
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-3xl font-bold text-[#2E8B78]">
+                  1200+
+                </h3>
+                <p className="text-sm text-slate-500">
+                  Jobs
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-3xl font-bold text-[#2E8B78]">
+                  350+
+                </h3>
+                <p className="text-sm text-slate-500">
+                  Companies
+                </p>
+              </div>
+            </motion.div>
+
+            {/* Popular Skills */}
 
             <motion.p
               variants={fadeUp}
               initial="hidden"
               animate="show"
-              custom={0.5}
-              className="mt-8 mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500"
+              custom={0.6}
+              className="mt-10 mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500"
             >
               Popular Searches
             </motion.p>
@@ -190,92 +262,58 @@ function Hero({ search, setSearch }) {
               variants={fadeUp}
               initial="hidden"
               animate="show"
-              custom={0.6}
+              custom={0.7}
               className="flex flex-wrap gap-3"
             >
               {[
                 "React",
+                "Node.js",
                 "AI",
                 "VLSI",
-                "Frontend",
-                "Backend",
                 "Cloud",
+                "Java",
               ].map((skill) => (
                 <Badge
                   key={skill}
                   variant="gray"
                   size="md"
-                  className="transition-all duration-300 hover:-translate-y-1 hover:border-[#2E8B78] hover:bg-[#E8F7F3]"
+                  className="cursor-pointer transition hover:-translate-y-1 hover:border-[#2E8B78] hover:bg-[#E8F7F3]"
+                  onClick={() =>
+                    navigate(`/jobs?search=${skill}`)
+                  }
                 >
                   {skill}
                 </Badge>
               ))}
             </motion.div>
-
           </div>
-            <motion.div
-             initial={{ opacity: 0, x: 60 }}
-             animate={{
-             opacity: 1,
-             x: 0,
-             y: [0, -10, 0],
-           }}
-          transition={{
-            opacity: {
-             duration: 0.7,
-            },
-            x: {
-              duration: 0.7,
-           },
-           y: {
-             duration: 6,
-             repeat: Infinity,
-             ease: "easeInOut",
-           },
-         }}
-         className="relative flex justify-center"
-       >
 
-        {/* Background Glow */}
+          {/* RIGHT */}
 
-        <div className="absolute inset-0 flex items-center justify-center">
+          <motion.div
+            initial={{ opacity: 0, x: 60 }}
+            animate={{
+              opacity: 1,
+              x: 0,
+              y: [0, -10, 0],
+            }}
+            transition={{
+              opacity: { duration: 0.8 },
+              x: { duration: 0.8 },
+              y: {
+                duration: 6,
+                repeat: Infinity,
+                ease: "easeInOut",
+              },
+            }}
+            className="relative flex justify-center"
+          >
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="h-[420px] w-[420px] rounded-full bg-[#2E8B78]/10 blur-[140px]" />
+            </div>
 
-         <div className="h-[420px] w-[420px] rounded-full bg-[#2E8B78]/10 blur-[140px]" />
-
-        </div>
-
-       {/* Decorative Circle */}
-
-       <motion.div
-         animate={{
-          y: [0, -12, 0],
-          scale: [1, 1.05, 1],
-        }}
-        transition={{
-         duration: 8,
-         repeat: Infinity,
-         ease: "easeInOut",
-       }}
-    className="absolute -right-6 -top-6 h-20 w-20 rounded-full bg-[#2E8B78]/10 blur-xl"
-  />
-
-  {/* Decorative Circle */}
-
-  <motion.div
-    animate={{
-      y: [0, 10, 0],
-    }}
-    transition={{
-      duration: 7,
-      repeat: Infinity,
-      ease: "easeInOut",
-    }}
-    className="absolute -bottom-8 -left-6 h-14 w-14 rounded-full bg-blue-300/20 blur-lg"
-  />
-
-  <HeroJobCard />
-
-</motion.div>
+            <HeroJobCard job={featuredJob} />
+          </motion.div>
         </div>
       </div>
     </section>

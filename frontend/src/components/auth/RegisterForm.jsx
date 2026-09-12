@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 import PasswordInput from "./PasswordInput";
 import SocialLogin from "./SocialLogin";
 
 import { registerUser } from "../../api/authApi";
+import { useAuth } from "../../context/AuthContext";
 
 function RegisterForm() {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -33,7 +36,7 @@ function RegisterForm() {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match.");
+      toast.error("Passwords do not match.");
       return;
     }
 
@@ -47,28 +50,35 @@ function RegisterForm() {
         role: formData.role,
       });
 
-      // Backend response:
-      // {
-      //   success,
-      //   message,
-      //   token,
-      //   user
-      // }
-
       const { token, user } = response.data;
 
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
 
-      if (user.role === "student") {
-        navigate("/dashboard");
-      } else if (user.role === "recruiter") {
-        navigate("/recruiter/dashboard");
-      } else if (user.role === "admin") {
-        navigate("/admin/dashboard");
+      setUser(user);
+
+      toast.success(`Welcome to CareerConnect, ${user.fullName}!`);
+
+      switch (user.role) {
+        case "student":
+          navigate("/dashboard", { replace: true });
+          break;
+
+        case "recruiter":
+          navigate("/recruiter/dashboard", { replace: true });
+          break;
+
+        case "admin":
+          navigate("/admin/dashboard", { replace: true });
+          break;
+
+        default:
+          navigate("/", { replace: true });
       }
     } catch (error) {
-      alert(
+      console.error(error);
+
+      toast.error(
         error.response?.data?.message ||
           error.message ||
           "Registration failed"
@@ -86,7 +96,10 @@ function RegisterForm() {
         to="/"
         className="text-2xl font-bold text-slate-900"
       >
-        Career<span className="text-[#2E8B78]">Connect</span>
+        Career
+        <span className="text-[#2E8B78]">
+          Connect
+        </span>
       </Link>
 
       {/* Heading */}
@@ -105,7 +118,7 @@ function RegisterForm() {
         onSubmit={handleSubmit}
         className="space-y-5"
       >
-        {/* Row 1 */}
+        {/* Name & Email */}
 
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -120,7 +133,7 @@ function RegisterForm() {
               onChange={handleChange}
               placeholder="John Doe"
               required
-              className="h-12 w-full rounded-lg border border-slate-300 px-4 outline-none focus:border-[#2E8B78] focus:ring-2 focus:ring-[#2E8B78]/20"
+              className="h-12 w-full rounded-lg border border-slate-300 px-4 outline-none transition focus:border-[#2E8B78] focus:ring-2 focus:ring-[#2E8B78]/20"
             />
           </div>
 
@@ -136,12 +149,12 @@ function RegisterForm() {
               onChange={handleChange}
               placeholder="name@example.com"
               required
-              className="h-12 w-full rounded-lg border border-slate-300 px-4 outline-none focus:border-[#2E8B78] focus:ring-2 focus:ring-[#2E8B78]/20"
+              className="h-12 w-full rounded-lg border border-slate-300 px-4 outline-none transition focus:border-[#2E8B78] focus:ring-2 focus:ring-[#2E8B78]/20"
             />
           </div>
         </div>
 
-        {/* Row 2 */}
+        {/* Password */}
 
         <div className="grid grid-cols-2 gap-4">
           <div>
@@ -170,7 +183,7 @@ function RegisterForm() {
           </div>
         </div>
 
-        {/* Account Type */}
+        {/* Role */}
 
         <div>
           <label className="mb-2 block text-sm font-medium">
@@ -181,10 +194,10 @@ function RegisterForm() {
             <button
               type="button"
               onClick={() =>
-                setFormData({
-                  ...formData,
+                setFormData((prev) => ({
+                  ...prev,
                   role: "student",
-                })
+                }))
               }
               className={`h-12 rounded-lg border transition ${
                 formData.role === "student"
@@ -198,10 +211,10 @@ function RegisterForm() {
             <button
               type="button"
               onClick={() =>
-                setFormData({
-                  ...formData,
+                setFormData((prev) => ({
+                  ...prev,
                   role: "recruiter",
-                })
+                }))
               }
               className={`h-12 rounded-lg border transition ${
                 formData.role === "recruiter"
@@ -235,12 +248,12 @@ function RegisterForm() {
           </Link>
         </label>
 
-        {/* Button */}
+        {/* Submit */}
 
         <button
           type="submit"
           disabled={!formData.agree || loading}
-          className="h-12 w-full rounded-lg bg-[#2E8B78] font-medium text-white transition hover:bg-[#236D5E] disabled:opacity-50"
+          className="h-12 w-full rounded-lg bg-[#2E8B78] font-medium text-white transition hover:bg-[#236D5E] disabled:cursor-not-allowed disabled:opacity-60"
         >
           {loading
             ? "Creating Account..."

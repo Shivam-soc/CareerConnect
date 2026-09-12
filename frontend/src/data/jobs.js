@@ -1,18 +1,19 @@
-import googleLogo from "../assets/logos/google.svg";
-import microsoftLogo from "../assets/logos/microsoft.svg";
-import adobeLogo from "../assets/logos/adobe.svg";
-import amazonLogo from "../assets/logos/amazon.svg";
-import appleLogo from "../assets/logos/apple.svg";
-import nvidiaLogo from "../assets/logos/nvidia.svg";
-import qualcommLogo from "../assets/logos/qualcomm.svg";
-import intelLogo from "../assets/logos/intel.svg";
-import oracleLogo from "../assets/logos/oracle.svg";
-import ibmLogo from "../assets/logos/ibm.svg";
-import ciscoLogo from "../assets/logos/cisco.svg";
-import accentureLogo from "../assets/logos/accenture.svg";
-import metaLogo from "../assets/logos/meta.svg";
-import acerLogo from "../assets/logos/acer.svg";
-import bmwLogo from "../assets/logos/bmw.svg";
+const googleLogo = "/logos/google.svg";
+const microsoftLogo = "/logos/microsoft.svg";
+const adobeLogo = "/logos/adobe.svg";
+const amazonLogo = "/logos/amazon.svg";
+const appleLogo = "/logos/apple.svg";
+const metaLogo = "/logos/meta.svg";
+const intelLogo = "/logos/intel.svg";
+const nvidiaLogo = "/logos/nvidia.svg";
+const ciscoLogo = "/logos/cisco.svg";
+const accentureLogo = "/logos/accenture.svg";
+const ibmLogo = "/logos/ibm.svg";
+const acerLogo = "/logos/acer.svg";
+const bmwLogo = "/logos/bmw.svg";
+const qualcommLogo = "/logos/qualcomm.svg";
+const oracleLogo = "/logos/oracle.svg";
+
 
 const defaultBenefits = [
   "🏥 Health Insurance",
