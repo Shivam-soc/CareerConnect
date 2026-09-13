@@ -16,16 +16,30 @@ import notificationRoutes from "./routes/notificationRoutes.js";
 
 const app = express();
 
-// ============================
-// Middleware
-// ============================
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://career-connect-shivam-soc.vercel.app",
+  "https://career-connect-git-main-shivam-soc.vercel.app",
+  "https://career-connect-ndhrqs98r-shivam-soc.vercel.app",
+];
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    origin: function (origin, callback) {
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("CORS Not Allowed"));
+    },
     credentials: true,
   })
 );
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
