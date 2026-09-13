@@ -2,9 +2,9 @@ import { useMemo, useState } from "react";
 
 import DashboardLayout from "../components/layout/DashboardLayout";
 
-import SavedJobsHeader from "../components/savedJobs/SavedJobsHeader";
-import SavedJobsFilters from "../components/savedJobs/SavedJobsFilters";
-import SavedJobsList from "../components/savedJobs/SavedJobsList";
+import SavedJobsHeader from "../components/SavedJobs/SavedJobsHeader";
+import SavedJobsFilters from "../components/SavedJobs/SavedJobsFilters";
+import SavedJobsList from "../components/SavedJobs/SavedJobsList";
 
 import jobs from "../data/jobs";
 
