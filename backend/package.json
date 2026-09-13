@@ -30,6 +30,7 @@
     "mongoose": "^8.18.1",
     "multer": "^2.3.0",
     "multer-storage-cloudinary": "^4.0.0",
+    "nodemailer": "^10.0.9",
     "socket.io": "^4.8.3"
   },
   "devDependencies": {

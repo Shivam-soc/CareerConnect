@@ -22,13 +22,42 @@ const userSchema = new mongoose.Schema(
       minlength: 6,
     },
 
+    // ============================
+    // Password Reset
+    // ============================
+    resetPasswordToken: {
+      type: String,
+      default: "",
+    },
+
+    resetPasswordExpire: {
+      type: Date,
+      default: null,
+    },
+
+    // ============================
+    // User Role
+    // ============================
     role: {
       type: String,
       enum: ["student", "recruiter", "admin"],
       default: "student",
     },
 
+    // ============================
+    // Basic Information
+    // ============================
     avatar: {
+      type: String,
+      default: "",
+    },
+
+    profilePicture: {
+      type: String,
+      default: "",
+    },
+
+    coverPhoto: {
       type: String,
       default: "",
     },
@@ -53,12 +82,23 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
 
+    resume: {
+      type: String,
+      default: "",
+    },
+
+    // ============================
+    // Skills
+    // ============================
     skills: [
       {
         type: String,
       },
     ],
 
+    // ============================
+    // Education
+    // ============================
     education: [
       {
         degree: String,
@@ -68,6 +108,9 @@ const userSchema = new mongoose.Schema(
       },
     ],
 
+    // ============================
+    // Experience
+    // ============================
     experience: [
       {
         company: String,
@@ -77,82 +120,81 @@ const userSchema = new mongoose.Schema(
       },
     ],
 
-projects: [
-  {
-    title: String,
-    description: String,
-    technologies: [String],
-    github: String,
-    demo: String,
-  },
-],
-certifications: [
-  {
-    title: {
-      type: String,
-      default: "",
-    },
-    organization: {
-      type: String,
-      default: "",
-    },
-    issueDate: {
-      type: String,
-      default: "",
-    },
-    credentialId: {
-      type: String,
-      default: "",
-    },
-    credentialUrl: {
-      type: String,
-      default: "",
-    },
-  },
-],
+    // ============================
+    // Projects
+    // ============================
+    projects: [
+      {
+        title: String,
+        description: String,
+        technologies: [String],
+        github: String,
+        demo: String,
+      },
+    ],
 
-socialLinks: {
-  github: {
-    type: String,
-    default: "",
-  },
-  linkedin: {
-    type: String,
-    default: "",
-  },
-  portfolio: {
-    type: String,
-    default: "",
-  },
-  leetcode: {
-    type: String,
-    default: "",
-  },
-  geeksforgeeks: {
-    type: String,
-    default: "",
-  },
-},
+    // ============================
+    // Certifications
+    // ============================
+    certifications: [
+      {
+        title: {
+          type: String,
+          default: "",
+        },
+        organization: {
+          type: String,
+          default: "",
+        },
+        issueDate: {
+          type: String,
+          default: "",
+        },
+        credentialId: {
+          type: String,
+          default: "",
+        },
+        credentialUrl: {
+          type: String,
+          default: "",
+        },
+      },
+    ],
 
-profilePicture: {
-  type: String,
-  default: "",
-},
-
-coverPhoto: {
-  type: String,
-  default: "",
-},
-
-resume: {
-  type: String,
-  default: "",
-},
+    // ============================
+    // Social Links
+    // ============================
+    socialLinks: {
+      github: {
+        type: String,
+        default: "",
+      },
+      linkedin: {
+        type: String,
+        default: "",
+      },
+      portfolio: {
+        type: String,
+        default: "",
+      },
+      leetcode: {
+        type: String,
+        default: "",
+      },
+      geeksforgeeks: {
+        type: String,
+        default: "",
+      },
+    },
   },
   {
     timestamps: true,
   }
 );
+
+// ============================
+// Indexes
+// ============================
 
 userSchema.index({ email: 1 });
 userSchema.index({ role: 1 });

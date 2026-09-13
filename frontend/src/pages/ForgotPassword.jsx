@@ -1,16 +1,35 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+
 import AuthLayout from "../components/auth/AuthLayout";
+import { forgotPassword } from "../api/forgotPasswordApi";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(email);
+    try {
+      setLoading(true);
 
-    // TODO: Send Reset Link API
+      const response = await forgotPassword(email);
+
+      toast.success(
+        response.data.message || "Password reset link has been sent."
+      );
+
+      setEmail("");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          "Something went wrong. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -54,9 +73,10 @@ function ForgotPassword() {
 
           <button
             type="submit"
-            className="h-12 w-full rounded-lg bg-[#2E8B78] text-white font-medium hover:bg-[#236D5E] transition"
+            disabled={loading}
+            className="h-12 w-full rounded-lg bg-[#2E8B78] text-white font-medium hover:bg-[#236D5E] transition disabled:cursor-not-allowed disabled:opacity-60"
           >
-            Send Reset Link
+            {loading ? "Sending..." : "Send Reset Link"}
           </button>
         </form>
 
