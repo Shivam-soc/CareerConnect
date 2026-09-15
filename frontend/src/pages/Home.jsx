@@ -38,7 +38,10 @@ function Home() {
 
         if (!cancelled) {
           setJobs([]);
-          setJobsError("Unable to load jobs right now.");
+          setJobsError(
+            error.response?.data?.message ||
+              "Unable to load jobs right now."
+          );
         }
       } finally {
         if (!cancelled) {
@@ -70,7 +73,7 @@ function Home() {
         {/* Divider */}
         <div className="mx-auto my-2 h-px w-full max-w-7xl bg-gradient-to-r from-transparent via-slate-200 to-transparent sm:my-4" />
 
-        {/* Companies */}
+        {/* Top Hiring Companies */}
         <TopHiringCompanies />
 
         {/* Featured Jobs */}
@@ -78,7 +81,6 @@ function Home() {
           jobs={jobs}
           loading={loadingJobs}
           error={jobsError}
-          search={search}
         />
 
         {/* Why CareerConnect */}

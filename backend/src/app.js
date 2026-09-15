@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import path from "path";
+import passport from "./config/passport.js";
 
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
@@ -34,16 +35,26 @@ app.use(
         return callback(null, true);
       }
 
+      if (
+        origin.startsWith("https://career-connect-") &&
+        origin.endsWith(".vercel.app")
+      ) {
+        return callback(null, true);
+      }
+
       return callback(new Error("CORS Not Allowed"));
     },
+
     credentials: true,
   })
 );
 
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+
+// Passport
+app.use(passport.initialize());
 
 // ============================
 // Static Files
@@ -51,7 +62,9 @@ app.use(cookieParser());
 
 app.use(
   "/uploads",
-  express.static(path.join(process.cwd(), "uploads"))
+  express.static(
+    path.join(process.cwd(), "uploads")
+  )
 );
 
 // ============================
@@ -61,13 +74,28 @@ app.use(
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/jobs", jobRoutes);
-app.use("/api/applications", applicationRoutes);
-app.use("/api/saved-jobs", savedJobRoutes);
-app.use("/api/recruiter", recruiterRoutes);
+app.use(
+  "/api/applications",
+  applicationRoutes
+);
+app.use(
+  "/api/saved-jobs",
+  savedJobRoutes
+);
+app.use(
+  "/api/recruiter",
+  recruiterRoutes
+);
 app.use("/api/admin", adminRoutes);
 app.use("/api/student", studentRoutes);
-app.use("/api/companies", companyRoutes);
-app.use("/api/notifications", notificationRoutes);
+app.use(
+  "/api/companies",
+  companyRoutes
+);
+app.use(
+  "/api/notifications",
+  notificationRoutes
+);
 
 // ============================
 // Health Check
@@ -76,7 +104,8 @@ app.use("/api/notifications", notificationRoutes);
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
-    message: "CareerConnect API is running 🚀",
+    message:
+      "CareerConnect API is running 🚀",
   });
 });
 

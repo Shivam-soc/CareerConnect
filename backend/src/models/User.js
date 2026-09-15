@@ -2,6 +2,9 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
+    // ============================
+    // Basic User Information
+    // ============================
     fullName: {
       type: String,
       required: true,
@@ -16,10 +19,25 @@ const userSchema = new mongoose.Schema(
       trim: true,
     },
 
+    // Password is optional for OAuth users
     password: {
       type: String,
-      required: true,
       minlength: 6,
+      default: "",
+    },
+
+    // ============================
+    // Authentication Provider
+    // ============================
+    authProvider: {
+      type: String,
+      enum: ["local", "google", "github"],
+      default: "local",
+    },
+
+    providerId: {
+      type: String,
+      default: "",
     },
 
     // ============================
@@ -45,7 +63,7 @@ const userSchema = new mongoose.Schema(
     },
 
     // ============================
-    // Basic Information
+    // Profile
     // ============================
     avatar: {
       type: String,
@@ -142,18 +160,22 @@ const userSchema = new mongoose.Schema(
           type: String,
           default: "",
         },
+
         organization: {
           type: String,
           default: "",
         },
+
         issueDate: {
           type: String,
           default: "",
         },
+
         credentialId: {
           type: String,
           default: "",
         },
+
         credentialUrl: {
           type: String,
           default: "",
@@ -169,18 +191,22 @@ const userSchema = new mongoose.Schema(
         type: String,
         default: "",
       },
+
       linkedin: {
         type: String,
         default: "",
       },
+
       portfolio: {
         type: String,
         default: "",
       },
+
       leetcode: {
         type: String,
         default: "",
       },
+
       geeksforgeeks: {
         type: String,
         default: "",

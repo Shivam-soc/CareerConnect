@@ -4,7 +4,7 @@ import {
   Sparkles,
   TrendingUp,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import HeroJobCard from "./HeroJobCard";
 
@@ -14,12 +14,22 @@ function Hero({
   featuredJob = null,
   loading = false,
 }) {
+  const navigate = useNavigate();
+
   const handleSearch = (event) => {
     event.preventDefault();
 
     const value = event.target.search?.value?.trim() || "";
 
-    setSearch?.(value);
+    if (value) {
+      navigate(`/jobs?search=${encodeURIComponent(value)}`);
+    } else {
+      navigate("/jobs");
+    }
+  };
+
+  const handlePopularSearch = (value) => {
+    navigate(`/jobs?search=${encodeURIComponent(value)}`);
   };
 
   const popularSearches = [
@@ -39,7 +49,9 @@ function Hero({
 
       <div className="relative mx-auto w-full max-w-7xl min-w-0 px-4 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-16 lg:px-8 lg:pb-24 lg:pt-20">
         <div className="grid min-w-0 items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
-          {/* Left */}
+          {/* ========================================
+              LEFT CONTENT
+          ========================================= */}
 
           <div className="min-w-0">
             {/* Badge */}
@@ -66,7 +78,9 @@ function Hero({
               from companies looking for your skills.
             </p>
 
-            {/* Search */}
+            {/* ========================================
+                SEARCH
+            ========================================= */}
 
             <form
               onSubmit={handleSearch}
@@ -89,12 +103,15 @@ function Hero({
                   className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-emerald-700"
                 >
                   Search Jobs
+
                   <ArrowRight className="h-4 w-4" />
                 </button>
               </div>
             </form>
 
-            {/* Popular searches */}
+            {/* ========================================
+                POPULAR SEARCHES
+            ========================================= */}
 
             <div className="mt-5 flex min-w-0 flex-wrap items-center gap-2">
               <span className="mr-1 text-xs font-medium text-slate-500">
@@ -105,7 +122,7 @@ function Hero({
                 <button
                   key={item}
                   type="button"
-                  onClick={() => setSearch?.(item)}
+                  onClick={() => handlePopularSearch(item)}
                   className="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition-colors hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
                 >
                   {item}
@@ -113,13 +130,16 @@ function Hero({
               ))}
             </div>
 
-            {/* Quick stats */}
+            {/* ========================================
+                QUICK STATS
+            ========================================= */}
 
             <div className="mt-9 flex flex-wrap gap-x-8 gap-y-4">
               <div>
                 <p className="text-xl font-bold text-slate-900">
                   22+
                 </p>
+
                 <p className="text-xs text-slate-500">
                   Live Jobs
                 </p>
@@ -129,6 +149,7 @@ function Hero({
                 <p className="text-xl font-bold text-slate-900">
                   15+
                 </p>
+
                 <p className="text-xs text-slate-500">
                   Companies
                 </p>
@@ -137,8 +158,10 @@ function Hero({
               <div>
                 <p className="flex items-center gap-1.5 text-xl font-bold text-slate-900">
                   <TrendingUp className="h-4 w-4 text-emerald-600" />
+
                   24/7
                 </p>
+
                 <p className="text-xs text-slate-500">
                   Opportunities
                 </p>
@@ -146,7 +169,9 @@ function Hero({
             </div>
           </div>
 
-          {/* Right — Featured Job */}
+          {/* ========================================
+              FEATURED JOB
+          ========================================= */}
 
           <div className="flex min-w-0 w-full justify-center lg:justify-end">
             <div className="w-full min-w-0 max-w-xl">

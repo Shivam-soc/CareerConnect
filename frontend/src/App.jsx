@@ -16,6 +16,7 @@ import EditCompany from "./pages/EditCompany";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
+import OAuthSuccess from "./pages/OAuthSuccess";
 
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
@@ -71,6 +72,7 @@ function App() {
         path="/forgot-password"
         element={<ForgotPassword />}
       />
+      <Route path="/oauth-success" element={<OAuthSuccess/>} />
 
       {/* ================= STUDENT ================= */}
 
