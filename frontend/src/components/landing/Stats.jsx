@@ -1,110 +1,86 @@
 import { motion } from "framer-motion";
 import {
-  FaBriefcase,
-  FaBuilding,
-  FaUserGraduate,
-  FaStar,
-} from "react-icons/fa";
-
-import SectionHeading from "../ui/SectionHeading";
-import AnimatedCounter from "../ui/AnimatedCounter";
-
-const stats = [
-  {
-    icon: <FaBriefcase />,
-    value: 1500,
-    suffix: "+",
-    title: "Active Jobs",
-  },
-  {
-    icon: <FaBuilding />,
-    value: 800,
-    suffix: "+",
-    title: "Companies",
-  },
-  {
-    icon: <FaUserGraduate />,
-    value: 25000,
-    suffix: "+",
-    title: "Students",
-  },
-  {
-    icon: <FaStar />,
-    value: 95,
-    suffix: "%",
-    title: "Hiring Rate",
-  },
-];
+  BriefcaseBusiness,
+  Building2,
+  GraduationCap,
+  TrendingUp,
+} from "lucide-react";
 
 function Stats() {
+  const stats = [
+    {
+      value: "22+",
+      label: "Live Jobs",
+      description: "Fresh opportunities",
+      icon: BriefcaseBusiness,
+    },
+    {
+      value: "15+",
+      label: "Companies",
+      description: "Hiring on CareerConnect",
+      icon: Building2,
+    },
+    {
+      value: "43+",
+      label: "Applications",
+      description: "Candidates connected",
+      icon: GraduationCap,
+    },
+    {
+      value: "24/7",
+      label: "Career Access",
+      description: "Find opportunities anytime",
+      icon: TrendingUp,
+    },
+  ];
+
   return (
-    <section className="relative overflow-hidden bg-[#F8FAF8] py-20 lg:py-24">
+    <section className="w-full min-w-0 overflow-hidden bg-[#F8FAF8] py-14 sm:py-16 lg:py-20">
+      <div className="mx-auto w-full max-w-7xl min-w-0 px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4 lg:gap-6">
+          {stats.map((stat, index) => {
+            const Icon = stat.icon;
 
-      {/* Background Glow */}
+            return (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{
+                  duration: 0.45,
+                  delay: index * 0.08,
+                }}
+                className="group min-w-0 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-200 hover:shadow-lg sm:rounded-3xl sm:p-6"
+              >
+                {/* Icon */}
 
-      <div className="absolute inset-0 -z-10 overflow-hidden">
+                <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 transition-all duration-300 group-hover:bg-emerald-600 group-hover:text-white sm:h-12 sm:w-12 sm:rounded-2xl">
+                  <Icon className="h-5 w-5 sm:h-6 sm:w-6" />
+                </div>
 
-        <div className="absolute -left-20 top-10 h-72 w-72 rounded-full bg-[#2E8B78]/5 blur-[120px]" />
+                {/* Number */}
 
-        <div className="absolute -right-20 bottom-0 h-72 w-72 rounded-full bg-emerald-200/20 blur-[120px]" />
+                <div className="truncate text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl lg:text-4xl">
+                  {stat.value}
+                </div>
 
-      </div>
+                {/* Label */}
 
-      <div className="mx-auto max-w-7xl px-6">
+                <p className="mt-1 truncate text-sm font-semibold text-slate-700 sm:text-base">
+                  {stat.label}
+                </p>
 
-        <SectionHeading
-          align="center"
-          eyebrow="By The Numbers"
-          title="CareerConnect in Numbers"
-          subtitle="Thousands of students trust our platform to launch their careers."
-        />
+                {/* Description */}
 
-        <div className="mt-16 grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-
-          {stats.map((item, index) => (
-
-            <motion.div
-              key={item.title}
-              initial={{ opacity: 0, y: 25 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.5,
-                delay: index * 0.1,
-              }}
-              whileHover={{ y: -6 }}
-              className="group rounded-[30px] border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 hover:border-[#2E8B78] hover:shadow-xl"
-            >
-
-              <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl bg-[#E8F7F3] text-2xl text-[#2E8B78] transition-all duration-300 group-hover:scale-110 group-hover:rotate-6">
-
-                {item.icon}
-
-              </div>
-
-              <h3 className="text-5xl font-extrabold tracking-tight text-slate-900">
-
-                <AnimatedCounter
-                  end={item.value}
-                  suffix={item.suffix}
-                />
-
-              </h3>
-
-              <p className="mt-3 text-base font-medium text-slate-500">
-
-                {item.title}
-
-              </p>
-
-            </motion.div>
-
-          ))}
-
+                <p className="mt-1 hidden text-xs leading-5 text-slate-400 sm:block">
+                  {stat.description}
+                </p>
+              </motion.div>
+            );
+          })}
         </div>
-
       </div>
-
     </section>
   );
 }
